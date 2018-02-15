@@ -10,32 +10,32 @@ use work.all;
 entity test_accel is
 	PORT
 	(
-		CLOCK_50		:	 IN STD_LOGIC;
-		CLOCK2_50		:	 IN STD_LOGIC;
-		CLOCK3_50		:	 IN STD_LOGIC;
-		LEDG		:	 OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
-		LEDR		:	 OUT STD_LOGIC_VECTOR(17 DOWNTO 0);
-		KEY		:	 IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-		SW		:	 IN STD_LOGIC_VECTOR(17 DOWNTO 0);
-		HEX0		:	 OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
-		HEX1		:	 OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
-		HEX2		:	 OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
-		HEX3		:	 OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
-		HEX4		:	 OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
-		HEX5		:	 OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
-		HEX6		:	 OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
-		HEX7		:	 OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
-		LCD_BLON		:	 OUT STD_LOGIC;
-		LCD_DATA		:	 INOUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-		LCD_EN		:	 OUT STD_LOGIC;
-		LCD_ON		:	 OUT STD_LOGIC;
-		LCD_RS		:	 OUT STD_LOGIC;
-		LCD_RW		:	 OUT STD_LOGIC;
-		UART_CTS		:	 IN STD_LOGIC;
-		UART_RTS		:	 OUT STD_LOGIC;
-		UART_RXD		:	 IN STD_LOGIC;
-		UART_TXD		:	 OUT STD_LOGIC;
-		GPIO		:	 INOUT STD_LOGIC_VECTOR(35 DOWNTO 0)
+		CLOCK_50    :   IN STD_LOGIC; 
+		CLOCK2_50    :   IN STD_LOGIC; 
+		CLOCK3_50    :   IN STD_LOGIC; 
+		LEDG    :   OUT STD_LOGIC_VECTOR(8 DOWNTO 0); 
+		LEDR    :   OUT STD_LOGIC_VECTOR(17 DOWNTO 0); 
+		KEY    :   IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
+		SW    :   IN STD_LOGIC_VECTOR(17 DOWNTO 0); 
+		HEX0    :   OUT STD_LOGIC_VECTOR(6 DOWNTO 0); 
+		HEX1    :   OUT STD_LOGIC_VECTOR(6 DOWNTO 0); 
+		HEX2    :   OUT STD_LOGIC_VECTOR(6 DOWNTO 0); 
+		HEX3    :   OUT STD_LOGIC_VECTOR(6 DOWNTO 0); 
+		HEX4    :   OUT STD_LOGIC_VECTOR(6 DOWNTO 0); 
+		HEX5    :   OUT STD_LOGIC_VECTOR(6 DOWNTO 0); 
+		HEX6    :   OUT STD_LOGIC_VECTOR(6 DOWNTO 0); 
+		HEX7    :   OUT STD_LOGIC_VECTOR(6 DOWNTO 0); 
+		LCD_BLON    :   OUT STD_LOGIC; 
+		LCD_DATA    :   INOUT STD_LOGIC_VECTOR(7 DOWNTO 0); 
+		LCD_EN    :   OUT STD_LOGIC; 
+		LCD_ON    :   OUT STD_LOGIC; 
+		LCD_RS    :   OUT STD_LOGIC; 
+		LCD_RW    :   OUT STD_LOGIC; 
+		UART_CTS    :   IN STD_LOGIC; 
+		UART_RTS    :   OUT STD_LOGIC; 
+		UART_RXD    :   IN STD_LOGIC; 
+		UART_TXD    :   OUT STD_LOGIC; 
+		GPIO    :   INOUT STD_LOGIC_VECTOR(35 DOWNTO 0)		 
 	);
 
 end entity;
@@ -56,7 +56,7 @@ COMPONENT spi_master
     cont    : IN     STD_LOGIC;                             --continuous mode command
     clk_div : IN     INTEGER;                               --system clock cycles per 1/2 period of sclk
     addr    : IN     INTEGER;                               --address of slave
-    tx_data : IN     STD_LOGIC_VECTOR(d_width-1 DOWNTO 0);  --data to transmit
+    tx_data : IN     STD_LOGIC_VECTOR(d_width-1 DOWNTO 0);		   --data to transmit
     miso    : IN     STD_LOGIC;                             --master in, slave out
     sclk    : BUFFER STD_LOGIC;                             --spi clock
     ss_n    : BUFFER STD_LOGIC_VECTOR(slaves-1 DOWNTO 0);   --slave select
@@ -81,7 +81,7 @@ signal spi_miso   : STD_LOGIC;
 signal spi_txdata : STD_LOGIC_VECTOR(15 DOWNTO 0);
 signal spi_rxdata : STD_LOGIC_VECTOR(15 DOWNTO 0);
 alias  spi_rxbyte is spi_rxdata( 7 downto 0);
-signal spi_dataz  : STD_LOGIC_VECTOR(15 DOWNTO 0);
+signal spi_dataz  : STD_LOGIC_VECTOR(23 DOWNTO 0);
 signal new_accel_data  : STD_LOGIC;
 
 -- signal spi_start_button : STD_LOGIC;
@@ -90,30 +90,35 @@ type   T_SPISTATE is ( RESETst, CONFst, CONFBUSYst, IDLEst, READst, READBUSYst )
 signal cState     : T_SPISTATE;
 
 type    T_WORD_ARR is array (natural range <>) of std_logic_vector;
+
 ---
---- ADXL345 Registers addresses
+--- ADXL355 Registers addresses
 ---
-constant ADXL_READ_REG    : std_logic_vector(1 downto 0):="10";
-constant ADXL_WRITE_REG   : std_logic_vector(1 downto 0):="00";
-constant ADXL_DATAZ0_ADD  : std_logic_vector(5 downto 0):=6x"36";
-constant ADXL_DATAZ1_ADD  : std_logic_vector(5 downto 0):=6x"37";
+constant ADXL_READ_REG    : std_logic := '1';
+constant ADXL_WRITE_REG   : std_logic := '0';
+
+constant ADXL_DATAZ1_ADD  : std_logic_vector(6 downto 0):=7x"10";
+constant ADXL_DATAZ2_ADD  : std_logic_vector(6 downto 0):=7x"0F";
+constant ADXL_DATAZ3_ADD  : std_logic_vector(6 downto 0):=7x"0E";
+
 constant SPI_ADD_FIELD    : std_logic_vector(15 downto 8):=(others=>'0');
 constant SPI_DATA_FIELD   : std_logic_vector(7 downto 0):=(others=>'0');
 
 constant ACCEL_CONFIG : T_WORD_ARR:= (
-			"00" & 14x"2C8F",
-			"00" & 14x"310B",
-			"00" & 14x"2D08");
+			7x"2C" & ADXL_WRITE_REG & 8x"03",  --the 2first bit of register begin always by 00
+			7x"2D" & ADXL_WRITE_REG & 8x"02");
+			
 constant ACCEL_READ : T_WORD_ARR:= (
-			ADXL_READ_REG & ADXL_DATAZ0_ADD & X"00", -- DATAZ0 (LSB)
-			ADXL_READ_REG & ADXL_DATAZ1_ADD & X"00"  -- DATAZ1 (MSB)
+			ADXL_DATAZ1_ADD & ADXL_READ_REG & X"00", -- DATAZ1 (LSB)
+			ADXL_DATAZ2_ADD & ADXL_READ_REG & X"00", -- DATAZ2
+			ADXL_DATAZ3_ADD & ADXL_READ_REG & X"00"  -- DATAZ3 (MSB)
 			);
 
 --signal ConfAddress: integer range 0 to ( maximum(ACCEL_CONFIG'LENGTH, ACCEL_READ'LENGTH) -1);
 signal ConfAddress: natural;
 
 constant CLOCK_50_FREQ : real:=50.0E6;
-constant SPI_READ_FREQ : real:=3.0E3;
+constant SPI_READ_FREQ : real:=3.0E3; -- SPI clock freq [100KHz ; 10 MHz]
 constant SPI_READ_NCLK : natural:=natural( ceil(CLOCK_50_FREQ/SPI_READ_FREQ) );
 signal   spi_read_cpt  : natural range 0 to SPI_READ_NCLK;
 signal   spi_read_cpt_zero :  std_logic;
@@ -137,14 +142,15 @@ GPIO( 1 ) <= spi_sclk;
 GPIO( 2 ) <= spi_mosi;
 GPIO( 3 ) <= spi_ss_n(0);
 
-LEDR(15 downto 0 ) <= spi_dataz;
-LEDR(16) <= new_accel_data; -- juste pour préserver le signal à la synthèse
+--LEDR(23 downto 0 ) <= spi_dataz;
+--LEDR(16) <= new_accel_data; -- juste pour préserver le signal à la synthèse
 
 sm: spi_master
 
   GENERIC MAP (
     slaves  => 1,
-    d_width => 16 )
+    d_width => 16
+	 )
   PORT MAP(
     clock    => CLOCK_50,
     reset_n  => reset_n,
@@ -256,15 +262,20 @@ sm: spi_master
 				when READBUSYst =>
 					spi_enable <= '0';
 					if spi_busydn='1' then
+					
 						case spi_txdata( SPI_ADD_FIELD'RANGE ) is
-							when ADXL_READ_REG & ADXL_DATAZ0_ADD =>
-								spi_dataz(  7 downto 0 ) <= spi_rxdata( 7 downto 0 );           -- 8 bits sur le mot bas, mais bit 0 toujours à zéro
+							when ADXL_DATAZ1_ADD & ADXL_READ_REG =>
+								spi_dataz(  7 downto 0 ) <= spi_rxdata( 7 downto 0 );				-- 8 bits sur le mot bas, mais bit 0 toujours à zéro
 								
-							when ADXL_READ_REG & ADXL_DATAZ1_ADD =>
-								spi_dataz( 15 downto 8 ) <= spi_rxdata( 7 downto 0 ) and X"1F"; -- 5 bits représentatifs sur le mot haut
+							when ADXL_DATAZ2_ADD & ADXL_READ_REG =>
+								spi_dataz( 15 downto 8 ) <= spi_rxdata( 7 downto 0 );		
 
+							when ADXL_DATAZ3_ADD & ADXL_READ_REG =>
+								spi_dataz( 23 downto 20 ) <= spi_rxdata( 7 downto 4 );
+								spi_dataz( 19 downto 16 ) <= ( others => '0' );						--4 bits reserved defines into the datasheet
+								
 							when others =>
-								null;
+								null; --modif null to delete latch
 						end case;
 						
 						if ConfAddress=ACCEL_READ'LENGTH-1 then
