@@ -7,7 +7,7 @@ use ieee.numeric_std.all;
 use ieee.math_real.all;
 use work.all;
 
-entity test_accel is
+entity test_accel_MultiSensor is
 	PORT
 	(
 		CLOCK_50    :   IN STD_LOGIC; 
@@ -40,7 +40,7 @@ entity test_accel is
 
 end entity;
 
-architecture rtl of test_accel is
+architecture rtl of test_accel_MultiSensor is
 
 COMPONENT spi_master
   GENERIC(

@@ -14,7 +14,7 @@ entity adxl345_beh is
 	 port(
 	   SCLK : in  STD_LOGIC;
 	   CSB  : in  STD_LOGIC;
-	   SDA  : in  STD_LOGIC;
+	   SDI  : in  STD_LOGIC;
 	   SDO  : out STD_LOGIC
 	     );
 end entity;
@@ -98,8 +98,8 @@ begin
       if rising_edge(CSB) then SpiReg <= RxData + '1'; end if;
   elsif rising_edge(SCLK) then
       if isAddress='1' then
-         if iBit=0 and isAddress='1' then ReadWriteB <= SDA; end if;
-         vInst := Instruction(Instruction'HIGH-1 downto 0) & SDA;
+         if iBit=0 and isAddress='1' then ReadWriteB <= SDI; end if;
+         vInst := Instruction(Instruction'HIGH-1 downto 0) & SDI;
          Instruction <= vInst;
          if iBit=Instruction'HIGH then
             isAddress <= '0';
@@ -120,7 +120,7 @@ begin
          end if;
       else
          if ReadWriteB='0' then
-            RxData <= RxData(RxData'HIGH-1 downto 0) & SDA ;
+            RxData <= RxData(RxData'HIGH-1 downto 0) & SDI ;
             iBit   <= iBit+1;
          end if;
       end if;
