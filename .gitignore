@@ -40,3 +40,5 @@ CHAMP_Project/\.DS_Store
 CHAMP_Project/\._\.DS_Store
 
 CHAMP_Project/test_accel2/
+
+*.bak
