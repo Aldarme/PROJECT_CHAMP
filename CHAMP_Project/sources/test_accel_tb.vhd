@@ -49,12 +49,12 @@ COMPONENT test_accel
 	);
 END COMPONENT;
 
-COMPONENT adxl345_beh
+COMPONENT adxl355_beh
 	PORT
 	(
 		SCLK		:	 IN STD_LOGIC;
 		CSB		:	 IN STD_LOGIC;
-		SDA		:	 IN STD_LOGIC;
+		SDI		:	 IN STD_LOGIC;
 		SDO		:	 OUT STD_LOGIC
 	);
 END COMPONENT;
@@ -101,12 +101,12 @@ begin
 	adxl_ss_n <= GPIO( 3 );
 	GPIO( 0 ) <= adxl_miso;
 	
-	acc: adxl345_beh
+	acc: adxl355_beh
 	PORT MAP
 	(
 		SCLK	=> adxl_sclk,
 		CSB		=> adxl_ss_n,
-		SDA		=> adxl_mosi,
+		SDI		=> adxl_mosi,
 		SDO		=> adxl_miso
 	);
 end rtl;
