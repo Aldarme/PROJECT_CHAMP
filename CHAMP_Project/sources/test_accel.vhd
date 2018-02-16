@@ -14,7 +14,7 @@ entity test_accel is
 		CLOCK2_50    :   IN STD_LOGIC; 
 		CLOCK3_50    :   IN STD_LOGIC; 
 		LEDG    :   OUT STD_LOGIC_VECTOR(8 DOWNTO 0); 
-		LEDR    :   OUT STD_LOGIC_VECTOR(17 DOWNTO 0); 
+		LEDR    :   OUT STD_LOGIC_VECTOR(24 DOWNTO 0); 
 		KEY    :   IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
 		SW    :   IN STD_LOGIC_VECTOR(17 DOWNTO 0); 
 		HEX0    :   OUT STD_LOGIC_VECTOR(6 DOWNTO 0); 
@@ -118,7 +118,7 @@ constant ACCEL_READ : T_WORD_ARR:= (
 signal ConfAddress: natural;
 
 constant CLOCK_50_FREQ : real:=50.0E6;
-constant SPI_READ_FREQ : real:=3.0E3; -- SPI clock freq [100KHz ; 10 MHz]
+constant SPI_READ_FREQ : real:=10.0E6; -- SPI clock freq [100KHz ; 10 MHz]
 constant SPI_READ_NCLK : natural:=natural( ceil(CLOCK_50_FREQ/SPI_READ_FREQ) );
 signal   spi_read_cpt  : natural range 0 to SPI_READ_NCLK;
 signal   spi_read_cpt_zero :  std_logic;
@@ -142,8 +142,8 @@ GPIO( 1 ) <= spi_sclk;
 GPIO( 2 ) <= spi_mosi;
 GPIO( 3 ) <= spi_ss_n(0);
 
---LEDR(23 downto 0 ) <= spi_dataz;
---LEDR(16) <= new_accel_data; -- juste pour préserver le signal à la synthèse
+LEDR(23 downto 0 ) <= spi_dataz;
+LEDR(24) <= new_accel_data; -- juste pour préserver le signal à la synthèse
 
 sm: spi_master
 
