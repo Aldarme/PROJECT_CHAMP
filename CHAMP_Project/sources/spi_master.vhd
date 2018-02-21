@@ -1,26 +1,27 @@
 --------------------------------------------------------------------------------
 --
---   FileName:         spi_master.vhd
---   Dependencies:     none
---   Design Software:  Quartus II Version 9.0 Build 132 SJ Full Version
+-- FileName:         spi_master.vhd
+-- Dependencies:     none
+-- Design Software:  Quartus II Version 9.0 Build 132 SJ Full Version
 --
---   HDL CODE IS PROVIDED "AS IS."  DIGI-KEY EXPRESSLY DISCLAIMS ANY
---   WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT
---   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
---   PARTICULAR PURPOSE, OR NON-INFRINGEMENT. IN NO EVENT SHALL DIGI-KEY
---   BE LIABLE FOR ANY INCIDENTAL, SPECIAL, INDIRECT OR CONSEQUENTIAL
---   DAMAGES, LOST PROFITS OR LOST DATA, HARM TO YOUR EQUIPMENT, COST OF
---   PROCUREMENT OF SUBSTITUTE GOODS, TECHNOLOGY OR SERVICES, ANY CLAIMS
---   BY THIRD PARTIES (INCLUDING BUT NOT LIMITED TO ANY DEFENSE THEREOF),
---   ANY CLAIMS FOR INDEMNITY OR CONTRIBUTION, OR OTHER SIMILAR COSTS.
+-- HDL CODE IS PROVIDED "AS IS."  DIGI-KEY EXPRESSLY DISCLAIMS ANY
+-- WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT
+-- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+-- PARTICULAR PURPOSE, OR NON-INFRINGEMENT. IN NO EVENT SHALL DIGI-KEY
+-- BE LIABLE FOR ANY INCIDENTAL, SPECIAL, INDIRECT OR CONSEQUENTIAL
+-- DAMAGES, LOST PROFITS OR LOST DATA, HARM TO YOUR EQUIPMENT, COST OF
+-- PROCUREMENT OF SUBSTITUTE GOODS, TECHNOLOGY OR SERVICES, ANY CLAIMS
+-- BY THIRD PARTIES (INCLUDING BUT NOT LIMITED TO ANY DEFENSE THEREOF),
+-- ANY CLAIMS FOR INDEMNITY OR CONTRIBUTION, OR OTHER SIMILAR COSTS.
 --
---   Version History
---   Version 1.0 7/23/2010 Scott Larson
---     Initial Public Release
---   Version 1.1 4/11/2013 Scott Larson
---     Corrected ModelSim simulation error (explicitly reset clk_toggles signal)
---    
+-- Version History
+--	Version 1.0 7/23/2010 Scott Larson
+--		Initial Public Release
 --	Version 1.1 4/11/2013 Scott Larson
+--		Corrected ModelSim simulation error (explicitly reset clk_toggles signal)
+--
+--	Version 1.2 21/02/2018 - Pierre ROMET
+--		Corrected bug in sclock, now when select_slave (ss_n) is High, sclock is Low
 --------------------------------------------------------------------------------
 
 LIBRARY ieee;

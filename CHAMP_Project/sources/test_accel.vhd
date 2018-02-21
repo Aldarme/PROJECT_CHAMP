@@ -81,7 +81,7 @@ signal spi_miso   : STD_LOGIC;
 signal spi_txdata : STD_LOGIC_VECTOR(15 DOWNTO 0);
 signal spi_rxdata : STD_LOGIC_VECTOR(15 DOWNTO 0);
 alias  spi_rxbyte is spi_rxdata( 7 downto 0);
-signal spi_dataz  : STD_LOGIC_VECTOR(23 DOWNTO 0);
+signal spi_dataz  : STD_LOGIC_VECTOR(19 DOWNTO 0);
 signal new_accel_data  : STD_LOGIC;
 
 -- signal spi_start_button : STD_LOGIC;
@@ -97,17 +97,17 @@ type    T_WORD_ARR is array (natural range <>) of std_logic_vector;
 constant ADXL_READ_REG    : std_logic := '1';
 constant ADXL_WRITE_REG   : std_logic := '0';
 
-constant ADXL_DATAZ1_ADD  : std_logic_vector(6 downto 0):=7x"00";
-constant ADXL_DATAZ2_ADD  : std_logic_vector(6 downto 0):=7x"01";
-constant ADXL_DATAZ3_ADD  : std_logic_vector(6 downto 0):=7x"2D";
+constant ADXL_DATAZ1_ADD  : std_logic_vector(6 downto 0):=7x"10";
+constant ADXL_DATAZ2_ADD  : std_logic_vector(6 downto 0):=7x"0F";
+constant ADXL_DATAZ3_ADD  : std_logic_vector(6 downto 0):=7x"0E";
 
 constant SPI_ADD_FIELD    : std_logic_vector(15 downto 8):=(others=>'0');
 constant SPI_DATA_FIELD   : std_logic_vector(7 downto 0):=(others=>'0');
 
 constant ACCEL_CONFIG : T_WORD_ARR:= (
-			7x"2D" & ADXL_WRITE_REG & 8x"01",
+			7x"2D" & ADXL_WRITE_REG & 8x"01",	--initiate protocol to configure registers (standby <- 1 : standby mode)
 			7x"2C" & ADXL_WRITE_REG & 8x"03",
-			7x"2D" & ADXL_WRITE_REG & 8x"02"
+			7x"2D" & ADXL_WRITE_REG & 8x"02"		--End protocol to configure registers (standby mode <- 0 : mesurement mode)
 			);
 			
 constant ACCEL_READ : T_WORD_ARR:= (
@@ -144,7 +144,7 @@ GPIO( 1 ) <= spi_sclk;
 GPIO( 2 ) <= spi_mosi;
 GPIO( 3 ) <= spi_ss_n(0);
 
-LEDR(23 downto 0 ) <= spi_dataz;
+LEDR(19 downto 0 ) <= spi_dataz;
 LEDR(24) <= new_accel_data; -- juste pour préserver le signal à la synthèse
 
 sm: spi_master
@@ -273,8 +273,8 @@ sm: spi_master
 								spi_dataz( 15 downto 8 ) <= spi_rxdata( 7 downto 0 );		
 
 							when ADXL_DATAZ3_ADD & ADXL_READ_REG =>
-								spi_dataz( 23 downto 16 ) <= spi_rxdata( 7 downto 0 );
-								--spi_dataz( 19 downto 16 ) <= ( others => '0' );						--4 bits reserved defines into the datasheet
+								spi_dataz( 19 downto 16 ) <= spi_rxdata( 7 downto 4 );
+								--spi_dataz( 23 downto 20 ) <= ( others => '0' );						--4 bits reserved defines into the datasheet
 								
 							when others =>
 								null; --modif null to delete latch

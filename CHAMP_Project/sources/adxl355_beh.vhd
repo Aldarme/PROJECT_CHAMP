@@ -8,8 +8,8 @@ use IEEE.MATH_REAL.all;
 
 entity adxl355_beh is
 	 generic(
-		SIZE   : INTEGER:=20; -- 13 bits data
-		ARANGE : REAL:=8.0 -- +-8g
+		SIZE   : INTEGER:=20;	-- 20 bits data
+		ARANGE : REAL:=8.0		-- +-8g
 	 );
 	 port(
 	   SCLK : in  STD_LOGIC;	--SPI clock
@@ -50,8 +50,8 @@ constant ADXL_DATAZ1_ADD  : std_logic_vector(5 downto 0):=6x"10";
 constant ADXL_DATAZ2_ADD  : std_logic_vector(5 downto 0):=6x"0F";
 constant ADXL_DATAZ3_ADD  : std_logic_vector(5 downto 0):=6x"0E";
 
-constant SPI_ADD_FIELD    : std_logic_vector(15 downto 8):=(others=>'0');
-constant SPI_DATA_FIELD   : std_logic_vector(7 downto 0):=(others=>'0');
+constant SPI_ADD_FIELD    : std_logic_vector(15 downto 8):=(others=>'0');	--Champ d'addresses
+constant SPI_DATA_FIELD   : std_logic_vector(7 downto 0):=(others=>'0');	--Champ de données
 
 --
 -- ADXL355
