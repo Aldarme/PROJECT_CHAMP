@@ -54,9 +54,9 @@ COMPONENT spi_master
     cpol    : IN     STD_LOGIC;                             --spi clock polarity
     cpha    : IN     STD_LOGIC;                             --spi clock phase
     cont    : IN     STD_LOGIC;                             --continuous mode command
-    clk_div : IN     INTEGER;                               --system clock cycles per 1/2 period of sclk
+    clk_div : IN     INTEGER;                               --system clock cycles, based on 1/2 period of clock (~10MHz -> 3 ; 100K -> 250)
     addr    : IN     INTEGER;                               --address of slave
-    tx_data : IN     STD_LOGIC_VECTOR(d_width-1 DOWNTO 0);		   --data to transmit
+    tx_data : IN     STD_LOGIC_VECTOR(d_width-1 DOWNTO 0);	--data to transmit
     miso    : IN     STD_LOGIC;                             --master in, slave out
     sclk    : BUFFER STD_LOGIC;                             --spi clock
     ss_n    : BUFFER STD_LOGIC_VECTOR(slaves-1 DOWNTO 0);   --slave select
@@ -69,9 +69,9 @@ END COMPONENT;
 signal reset_n : STD_LOGIC;
 signal SampKey : STD_LOGIC_VECTOR(3 DOWNTO 0);
 
-signal ss_n       : STD_LOGIC_VECTOR(0 DOWNTO 0);
+signal ss_n       : STD_LOGIC_VECTOR(0 DOWNTO 0); 
 signal spi_enable : STD_LOGIC;
-signal spi_ss_n   : STD_LOGIC_VECTOR(0 DOWNTO 0);
+signal spi_ss_n   :  STD_LOGIC_VECTOR(0 DOWNTO 0); 
 signal spi_busy   : STD_LOGIC;
 signal spi_pbusy  : STD_LOGIC;
 signal spi_busydn : STD_LOGIC;
@@ -97,19 +97,21 @@ type    T_WORD_ARR is array (natural range <>) of std_logic_vector;
 constant ADXL_READ_REG    : std_logic := '1';
 constant ADXL_WRITE_REG   : std_logic := '0';
 
-constant ADXL_DATAZ1_ADD  : std_logic_vector(6 downto 0):=7x"10";
-constant ADXL_DATAZ2_ADD  : std_logic_vector(6 downto 0):=7x"0F";
-constant ADXL_DATAZ3_ADD  : std_logic_vector(6 downto 0):=7x"0E";
+constant ADXL_DATAZ1_ADD  : std_logic_vector(6 downto 0):=7x"00";
+constant ADXL_DATAZ2_ADD  : std_logic_vector(6 downto 0):=7x"01";
+constant ADXL_DATAZ3_ADD  : std_logic_vector(6 downto 0):=7x"2D";
 
 constant SPI_ADD_FIELD    : std_logic_vector(15 downto 8):=(others=>'0');
 constant SPI_DATA_FIELD   : std_logic_vector(7 downto 0):=(others=>'0');
 
 constant ACCEL_CONFIG : T_WORD_ARR:= (
-			7x"2C" & ADXL_WRITE_REG & 8x"03",  --the 2first bit of register begin always by 00
-			7x"2D" & ADXL_WRITE_REG & 8x"02");
+			7x"2D" & ADXL_WRITE_REG & 8x"01",
+			7x"2C" & ADXL_WRITE_REG & 8x"03",
+			7x"2D" & ADXL_WRITE_REG & 8x"02"
+			);
 			
 constant ACCEL_READ : T_WORD_ARR:= (
-			ADXL_DATAZ1_ADD & ADXL_READ_REG & X"00", -- DATAZ1 (LSB)
+			ADXL_DATAZ1_ADD & ADXL_READ_REG & x"00", -- DATAZ1 (LSB)
 			ADXL_DATAZ2_ADD & ADXL_READ_REG & X"00", -- DATAZ2
 			ADXL_DATAZ3_ADD & ADXL_READ_REG & X"00"  -- DATAZ3 (MSB)
 			);
@@ -118,7 +120,7 @@ constant ACCEL_READ : T_WORD_ARR:= (
 signal ConfAddress: natural;
 
 constant CLOCK_50_FREQ : real:=50.0E6;
-constant SPI_READ_FREQ : real:=10.0E6; -- SPI clock freq [100KHz ; 10 MHz]
+constant SPI_READ_FREQ : real:=3.0E3; 
 constant SPI_READ_NCLK : natural:=natural( ceil(CLOCK_50_FREQ/SPI_READ_FREQ) );
 signal   spi_read_cpt  : natural range 0 to SPI_READ_NCLK;
 signal   spi_read_cpt_zero :  std_logic;
@@ -156,17 +158,17 @@ sm: spi_master
     reset_n  => reset_n,
     enable   => spi_enable,
     cpol     => '1',
-    cpha     => '1',                            --spi clock phase
-    cont     => '0',                          --continuous mode command
-    clk_div  => 10,                             --system clock cycles per 1/2 period of sclk
-    addr     => 0,                               --address of slave
-    tx_data  => spi_txdata,                --data to transmit
-    miso     => spi_miso,                           --master in, slave out
-    sclk     => spi_sclk,                             --spi clock
-    ss_n     => spi_ss_n,                --slave select
-    mosi     => spi_mosi,                             --master out, slave in
-    busy     => spi_busy,                           --busy / data ready signal
-    rx_data  => spi_rxdata --data received
+    cpha     => '1',                         --spi clock phase
+    cont     => '0',                         --continuous mode command
+    clk_div  => 83,									--system clock cycles, based on 1/2 period of clock (~10MHz -> 3 ; 100K -> 250)
+    addr     => 0,                           --address of slave
+    tx_data  => spi_txdata,                	--data to transmit
+    miso     => spi_miso,                    --master in, slave out
+    sclk     => spi_sclk,                    --spi clock
+    ss_n     => spi_ss_n,                		--slave select
+    mosi     => spi_mosi,                    --master out, slave in
+    busy     => spi_busy,                    --busy / data ready signal
+    rx_data  => spi_rxdata 						--data received
 	);
 
 	samp: process(reset_n, CLOCK_50) is 
@@ -271,8 +273,8 @@ sm: spi_master
 								spi_dataz( 15 downto 8 ) <= spi_rxdata( 7 downto 0 );		
 
 							when ADXL_DATAZ3_ADD & ADXL_READ_REG =>
-								spi_dataz( 23 downto 20 ) <= spi_rxdata( 7 downto 4 );
-								spi_dataz( 19 downto 16 ) <= ( others => '0' );						--4 bits reserved defines into the datasheet
+								spi_dataz( 23 downto 16 ) <= spi_rxdata( 7 downto 0 );
+								--spi_dataz( 19 downto 16 ) <= ( others => '0' );						--4 bits reserved defines into the datasheet
 								
 							when others =>
 								null; --modif null to delete latch
