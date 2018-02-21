@@ -38,7 +38,7 @@ ENTITY spi_master IS
     cpol    : IN     STD_LOGIC;                             --spi clock polarity
     cpha    : IN     STD_LOGIC;                             --spi clock phase
     cont    : IN     STD_LOGIC;                             --continuous mode command
-    clk_div : IN     INTEGER;                               --system clock cycles per 1/2 period of sclk
+    clk_div : IN     INTEGER;                               --system clock cycles, based on 1/2 period of clock
     addr    : IN     INTEGER;                               --address of slave
     tx_data : IN     STD_LOGIC_VECTOR(d_width-1 DOWNTO 0);  --data to transmit
     miso    : IN     STD_LOGIC;                             --master in, slave out
@@ -60,8 +60,10 @@ ARCHITECTURE logic OF spi_master IS
   SIGNAL continue    : STD_LOGIC;                            --flag to continue transaction
   SIGNAL rx_buffer   : STD_LOGIC_VECTOR(d_width-1 DOWNTO 0); --receive data buffer
   SIGNAL tx_buffer   : STD_LOGIC_VECTOR(d_width-1 DOWNTO 0); --transmit data buffer
-  SIGNAL last_bit_rx : INTEGER RANGE 0 TO d_width*2;         --last rx data bit location
+  SIGNAL last_bit_rx : INTEGER RANGE 0 TO d_width*2;			 --last rx data bit location
+  
 BEGIN
+
   PROCESS(clock, reset_n)
   BEGIN
 
@@ -72,8 +74,9 @@ BEGIN
       rx_data <= (OTHERS => '0'); --clear receive data port
       state <= ready;             --go to ready state when reset is exited
 
-    ELSIF(clock'EVENT AND clock = '1') THEN
-      CASE state IS               --state machine
+    ELSIF(clock'EVENT AND clock = '1') THEN -- <-> rising_edge(clock)
+      
+		CASE state IS               --state machine
 
         WHEN ready =>
           busy <= '0';             --clock out not busy signal
@@ -154,6 +157,7 @@ BEGIN
             IF((clk_toggles = d_width*2 + 1) AND cont = '0') THEN   
               busy <= '0';             --clock out not busy signal
               ss_n <= (OTHERS => '1'); --set all slave selects high
+				  sclk <= NOT sclk;
               mosi <= 'Z';             --set mosi output high impedance
               rx_data <= rx_buffer;    --clock out received data to output port
               state <= ready;          --return to ready state
@@ -161,7 +165,7 @@ BEGIN
               state <= execute;        --remain in execute state
             END IF;
           
-          ELSE        --system clock to sclk ratio not met
+          ELSE        --system clock and sclk ratio don't met
             count <= count + 1; --increment counter
             state <= execute;   --remain in execute state
           END IF;
