@@ -20,6 +20,7 @@
 --   Version 1.1 4/11/2013 Scott Larson
 --     Corrected ModelSim simulation error (explicitly reset clk_toggles signal)
 --    
+--	Version 1.1 4/11/2013 Scott Larson
 --------------------------------------------------------------------------------
 
 LIBRARY ieee;
