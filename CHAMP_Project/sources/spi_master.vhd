@@ -22,6 +22,9 @@
 --
 --	Version 1.2 21/02/2018 - Pierre ROMET
 --		Corrected bug in sclock, now when select_slave (ss_n) is High, sclock is Low
+--
+--	Version 2.0 27/02/2018 - Pierre ROMET
+--		Hack system to used ADXL355 (SPI 4 wires) as a SPI 3 wires
 ----------------------------------------------------------------------------------
 
 LIBRARY ieee;
@@ -43,10 +46,8 @@ ENTITY spi_master IS
     clk_div : IN     INTEGER;                               --system clock cycles, based on 1/2 period of clock
     addr    : IN     INTEGER;                               --address of slave
     tx_data : IN     STD_LOGIC_VECTOR(d_width-1 DOWNTO 0);  --data to transmit
-    --miso    : IN     STD_LOGIC;                           --master in, slave out
     sclk    : BUFFER STD_LOGIC;                             --spi clock
     ss_n    : BUFFER STD_LOGIC_VECTOR(slaves-1 DOWNTO 0);   --slave select
-    --mosi    : OUT    STD_LOGIC;                           --master out, slave in
     busy    : OUT    STD_LOGIC;                             --busy / data ready signal
     rx_data : OUT    STD_LOGIC_VECTOR(d_width-1 DOWNTO 0);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      --data received
 	 MISOMOSI: INOUT 	STD_LOGIC
@@ -153,8 +154,8 @@ BEGIN
 				  MISOMOSI <= 'Z';
 				  
 				  else 
-				  MISOMOSI <= tx_buffer(d_width-1);                     --clock out data bit
-				  tx_buffer <= tx_buffer(d_width-2 DOWNTO 0) & '0'; --shift data transmit buffer
+				  MISOMOSI <= tx_buffer(d_width-1);                     	--clock out data bit
+				  tx_buffer <= tx_buffer(d_width-2 DOWNTO 0) & '0';		--shift data transmit buffer
 				  
 				  end if;
 				  

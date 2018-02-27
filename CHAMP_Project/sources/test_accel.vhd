@@ -57,10 +57,8 @@ COMPONENT spi_master
     clk_div : IN     INTEGER;                               --system clock cycles, based on 1/2 period of clock (~10MHz -> 3 ; 100K -> 250)
     addr    : IN     INTEGER;                               --address of slave
     tx_data : IN     STD_LOGIC_VECTOR(d_width-1 DOWNTO 0);	--data to transmit
-    --miso    : IN     STD_LOGIC;                             --master in, slave out
     sclk    : BUFFER STD_LOGIC;                             --spi clock
     ss_n    : BUFFER STD_LOGIC_VECTOR(slaves-1 DOWNTO 0);   --slave select
-    --mosi    : OUT    STD_LOGIC;                             --master out, slave in
     busy    : OUT    STD_LOGIC;                             --busy / data ready signal
     rx_data : OUT    STD_LOGIC_VECTOR(d_width-1 DOWNTO 0);	--data received
 	 MISOMOSI: INOUT	STD_LOGIC
@@ -77,8 +75,6 @@ signal spi_busy   : STD_LOGIC;
 signal spi_pbusy  : STD_LOGIC;
 signal spi_busydn : STD_LOGIC;
 signal spi_sclk   : STD_LOGIC;
---signal spi_mosi   : STD_LOGIC;
---signal spi_miso   : STD_LOGIC;
 signal spi_txdata : STD_LOGIC_VECTOR(15 DOWNTO 0);
 signal spi_rxdata : STD_LOGIC_VECTOR(15 DOWNTO 0);
 alias  spi_rxbyte is spi_rxdata( 7 downto 0);
@@ -98,8 +94,8 @@ type    T_WORD_ARR is array (natural range <>) of std_logic_vector;
 constant ADXL_READ_REG    : std_logic := '1';
 constant ADXL_WRITE_REG   : std_logic := '0';
 
-constant ADXL_DATAZ1_ADD  : std_logic_vector(6 downto 0):=7x"10";--10
-constant ADXL_DATAZ2_ADD  : std_logic_vector(6 downto 0):=7x"0F";--0F
+constant ADXL_DATAZ1_ADD  : std_logic_vector(6 downto 0):=7x"10";
+constant ADXL_DATAZ2_ADD  : std_logic_vector(6 downto 0):=7x"0F";
 constant ADXL_DATAZ3_ADD  : std_logic_vector(6 downto 0):=7x"0E";
 
 constant SPI_ADD_FIELD    : std_logic_vector(15 downto 8):=(others=>'0');
@@ -116,8 +112,7 @@ constant ACCEL_READ : T_WORD_ARR:= (
 			ADXL_DATAZ2_ADD & ADXL_READ_REG & X"00", -- DATAZ2
 			ADXL_DATAZ3_ADD & ADXL_READ_REG & X"00"  -- DATAZ3 (MSB)
 			);
-
---signal ConfAddress: integer range 0 to ( maximum(ACCEL_CONFIG'LENGTH, ACCEL_READ'LENGTH) -1);
+			
 signal ConfAddress: natural;
 
 constant CLOCK_50_FREQ : real:=50.0E6;
@@ -134,20 +129,12 @@ LEDG( 3 ) <= not KEY(3);
 LEDG( 1 ) <= not spi_busy;
 
 reset_n <= KEY(3);
---spi_addr <= 0; -- DEVID
---spi_enable <= not KEY(0);
 
---spi_txdata <= ( X"80" or X"2c" ) & X"0F";
---spi_txdata <= ( SW(0) & "000" & X"0" or X"2c" ) & X"0F";
-
---spi_miso <= GPIO( 0 ); -- SDO
 GPIO( 1 ) <= spi_sclk;
---GPIO( 2 ) <= spi_mosi;
 GPIO( 3 ) <= spi_ss_n(0);
 
-
 LEDR(19 downto 0 ) <= spi_dataz;
-LEDR(24) <= new_accel_data; -- juste pour préserver le signal à la synthèse
+
 
 sm: spi_master
 
@@ -165,29 +152,26 @@ sm: spi_master
     clk_div  => 5,									--system clock cycles, based on 1/2 period of clock (~10MHz -> 3 ; 100K -> 250)
     addr     => 0,                           --address of slave
     tx_data  => spi_txdata,                	--data to transmit
-    --miso     => spi_miso,                    --master in, slave out
     sclk     => spi_sclk,                    --spi clock
     ss_n     => spi_ss_n,                		--slave select
-    --mosi     => spi_mosi,                    --master out, slave in
     busy     => spi_busy,                    --busy / data ready signal
     rx_data  => spi_rxdata,						--data received
 	 MISOMOSI => GPIO(0)
 	);
 
 	samp: process(reset_n, CLOCK_50) is 
-		-- Declaration(s) 
+	-- Declaration(s) 
 	begin 
 		if(reset_n = '0') then
 			SampKey <= ( others=> '1' );
 		elsif(rising_edge(CLOCK_50)) then
 			SampKey <= KEY;
---			spi_enable <= not KEY(0) and SampKey(0);
 
 		end if;
 	end process samp; 
 
 	rcpt: process(reset_n, CLOCK_50) is 
-		-- Declaration(s) 
+	-- Declaration(s) 
 	begin 
 		if(reset_n = '0') then
 			spi_read_cpt      <= 0;
@@ -270,14 +254,13 @@ sm: spi_master
 					
 						case spi_txdata( SPI_ADD_FIELD'RANGE ) is
 							when ADXL_DATAZ1_ADD & ADXL_READ_REG =>
-								spi_dataz(  7 downto 0 ) <= spi_rxdata( 7 downto 0 );				-- 8 bits sur le mot bas, mais bit 0 toujours à zéro
+								spi_dataz(  7 downto 0 ) <= spi_rxdata( 7 downto 0 );
 								
 							when ADXL_DATAZ2_ADD & ADXL_READ_REG =>
 								spi_dataz( 15 downto 8 ) <= spi_rxdata( 7 downto 0 );		
 
 							when ADXL_DATAZ3_ADD & ADXL_READ_REG =>
 								spi_dataz( 19 downto 16 ) <= spi_rxdata( 7 downto 4 );
-								--spi_dataz( 23 downto 20 ) <= ( others => '0' );						--4 bits reserved defines into the datasheet
 								
 							when others =>
 								null; --modif null to delete latch
