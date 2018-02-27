@@ -22,7 +22,7 @@
 --
 --	Version 1.2 21/02/2018 - Pierre ROMET
 --		Corrected bug in sclock, now when select_slave (ss_n) is High, sclock is Low
---------------------------------------------------------------------------------
+----------------------------------------------------------------------------------
 
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
@@ -43,12 +43,14 @@ ENTITY spi_master IS
     clk_div : IN     INTEGER;                               --system clock cycles, based on 1/2 period of clock
     addr    : IN     INTEGER;                               --address of slave
     tx_data : IN     STD_LOGIC_VECTOR(d_width-1 DOWNTO 0);  --data to transmit
-    miso    : IN     STD_LOGIC;                             --master in, slave out
+    --miso    : IN     STD_LOGIC;                           --master in, slave out
     sclk    : BUFFER STD_LOGIC;                             --spi clock
     ss_n    : BUFFER STD_LOGIC_VECTOR(slaves-1 DOWNTO 0);   --slave select
-    mosi    : OUT    STD_LOGIC;                             --master out, slave in
+    --mosi    : OUT    STD_LOGIC;                           --master out, slave in
     busy    : OUT    STD_LOGIC;                             --busy / data ready signal
-    rx_data : OUT    STD_LOGIC_VECTOR(d_width-1 DOWNTO 0)); --data received
+    rx_data : OUT    STD_LOGIC_VECTOR(d_width-1 DOWNTO 0);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      --data received
+	 MISOMOSI: INOUT 	STD_LOGIC
+	);
 END spi_master;
 
 ARCHITECTURE logic OF spi_master IS
@@ -67,12 +69,15 @@ ARCHITECTURE logic OF spi_master IS
 BEGIN
 
   PROCESS(clock, reset_n)
+  
+  VARIABLE BITCOUNTER	: INTEGER :=0;
+	 
   BEGIN
 
     IF(reset_n = '0') THEN        --reset system
       busy <= '1';                --set busy signal
       ss_n <= (OTHERS => '1');    --deassert all slave select lines
-      mosi <= 'Z';                --set master out to high impedance
+      MISOMOSI <= 'Z';                --set master out to high impedance
       rx_data <= (OTHERS => '0'); --clear receive data port
       state <= ready;             --go to ready state when reset is exited
 
@@ -83,7 +88,7 @@ BEGIN
         WHEN ready =>
           busy <= '0';             --clock out not busy signal
           ss_n <= (OTHERS => '1'); --set all slave select outputs high
-          mosi <= 'Z';             --set mosi output high impedance
+          MISOMOSI <= 'Z';             --set mosi output high impedance
           continue <= '0';         --clear continue flag
 
           --user input to initiate transaction
@@ -131,15 +136,29 @@ BEGIN
             END IF;
             
             --receive spi clock toggle
-            IF(assert_data = '0' AND clk_toggles < last_bit_rx + 1 AND ss_n(slave) = '0') THEN 
-              rx_buffer <= rx_buffer(d_width-2 DOWNTO 0) & miso; --shift in received bit
+            IF(assert_data = '0' AND clk_toggles < last_bit_rx + 1 AND ss_n(slave) = '0') THEN
+				  
+              rx_buffer <= rx_buffer(d_width-2 DOWNTO 0) & MISOMOSI; --shift in received bit
             END IF;
-            
+				
             --transmit spi clock toggle
-            IF(assert_data = '1' AND clk_toggles < last_bit_rx) THEN 
-              mosi <= tx_buffer(d_width-1);                     --clock out data bit
-              tx_buffer <= tx_buffer(d_width-2 DOWNTO 0) & '0'; --shift data transmit buffer
-            END IF;
+            IF(assert_data = '1' AND clk_toggles < last_bit_rx) THEN
+              if ((BITCOUNTER = 7 and MISOMOSI = '1') or (BITCOUNTER >= 8)) then
+				  MISOMOSI <= 'Z';
+				  
+				  else 
+				  MISOMOSI <= tx_buffer(d_width-1);                     --clock out data bit
+				  tx_buffer <= tx_buffer(d_width-2 DOWNTO 0) & '0'; --shift data transmit buffer
+				  
+				  end if;
+				  
+				  BITCOUNTER := BITCOUNTER +1;
+				END IF;
+--            --transmit spi clock toggle
+--            IF(assert_data = '1' AND clk_toggles < last_bit_rx) THEN 
+--             	MISOMOSI <= tx_buffer(d_width-1);                     	--clock out data bit
+--						tx_buffer <= tx_buffer(d_width-2 DOWNTO 0) & '0'; 			--shift data transmit buffer
+--            END IF;
             
             --last data receive, but continue
             IF(clk_toggles = last_bit_rx AND cont = '1') THEN 
@@ -156,12 +175,13 @@ BEGIN
             END IF;
             
             --end of transaction
-            IF((clk_toggles = d_width*2 + 1) AND cont = '0') THEN   
+            IF((clk_toggles = d_width*2 + 1) AND cont = '0') THEN		
               busy <= '0';             --clock out not busy signal
               ss_n <= (OTHERS => '1'); --set all slave selects high
 				  sclk <= NOT sclk;
-              mosi <= 'Z';             --set mosi output high impedance
+              MISOMOSI <= 'Z';             --set mosi output high impedance
               rx_data <= rx_buffer;    --clock out received data to output port
+				  BITCOUNTER := 0;
               state <= ready;          --return to ready state
             ELSE                       --not end of transaction
               state <= execute;        --remain in execute state
