@@ -98,9 +98,9 @@ type    T_WORD_ARR is array (natural range <>) of std_logic_vector;
 constant ADXL_READ_REG    : std_logic := '1';
 constant ADXL_WRITE_REG   : std_logic := '0';
 
-constant ADXL_DATAZ1_ADD  : std_logic_vector(6 downto 0):=7x"00";--10
-constant ADXL_DATAZ2_ADD  : std_logic_vector(6 downto 0):=7x"01";--0F
---constant ADXL_DATAZ3_ADD  : std_logic_vector(6 downto 0):=7x"0E";
+constant ADXL_DATAZ1_ADD  : std_logic_vector(6 downto 0):=7x"10";--10
+constant ADXL_DATAZ2_ADD  : std_logic_vector(6 downto 0):=7x"0F";--0F
+constant ADXL_DATAZ3_ADD  : std_logic_vector(6 downto 0):=7x"0E";
 
 constant SPI_ADD_FIELD    : std_logic_vector(15 downto 8):=(others=>'0');
 constant SPI_DATA_FIELD   : std_logic_vector(7 downto 0):=(others=>'0');
@@ -113,8 +113,8 @@ constant ACCEL_CONFIG : T_WORD_ARR:= (
 			
 constant ACCEL_READ : T_WORD_ARR:= (
 			ADXL_DATAZ1_ADD & ADXL_READ_REG & x"00", -- DATAZ1 (LSB)
-			ADXL_DATAZ2_ADD & ADXL_READ_REG & X"00" -- DATAZ2
-			--ADXL_DATAZ3_ADD & ADXL_READ_REG & X"00"  -- DATAZ3 (MSB)
+			ADXL_DATAZ2_ADD & ADXL_READ_REG & X"00", -- DATAZ2
+			ADXL_DATAZ3_ADD & ADXL_READ_REG & X"00"  -- DATAZ3 (MSB)
 			);
 
 --signal ConfAddress: integer range 0 to ( maximum(ACCEL_CONFIG'LENGTH, ACCEL_READ'LENGTH) -1);
@@ -275,8 +275,8 @@ sm: spi_master
 							when ADXL_DATAZ2_ADD & ADXL_READ_REG =>
 								spi_dataz( 15 downto 8 ) <= spi_rxdata( 7 downto 0 );		
 
-							--when ADXL_DATAZ3_ADD & ADXL_READ_REG =>
-								--spi_dataz( 19 downto 16 ) <= spi_rxdata( 7 downto 4 );
+							when ADXL_DATAZ3_ADD & ADXL_READ_REG =>
+								spi_dataz( 19 downto 16 ) <= spi_rxdata( 7 downto 4 );
 								--spi_dataz( 23 downto 20 ) <= ( others => '0' );						--4 bits reserved defines into the datasheet
 								
 							when others =>

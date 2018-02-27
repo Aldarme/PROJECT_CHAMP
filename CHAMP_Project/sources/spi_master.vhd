@@ -65,12 +65,14 @@ ARCHITECTURE logic OF spi_master IS
   SIGNAL rx_buffer   : STD_LOGIC_VECTOR(d_width-1 DOWNTO 0); --receive data buffer
   SIGNAL tx_buffer   : STD_LOGIC_VECTOR(d_width-1 DOWNTO 0); --transmit data buffer
   SIGNAL last_bit_rx : INTEGER RANGE 0 TO d_width*2;			 --last rx data bit location
+
   
 BEGIN
 
   PROCESS(clock, reset_n)
   
   VARIABLE BITCOUNTER	: INTEGER :=0;
+  VARIABLE tmp 			: std_logic := '0';
 	 
   BEGIN
 
@@ -143,7 +145,11 @@ BEGIN
 				
             --transmit spi clock toggle
             IF(assert_data = '1' AND clk_toggles < last_bit_rx) THEN
-              if ((BITCOUNTER = 7 and MISOMOSI = '1') or (BITCOUNTER >= 8)) then
+				  if (BITCOUNTER = 7 ) then
+				  tmp := tx_buffer(d_width-1);
+				  end if;
+				
+              if (BITCOUNTER >= 8 and tmp = '1') then
 				  MISOMOSI <= 'Z';
 				  
 				  else 
@@ -154,11 +160,6 @@ BEGIN
 				  
 				  BITCOUNTER := BITCOUNTER +1;
 				END IF;
---            --transmit spi clock toggle
---            IF(assert_data = '1' AND clk_toggles < last_bit_rx) THEN 
---             	MISOMOSI <= tx_buffer(d_width-1);                     	--clock out data bit
---						tx_buffer <= tx_buffer(d_width-2 DOWNTO 0) & '0'; 			--shift data transmit buffer
---            END IF;
             
             --last data receive, but continue
             IF(clk_toggles = last_bit_rx AND cont = '1') THEN 
@@ -182,6 +183,7 @@ BEGIN
               MISOMOSI <= 'Z';             --set mosi output high impedance
               rx_data <= rx_buffer;    --clock out received data to output port
 				  BITCOUNTER := 0;
+				  tmp := '0';
               state <= ready;          --return to ready state
             ELSE                       --not end of transaction
               state <= execute;        --remain in execute state
