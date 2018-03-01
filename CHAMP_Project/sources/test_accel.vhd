@@ -108,9 +108,9 @@ constant ACCEL_CONFIG : T_WORD_ARR:= (
 			);
 			
 constant ACCEL_READ : T_WORD_ARR:= (
-			ADXL_DATAZ1_ADD & ADXL_READ_REG & x"00", -- DATAZ1 (LSB)
-			ADXL_DATAZ2_ADD & ADXL_READ_REG & X"00", -- DATAZ2
-			ADXL_DATAZ3_ADD & ADXL_READ_REG & X"00"  -- DATAZ3 (MSB)
+			ADXL_DATAZ1_ADD & ADXL_READ_REG & 8x"00", -- DATAZ1 (LSB)
+			ADXL_DATAZ2_ADD & ADXL_READ_REG & 8x"00", -- DATAZ2
+			ADXL_DATAZ3_ADD & ADXL_READ_REG & 8x"00"  -- DATAZ3 (MSB)
 			);
 			
 signal ConfAddress: natural;
@@ -136,7 +136,7 @@ GPIO( 3 ) <= spi_ss_n(0);
 LEDR(19 downto 0 ) <= spi_dataz;
 
 
-sm: spi_master
+sm: entity work.spi_master(SPI_ACCEL)
 
   GENERIC MAP (
     slaves  => 1,
