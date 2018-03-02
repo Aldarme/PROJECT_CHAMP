@@ -11,17 +11,16 @@ entity spi_DAC is
 	PORT
 	(
 		CLOCK_50   	:   IN STD_LOGIC;
-		LEDG    		:   OUT STD_LOGIC_VECTOR(8 DOWNTO 0); 
-		LEDR    		:   OUT STD_LOGIC_VECTOR(24 DOWNTO 0); 
 		KEY    		:   IN STD_LOGIC_VECTOR(3 DOWNTO 0);
 		GPIO    		:   INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
-		RECV_DATA	:	 INOUT STD_LOGIC_VECTOR(24 DOWNTO 0);
-		ACKNOLEDGE	:	 IN STD_LOGIC
+		RECV_DATA	:	 INOUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+		DAC_OE_INPUT:	 INOUT STD_LOGIC;
+		DAC_OE_OUTPUT:	 INOUT STD_LOGIC
 	);
 
 end entity;
 
-architecture myArchi of spi_DAC is
+architecture dac_Archi of spi_DAC is
 
 COMPONENT spi_master
   GENERIC(
@@ -51,23 +50,24 @@ signal SampKey : STD_LOGIC_VECTOR(3 DOWNTO 0);
 
 signal ss_n       : STD_LOGIC_VECTOR(0 DOWNTO 0); 
 signal spi_enable : STD_LOGIC;
-signal spi_ss_n   :  STD_LOGIC_VECTOR(0 DOWNTO 0); 
+signal spi_ss_n   : STD_LOGIC_VECTOR(0 DOWNTO 0); 
 signal spi_busy   : STD_LOGIC;
 signal spi_pbusy  : STD_LOGIC;
 signal spi_sclk   : STD_LOGIC;
-signal spi_txdata : STD_LOGIC_VECTOR(24 DOWNTO 0);
-signal spi_rxdata : STD_LOGIC_VECTOR(15 DOWNTO 0);
+signal spi_txdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
+signal spi_rxdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
 
 type   T_SPISTATE is ( RESETst, WAITst, TRANSMITst);
 signal cState     : T_SPISTATE;
 
 type    T_WORD_ARR is array (natural range <>) of std_logic_vector;
 
-constant WRITEnUPDATE  : std_logic_vector(3 downto 0):=4x"3";
-constant DAC_ADDRESS	  : std_logic_vector(3 downto 0):=4x"0";
+constant WRITEnUPDATE  	: std_logic_vector(3 downto 0) := 4x"3";
+constant DAC_ADDRESS		: std_logic_vector(3 downto 0) := 4x"0";
 
 constant SPI_CONFIG : T_WORD_ARR:= (
-			WRITEnUPDATE & DAC_ADDRESS	--initiate protocol to configure registers (standby <- 1 : standby mode)
+			WRITEnUPDATE,
+			DAC_ADDRESS			
 			);
 
 constant CLOCK_50_FREQ : real:=50.0E6;
@@ -78,17 +78,11 @@ signal   spi_read_cpt_zero :  std_logic;
 
 
 begin
-LEDG( 4 ) <= not KEY(1);
-LEDG( 5 ) <= not KEY(2);
-
-LEDG( 6 ) <= not spi_busy;
 
 reset_n <= KEY(2);
 
 GPIO( 5 ) <= spi_sclk;
 GPIO( 6 ) <= spi_ss_n(0);
-
-LEDR(19 downto 0 ) <= RECV_DATA(15 downto 0);
 
 
 sm: entity work.spi_master(SPI_DAC)
@@ -126,9 +120,10 @@ sm: entity work.spi_master(SPI_DAC)
 	end process samp;
 
 	--
-	-- Accelerometer state machine
+	-- SPI DAC state machine
 	--
 	statep: process( reset_n, CLOCK_50 )
+	
 	begin
 		if reset_n='0' then
 			cState <= RESETst;
@@ -136,7 +131,7 @@ sm: entity work.spi_master(SPI_DAC)
 			spi_pbusy <= '1';
 			
 			
-		elsif rising_edge(CLOCK_50) then	--RESETst, WAITst, TRANSMITst
+		elsif rising_edge(CLOCK_50) then
 			
 			case cState is
 				
@@ -145,17 +140,24 @@ sm: entity work.spi_master(SPI_DAC)
 					cState <= WAITst;
 					
 				when WAITst =>
+					DAC_OE_INPUT <= '0';
 					spi_enable <= '0';
-					if ACKNOLEDGE = '0' then
+					if DAC_OE_INPUT = '0' then
 						cState <= WAITst;
 					else						
-						cState <= SPI_CONFIG & TRANSMITst;
+						cState <= TRANSMITst;
 					end if;
 				
 				when TRANSMITst =>
 					spi_enable <= '1';
-					spi_txdata <= RECV_DATA;
-					cState <= WAITst;		
+					spi_txdata(15 downto 0)	 <= RECV_DATA;
+					spi_txdata(19 downto 16) <= SPI_CONFIG(1);
+					spi_txdata(23 downto 20) <= SPI_CONFIG(0);
+					DAC_OE_OUTPUT <= '1';
+					cState <= WAITst;
+					
+				when others	=>
+				null;
 				
 			end case;
 			
@@ -168,4 +170,4 @@ sm: entity work.spi_master(SPI_DAC)
 		
 	end process statep;
 
-end myArchi;
+end dac_Archi;

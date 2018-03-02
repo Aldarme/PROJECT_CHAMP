@@ -7,40 +7,21 @@ use ieee.numeric_std.all;
 use ieee.math_real.all;
 use work.all;
 
-entity test_accel is
+entity spi_accel is
 	PORT
 	(
-		CLOCK_50   	:   IN STD_LOGIC; 
-		CLOCK2_50  	:   IN STD_LOGIC; 
-		CLOCK3_50  	:   IN STD_LOGIC; 
+		CLOCK_50   	:   IN STD_LOGIC;		
 		LEDG    		:   OUT STD_LOGIC_VECTOR(8 DOWNTO 0); 
 		LEDR    		:   OUT STD_LOGIC_VECTOR(24 DOWNTO 0); 
 		KEY    		:   IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
-		SW    		:   IN STD_LOGIC_VECTOR(17 DOWNTO 0); 
-		HEX0    		:   OUT STD_LOGIC_VECTOR(6 DOWNTO 0); 
-		HEX1    		:   OUT STD_LOGIC_VECTOR(6 DOWNTO 0); 
-		HEX2    		:   OUT STD_LOGIC_VECTOR(6 DOWNTO 0); 
-		HEX3    		:   OUT STD_LOGIC_VECTOR(6 DOWNTO 0); 
-		HEX4    		:   OUT STD_LOGIC_VECTOR(6 DOWNTO 0); 
-		HEX5    		:   OUT STD_LOGIC_VECTOR(6 DOWNTO 0); 
-		HEX6    		:   OUT STD_LOGIC_VECTOR(6 DOWNTO 0); 
-		HEX7    		:   OUT STD_LOGIC_VECTOR(6 DOWNTO 0); 
-		LCD_BLON    :   OUT STD_LOGIC; 
-		LCD_DATA    :   INOUT STD_LOGIC_VECTOR(7 DOWNTO 0); 
-		LCD_EN    	:   OUT STD_LOGIC; 
-		LCD_ON    	:   OUT STD_LOGIC; 
-		LCD_RS    	:   OUT STD_LOGIC; 
-		LCD_RW    	:   OUT STD_LOGIC; 
-		UART_CTS    :   IN STD_LOGIC; 
-		UART_RTS    :   OUT STD_LOGIC; 
-		UART_RXD    :   IN STD_LOGIC; 
-		UART_TXD    :   OUT STD_LOGIC; 
-		GPIO    		:   INOUT STD_LOGIC_VECTOR(35 DOWNTO 0)	 
+		GPIO    		:   INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
+		DATA_TODAC	:	 out STD_LOGIC_VECTOR(15 DOWNTO 0);
+		DATA_ENABLE	:	 out STD_LOGIC
 	);
 
 end entity;
 
-architecture rtl of test_accel is
+architecture rtl of spi_accel is
 
 COMPONENT spi_master
   GENERIC(
@@ -78,7 +59,7 @@ signal spi_sclk   : STD_LOGIC;
 signal spi_txdata : STD_LOGIC_VECTOR(15 DOWNTO 0);
 signal spi_rxdata : STD_LOGIC_VECTOR(15 DOWNTO 0);
 alias  spi_rxbyte is spi_rxdata( 7 downto 0);
-signal spi_dataz  : STD_LOGIC_VECTOR(19 DOWNTO 0);
+signal spi_dataz  : STD_LOGIC_VECTOR(15 DOWNTO 0);
 signal new_accel_data  : STD_LOGIC;
 
 -- signal spi_start_button : STD_LOGIC;
@@ -133,7 +114,7 @@ reset_n <= KEY(3);
 GPIO( 1 ) <= spi_sclk;
 GPIO( 3 ) <= spi_ss_n(0);
 
-LEDR(19 downto 0 ) <= spi_dataz;
+LEDR(15 downto 0 ) <= spi_dataz;
 
 
 sm: entity work.spi_master(SPI_ACCEL)
@@ -208,6 +189,7 @@ sm: entity work.spi_master(SPI_ACCEL)
 		elsif rising_edge(CLOCK_50) then
 			case cState is
 				when RESETst =>
+					DATA_ENABLE <= '0';
 					ConfAddress <= 0;
 					spi_enable <= '0';
 					cState <= CONFst;
@@ -234,6 +216,7 @@ sm: entity work.spi_master(SPI_ACCEL)
 					end if;
 					
 				when IDLEst =>
+					DATA_ENABLE <= '0';
 					ConfAddress <= 0;
 					spi_enable <= '0';
 					if spi_read_cpt_zero='1' then
@@ -243,12 +226,14 @@ sm: entity work.spi_master(SPI_ACCEL)
 					new_accel_data <= '0';
 					
 				when READst =>
+					DATA_ENABLE <= '0';
 					spi_read_restart <= '0';
 					spi_enable <= '1';
 					spi_txdata <= ACCEL_READ(ConfAddress);
 					cState <= READBUSYst;
 				
 				when READBUSYst =>
+					DATA_ENABLE <= '0';
 					spi_enable <= '0';
 					if spi_busydn='1' then
 					
@@ -258,13 +243,17 @@ sm: entity work.spi_master(SPI_ACCEL)
 								
 							when ADXL_DATAZ2_ADD & ADXL_READ_REG =>
 								spi_dataz( 15 downto 8 ) <= spi_rxdata( 7 downto 0 );		
-
-							when ADXL_DATAZ3_ADD & ADXL_READ_REG =>
-								spi_dataz( 19 downto 16 ) <= spi_rxdata( 7 downto 4 );
+								
+							--Don't use the last 4 bits, beacause of SPI DAC, that is a 16 bits input
+							--when ADXL_DATAZ3_ADD & ADXL_READ_REG =>
+							--	spi_dataz( 19 downto 16 ) <= spi_rxdata( 7 downto 4 );
 								
 							when others =>
 								null; --modif null to delete latch
 						end case;
+						
+						DATA_ENABLE <= '1';
+						DATA_TODAC <= spi_dataz(15 downto 0);
 						
 						if ConfAddress=ACCEL_READ'LENGTH-1 then
 							cState <=  IDLEst;
