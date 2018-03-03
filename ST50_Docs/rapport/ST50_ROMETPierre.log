@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Debian) (preloaded format=pdflatex 2017.9.13)  17 FEB 2018 18:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.2.23)  3 MAR 2018 15:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **ST50_ROMETPierre.tex
 (./ST50_ROMETPierre.tex
-LaTeX2e <2017/01/01> patch level 3
-Babel <3.9r> and hyphenation patterns for 3 language(s) loaded.
+LaTeX2e <2017-04-15>
+Babel <3.12> and hyphenation patterns for 5 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/report.cls
 Document Class: report 2014/09/29 v1.4h Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo
@@ -343,10 +343,10 @@ Now handling font encoding U ...
    defining Unicode char U+2423 (decimal 9251)
 ))
 (/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
-Package: fontenc 2017/02/22 v2.0g Standard LaTeX package
+Package: fontenc 2017/04/05 v2.0i Standard LaTeX package
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1enc.def
-File: t1enc.def 2017/02/22 v2.0g Standard LaTeX file
+File: t1enc.def 2017/04/05 v2.0i Standard LaTeX file
 LaTeX Font Info:    Redeclaring font encoding T1 on input line 48.
 ))
 (/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
@@ -357,7 +357,7 @@ Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks16
 )
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifpdf.sty
-Package: ifpdf 2016/05/14 v3.1 Provides the ifpdf switch
+Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
 )
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifvtex.sty
 Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
@@ -400,8 +400,7 @@ File: color.cfg 2016/01/02 v1.6 sample color configuration
 Package xcolor Info: Driver file: pdftex.def on input line 225.
 
 (/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
-File: pdftex.def 2017/01/12 v0.06k Graphics/color for pdfTeX
-\Gread@gobject=\count91
+File: pdftex.def 2017/06/24 v1.0g Graphics/color driver for pdftex
 )
 Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1348.
 Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1352.
@@ -414,10 +413,10 @@ Package xcolor Info: Model `Gray' substituted by `gray' on input line 1370.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1371.
 ))
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
-Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
 
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
-Package: graphics 2016/10/09 v1.0u Standard LaTeX Graphics (DPC,SPQR)
+Package: graphics 2017/06/25 v1.2c Standard LaTeX Graphics (DPC,SPQR)
 
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
 Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
@@ -432,30 +431,30 @@ Package graphics Info: Driver file: pdftex.def on input line 99.
 )
 (/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count92
+\c@float@type=\count91
 \float@exts=\toks18
 \float@box=\box26
 \@float@everytoks=\toks19
 \@floatcapt=\box27
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
-\lst@mode=\count93
+\lst@mode=\count92
 \lst@gtempboxa=\box28
 \lst@token=\toks20
-\lst@length=\count94
+\lst@length=\count93
 \lst@currlwidth=\dimen113
-\lst@column=\count95
-\lst@pos=\count96
+\lst@column=\count94
+\lst@pos=\count95
 \lst@lostspace=\dimen114
 \lst@width=\dimen115
-\lst@newlines=\count97
-\lst@lineno=\count98
+\lst@newlines=\count96
+\lst@lineno=\count97
 \lst@maxwidth=\dimen116
 
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
-\c@lstnumber=\count99
-\lst@skipnumbers=\count100
+\c@lstnumber=\count98
+\lst@skipnumbers=\count99
 \lst@framebox=\box29
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
@@ -523,31 +522,18 @@ LaTeX Font Info:    ... okay on input line 34.
 \AtBeginShipoutBox=\box30
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count101
+\scratchcounter=\count100
 \scratchdimen=\dimen117
 \scratchbox=\box31
-\nofMPsegments=\count102
-\nofMParguments=\count103
+\nofMPsegments=\count101
+\nofMParguments=\count102
 \everyMPshowfont=\toks21
-\MPscratchCnt=\count104
+\MPscratchCnt=\count103
 \MPscratchDim=\dimen118
-\MPnumerator=\count105
-\makeMPintoPDFobject=\count106
+\MPnumerator=\count104
+\makeMPintoPDFobject=\count105
 \everyMPtoPDFconversion=\toks22
-) (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
-Package: pdftexcmds 2016/05/21 v0.22 Utility functions of pdfTeX for LuaTeX (HO
-)
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifluatex.sty
-Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
-Package ifluatex Info: LuaTeX not detected.
-)
-Package pdftexcmds Info: LuaTeX not detected.
-Package pdftexcmds Info: \pdf@primitive is available.
-Package pdftexcmds Info: \pdf@ifprimitive is available.
-Package pdftexcmds Info: \pdfdraftmode found.
-)
-(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
@@ -564,15 +550,28 @@ Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
 
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/etexcmds.sty
 Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
 Package etexcmds Info: Could not find \expanded.
 (etexcmds)             That can mean that you are not using pdfTeX 1.50 or
 (etexcmds)             that some package has redefined \expanded.
 (etexcmds)             In the latter case, load this package earlier.
 )))
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 38.
 Package grfext Info: Graphics extension search list:
-(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
 G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 456.
 
@@ -580,20 +579,23 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-\c@lstlisting=\count107
-
+\c@lstlisting=\count106
 <UTBM_LOGO.png, id=1, 475.7775pt x 475.7775pt>
 File: UTBM_LOGO.png Graphic file (type png)
- <use UTBM_LOGO.png>
-Package pdftex.def Info: UTBM_LOGO.png used on input line 69.
-(pdftex.def)             Requested size: 87.66173pt x 87.66623pt.
-
+<use UTBM_LOGO.png>
+Package pdftex.def Info: UTBM_LOGO.png  used on input line 69. on input line 69
+.
+Package pdftex.def Info: Requested size: 87.66173pt x 87.66623pt on input line 
+69.
 <LPNHE_LOGO.png, id=2, 223.58531pt x 124.21407pt>
 File: LPNHE_LOGO.png Graphic file (type png)
- <use LPNHE_LOGO.png>
-Package pdftex.def Info: LPNHE_LOGO.png used on input line 71.
-(pdftex.def)             Requested size: 109.23706pt x 60.68726pt.
- [1
+<use LPNHE_LOGO.png>
+Package pdftex.def Info: LPNHE_LOGO.png  used on input line 71. on input line 7
+1.
+Package pdftex.def Info: Requested size: 109.23706pt x 60.68726pt on input line
+ 71.
+
+[1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./UTBM_LOGO.png (PNG copy)
 > <./LPNHE_LOGO.png (PNG copy)>] (./ST50_ROMETPierre.toc
@@ -654,12 +656,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 94--95
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 96--97
+Underfull \hbox (badness 10000) in paragraph at lines 100--101
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 98--99
+Underfull \hbox (badness 10000) in paragraph at lines 102--103
 
  []
 
@@ -667,80 +669,88 @@ Underfull \hbox (badness 10000) in paragraph at lines 98--99
 
 ]
 Chapter 3.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 114.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 118.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 114.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 118.
  [5
 
 ] [6]
 <ATLASLHC.jpg, id=36, 810.52812pt x 527.9725pt>
 File: ATLASLHC.jpg Graphic file (type jpg)
- <use ATLASLHC.jpg>
-Package pdftex.def Info: ATLASLHC.jpg used on input line 147.
-(pdftex.def)             Requested size: 199.16928pt x 129.73706pt.
+<use ATLASLHC.jpg>
+Package pdftex.def Info: ATLASLHC.jpg  used on input line 151. on input line 15
+1.
+Package pdftex.def Info: Requested size: 199.16928pt x 129.73706pt on input lin
+e 151.
 
-Underfull \hbox (badness 10000) in paragraph at lines 147--148
+Underfull \hbox (badness 10000) in paragraph at lines 151--152
 
  []
 
 <CDFLOGO.png, id=37, 628.3475pt x 626.34pt>
 File: CDFLOGO.png Graphic file (type png)
- <use CDFLOGO.png>
-Package pdftex.def Info: CDFLOGO.png used on input line 161.
-(pdftex.def)             Requested size: 199.16928pt x 198.531pt.
-
+<use CDFLOGO.png>
+Package pdftex.def Info: CDFLOGO.png  used on input line 165. on input line 165
+.
+Package pdftex.def Info: Requested size: 199.16928pt x 198.531pt on input line 
+165.
 <D0.jpg, id=38, 373.395pt x 201.75375pt>
 File: D0.jpg Graphic file (type jpg)
- <use D0.jpg>
-Package pdftex.def Info: D0.jpg used on input line 161.
-(pdftex.def)             Requested size: 199.16928pt x 107.61548pt.
-
+<use D0.jpg>
+Package pdftex.def Info: D0.jpg  used on input line 165. on input line 165.
+Package pdftex.def Info: Requested size: 199.16928pt x 107.61548pt on input lin
+e 165.
 <SLHC.jpg, id=39, 517.18219pt x 339.51843pt>
 File: SLHC.jpg Graphic file (type jpg)
- <use SLHC.jpg>
-Package pdftex.def Info: SLHC.jpg used on input line 165.
-(pdftex.def)             Requested size: 199.16928pt x 130.74867pt.
+<use SLHC.jpg>
+Package pdftex.def Info: SLHC.jpg  used on input line 169. on input line 169.
+Package pdftex.def Info: Requested size: 199.16928pt x 130.74867pt on input lin
+e 169.
 
-Underfull \hbox (badness 10000) in paragraph at lines 165--166
+Underfull \hbox (badness 10000) in paragraph at lines 169--170
 
  []
 
 [7 <./ATLASLHC.jpg> <./CDFLOGO.png> <./D0.jpg> <./SLHC.jpg>]
 <T2K.jpg, id=44, 702.625pt x 485.815pt>
 File: T2K.jpg Graphic file (type jpg)
- <use T2K.jpg>
-Package pdftex.def Info: T2K.jpg used on input line 183.
-(pdftex.def)             Requested size: 199.16928pt x 137.71pt.
-
+<use T2K.jpg>
+Package pdftex.def Info: T2K.jpg  used on input line 187. on input line 187.
+Package pdftex.def Info: Requested size: 199.16928pt x 137.71pt on input line 1
+87.
 <SLACBABAR.png, id=45, 602.25pt x 361.35pt>
 File: SLACBABAR.png Graphic file (type png)
- <use SLACBABAR.png>
-Package pdftex.def Info: SLACBABAR.png used on input line 183.
-(pdftex.def)             Requested size: 199.16928pt x 119.4995pt.
-
+<use SLACBABAR.png>
+Package pdftex.def Info: SLACBABAR.png  used on input line 187. on input line 1
+87.
+Package pdftex.def Info: Requested size: 199.16928pt x 119.4995pt on input line
+ 187.
 <hesscta.jpg, id=47, 622.325pt x 414.54875pt>
 File: hesscta.jpg Graphic file (type jpg)
- <use hesscta.jpg>
-Package pdftex.def Info: hesscta.jpg used on input line 200.
-(pdftex.def)             Requested size: 199.16928pt x 132.67096pt.
-
+<use hesscta.jpg>
+Package pdftex.def Info: hesscta.jpg  used on input line 204. on input line 204
+.
+Package pdftex.def Info: Requested size: 199.16928pt x 132.67096pt on input lin
+e 204.
 <auger.jpg, id=48, 762.85pt x 801.99625pt>
 File: auger.jpg Graphic file (type jpg)
- <use auger.jpg>
-Package pdftex.def Info: auger.jpg used on input line 200.
-(pdftex.def)             Requested size: 199.16928pt x 209.38297pt.
+<use auger.jpg>
+Package pdftex.def Info: auger.jpg  used on input line 204. on input line 204.
+Package pdftex.def Info: Requested size: 199.16928pt x 209.38297pt on input lin
+e 204.
  [8 <./T2K.jpg> <./SLACBABAR.png> <./hesscta.jpg> <./auger.jpg>]
 <lsst.jpg, id=53, 672.5125pt x 353.32pt>
 File: lsst.jpg Graphic file (type jpg)
- <use lsst.jpg>
-Package pdftex.def Info: lsst.jpg used on input line 210.
-(pdftex.def)             Requested size: 199.16928pt x 104.63823pt.
+<use lsst.jpg>
+Package pdftex.def Info: lsst.jpg  used on input line 214. on input line 214.
+Package pdftex.def Info: Requested size: 199.16928pt x 104.63823pt on input lin
+e 214.
 
-Underfull \hbox (badness 10000) in paragraph at lines 210--211
+Underfull \hbox (badness 10000) in paragraph at lines 214--215
 
  []
 
@@ -748,33 +758,89 @@ Underfull \hbox (badness 10000) in paragraph at lines 210--211
 Chapter 4.
 [10
 
-] [11
+]
+Underfull \hbox (badness 10000) in paragraph at lines 240--242
 
-] [12
+ []
 
-] (./ST50_ROMETPierre.aux) ) 
+<MECA_PIANO.png, id=60, 892.83563pt x 338.01282pt>
+File: MECA_PIANO.png Graphic file (type png)
+<use MECA_PIANO.png>
+Package pdftex.def Info: MECA_PIANO.png  used on input line 243. on input line 
+243.
+Package pdftex.def Info: Requested size: 426.79134pt x 161.57896pt on input lin
+e 243.
+
+Underfull \hbox (badness 10000) in paragraph at lines 243--244
+
+ []
+
+[11 <./MECA_PIANO.png (PNG copy)>] [12]
+Underfull \hbox (badness 10000) in paragraph at lines 279--280
+
+ []
+
+[13]
+<MECA_PIANO2.png, id=71, 835.62187pt x 429.10312pt>
+File: MECA_PIANO2.png Graphic file (type png)
+<use MECA_PIANO2.png>
+Package pdftex.def Info: MECA_PIANO2.png  used on input line 281. on input line
+ 281.
+Package pdftex.def Info: Requested size: 426.79134pt x 219.16707pt on input lin
+e 281.
+
+Underfull \hbox (badness 10000) in paragraph at lines 281--287
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 305--306
+
+ []
+
+[14 <./MECA_PIANO2.png (PNG copy)>]
+<MECA_PIANO3.png, id=75, 848.4197pt x 412.54124pt>
+File: MECA_PIANO3.png Graphic file (type png)
+<use MECA_PIANO3.png>
+Package pdftex.def Info: MECA_PIANO3.png  used on input line 307. on input line
+ 307.
+Package pdftex.def Info: Requested size: 426.79134pt x 207.5228pt on input line
+ 307.
+
+Underfull \hbox (badness 10000) in paragraph at lines 307--313
+
+ []
+
+[15 <./MECA_PIANO3.png (PNG copy)>] [16] [17
+
+] [18
+
+] [19
+
+] [20]
+(./ST50_ROMETPierre.aux) ) 
 Here is how much of TeX's memory you used:
- 4676 strings out of 494945
- 62625 string characters out of 6181032
- 149082 words of memory out of 5000000
- 7888 multiletter control sequences out of 15000+600000
+ 4640 strings out of 494888
+ 62191 string characters out of 6179710
+ 146487 words of memory out of 5000000
+ 7869 multiletter control sequences out of 15000+600000
  16141 words of font info for 36 fonts, out of 8000000 for 9000
- 14 hyphenation exceptions out of 8191
- 39i,9n,40p,947b,383s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/promet/.texlive2016/texmf-var/fonts/pk/ljfo
-ur/jknappen/ec/ecbx1728.600pk> </home/promet/.texlive2016/texmf-var/fonts/pk/lj
-four/jknappen/ec/ecrm1200.600pk> </home/promet/.texlive2016/texmf-var/fonts/pk/
-ljfour/jknappen/ec/ecbx1200.600pk> </home/promet/.texlive2016/texmf-var/fonts/p
-k/ljfour/jknappen/ec/ecbx1440.600pk> </home/promet/.texlive2016/texmf-var/fonts
-/pk/ljfour/jknappen/ec/ecbx2488.600pk> </home/promet/.texlive2016/texmf-var/fon
-ts/pk/ljfour/jknappen/ec/ecrm1440.600pk> </home/promet/.texlive2016/texmf-var/f
-onts/pk/ljfour/jknappen/ec/ecxc1440.600pk> </home/promet/.texlive2016/texmf-var
-/fonts/pk/ljfour/jknappen/ec/ecbx2074.600pk></usr/share/texlive/texmf-dist/font
-s/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on ST50_ROMETPierre.pdf (13 pages, 1528188 bytes).
+ 36 hyphenation exceptions out of 8191
+ 41i,9n,40p,1085b,379s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </home/promet/.texlive2017/texmf-var/fonts/pk/ljfour
+/jknappen/ec/ecbx1728.600pk> </home/promet/.texlive2017/texmf-var/fonts/pk/ljfo
+ur/jknappen/ec/ecrm1200.600pk> </home/promet/.texlive2017/texmf-var/fonts/pk/lj
+four/jknappen/ec/ecbx1200.600pk> </home/promet/.texlive2017/texmf-var/fonts/pk/
+ljfour/jknappen/ec/ecbx1440.600pk> </home/promet/.texlive2017/texmf-var/fonts/p
+k/ljfour/jknappen/ec/ecbx2488.600pk> </home/promet/.texlive2017/texmf-var/fonts
+/pk/ljfour/jknappen/ec/ecrm1440.600pk> </home/promet/.texlive2017/texmf-var/fon
+ts/pk/ljfour/jknappen/ec/ecxc1440.600pk> </home/promet/.texlive2017/texmf-var/f
+onts/pk/ljfour/jknappen/ec/ecbx2074.600pk></usr/share/texlive/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on ST50_ROMETPierre.pdf (21 pages, 2648166 bytes).
 PDF statistics:
- 386 PDF objects out of 1000 (max. 8388607)
- 67 compressed objects within 1 object stream
+ 458 PDF objects out of 1000 (max. 8388607)
+ 84 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 56 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 71 words of extra memory for PDF output out of 10000 (max. 10000000)
 
