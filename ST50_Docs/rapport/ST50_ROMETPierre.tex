@@ -216,13 +216,19 @@ Suite à cette introduction, nous allons poursuivre avec la présentation du lab
   \end{itemize}
   
   
-  \chapter{Présentation du projet "CHAMP"}
+%------------------------------------------------------------------
+%
+%	Présentation du projet "CHAMP"
+%
+%------------------------------------------------------------------
+\part{Projet "CHAMP"}
+  \chapter{Présentation}
   
   Ce projet est né de la rencontre de Laurent BESSIÈRES, préparateur de piano intervenant pour les concerts et récitals de la Philarmonoe de Paris, et de Antoine LETESSIER SELVON, physicien des hautes énergies, directeur de recherche au CNRS et pianiste amateur. 
   
   De leur discution est né un projet au travers du quel ils cherche à élargir les possibilités de l'instrument en modifiant de mainère original sa mécanique. C'est en s'appuyant sur des techniques modernes qu'il souhaite proposer de nouveaux moyen d'expression aux artistes, tout en respectant le lien étroit qu'ils entretiennent avec leur instrument nottament au travers du toucher.
   
-  \section{Etat de l'art}
+  \section{État de l'art}
   
   C’est en 1700 que Bartolomeo Cristofori invente la mécanique à échappement et construit le premier instrument à cordes frappées : le piano-forte. Ce sont les balbutiements de l’histoire du piano à queue. Le piano-forte révolutionne la technique pianistique car il permet à l’interprète de passer par le jeu des doigts, d’une nuance piano à une nuance forte, ouvrant de nouvelles voies à l’expression musicale et à la créativité des compositeurs. Cent vingt-trois ans plus tard, en 1821, Sébastien Érard ajouta un système de répétition à la mécanique de Cristofori et invente la mécanique moderne dite (improprement) à double échappement.
 
@@ -274,8 +280,8 @@ joue le poids du marteau, [...]”.
 
 Le poids d’enfoncement d’une touche de clavier est compris entre 45g et 60g, celui des marteaux est d’un peu moins de 12g dans les basses à moins de 5g dans les aigus, et ce depuis 200 ans. C’est le confort de jeu des pianistes qui l’impose. Pour maintenir l’inertie des touches à un niveau acceptable, il faut également que l’ensemble du poids mis en mouvement ne soit pas trop élevé et donc que le contre-poids (en plomb) mis dans les touches reste faible. Ces deux principes limitent la masse du marteau qui est le seul élément qui pourrait, si on augmentait sa masse, transmettre toute l’énergie qu’un piano de 3m (et plus!) peut développer.
 
-\section{Réalisation}
-  \subsection{Mécanique et Electronique}
+\chapter{Réalisation}
+  \section{Mécanique et Electronique}
 Nos premières réflexions sur la réalisation d’un système d’assistance et d’asservissement d’une mécanique de piano à queue démontrent qu’il faut faire appel à des technologies de pointe. Ce qui explique l’aspect novateur de notre projet. Par exemple, les contraintes mécaniques sur les moteurs susceptibles de seconder les doigts dans leur action sont nombreuses. Pour ne citer que les plus essentielles :\newline
 
 \hfill\hbox to 0pt{\hss\includegraphics[width=15cm]{MECA_PIANO2.png}\hss}\hfill\null\newline
@@ -293,7 +299,7 @@ seconde, accélération de l’ordre de 10 ou 20 g (100 à 200 m/s2 ).
 
 \item encombrement faible: dimension de l'ordre de 1 cm(l) x 1 cm(p) x 5 cm(h).
 
-\item bruit, inexistant ou négligeable : 10-15 dB ou moins de 1m.
+\item bruit, inexistant ou négligeable : 10-15 dB à moins de 1m.
 
 \item précision : positionnement du manche de marteau au dixième (0.1 mm).
 
@@ -316,7 +322,7 @@ précise, si possible intégrée, fiable, puissante et programmable et fera donc
 Pour guider les idées, un schéma envisageable d’implémentation est proposé sur la figure 3. L’implémentation optimale nécessite bien-sûr une étude plus approfondie, il s’agit simplement ici de se de fixer les idées. Le moteur et les capteurs de positions sont représentés par les rectangles bleus ou rouges. Sur cette proposition, le rapport (R) entre l’action du moteur et celui du marteau est le même que pour le doigt de l’artiste soit environ 5,5. Les modifications apportées à la mécanique originale sont minimales. Avec un réglage approprié, la sensation
 de toucher sera adaptable aux désirs de l’artiste et restera très proche des sensations offertes par la mécanique à répétition et ce même si les marteaux sont lourds car le moteur accompagne en le soutenant le mouvement de la touche mais ne s’y substitue pas totalement.
 
-  \subsection{Boucle d'asservissement}
+  \section{Boucle d'asservissement}
 
 La qualité de la boucle de feedback est un point essentiel de notre entreprise. C’est ici que l’expertise de Laurent Bessières donne tout son sens musical au projet. L’asservissement devra d’une part donner aux artistes un confort de jeu digne des meilleures mécaniques avec en plus un équilibrage parfait sur toute l’étendue du clavier. D’autre part, et c’est peut être le plus important, un certain nombre de paramètres de la boucle d’asservissement seront modifiables.
 
@@ -330,7 +336,7 @@ L’échappement et la façon dont il se déroule constituent l’épicentre de 
 
 Sur tous ces domaines, l’expertise de Laurent Bessières est fondamentale aussi bien pour identifier les paramètres de contrôle que pour qualifier leur gamme et pour la bonne intégration de l’ensemble dans l’instrument. La programmation des fonctionnalités dans le FPGA qui calculera les commandes du moteur à partir des données des capteurs sera elle réalisée par les ingénieurs du LPNHE.
 
-  \subsection{Modélisation}
+  \section{Modélisation}
 
 Thomas Hélie, chercheur à l’IRCAM au Laboratoire des Sciences et Technologies de la Musique et du Son, est spécialiste de la modélisation physique d’instruments de musique. L’un de ses projets de recherche concerne notamment la modélisation, l’asservissement et la commande d’une bouche artificielle robotisé pour le jeux de cuivre. Dans le cadre de notre projet son expertise nous permettra de modéliser les performances de la boucle de feedback en fonction des paramètres mécaniques que nous pouvons ajuster (position de l’actuateur, nombre, nature et position des capteurs). Disposer d’un modèle nous permettra de choisir les configurations les plus prometteuses avant de les réaliser plutôt que d’avoir à toutes les construire et toutes les essayer.
 
@@ -338,23 +344,172 @@ La méthode des systèmes Hamiltionien à ports (Port Hamiltonian System ou PHS)
 
 Notons également que l’approche PHS permet d’étudier les réponses non linéaires aux actions extérieures et de calculer les (pré-)contraintes à appliquer sur le signal d’entrée pour obtenir la réponse souhaitée (platitude). Cette approche nous permettra alors de calculer avec précision les paramètres de la boucle d’asservissement. Là encore l’expertise de Thomas Hélie nous permettra d’élaborer ces modèles de manière efficace et optimale.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-\part{Recherche Documentaire}
-
+%------------------------------------------------------------------
+%
+%	Présentation et Détail des travaux Réalisés durant le stage - TODO
+%
+%------------------------------------------------------------------
 \part{Travaux menés}
+
+\chapter{La mesure de l'accélération}
+
+Comme nous l'avons vu lors de la précédente partie, la réalisation d'un système d'assistance et d'asservissement d'une mécanique de piano à queue induit l'appel à des technologies de "pointe"; technologie que nous retrouvons et côtoyons au quotidiens au travers de nos smart-phone, notamment celle nous permet de mesurer une accélération (technologie qui sera une composante principale de notre projet.
+
+La mesure de l'accélération et la composante clef de notre projet étant données que ce seul élément rend possible la mesure de l'accélération (sur trois axes x,y,z) de la touche joué par le pianiste, ainsi que la mise en place de la boucle d'asservissement contrôlant les moteurs devant actionner les marteaux en cotons frappant les cordes.
+
+\section{Matériel utilisé}
+Pour ce projet, une première maquettes utilisant des composant électronique analogique fut réaliser, se basant sur le modèle de la figure (dernière figure). Ce prototype avait pour but montré la manière de procéder et de vérifier le postulat de départ quand à la faisabilité du projet.
+
+% PHOTO de la maquette initiale de Hervé
+
+Suite à mon arrivé au sein du projet "CHAMP", j'ai commencé le développement de la nouvelle maquette (tjs basé sur le même schéma de fonctionnement) qui est maintenant basé sur des composants électronique numérique.
+
+Le capteur numérique utilisé et choisi par l'équipe qui initié le projet est l'accéléromètre ADXL355 du fabriquant "ANALOG DEVICE". Ce composant nous permet de mesurer une accélération sur 3 axes (x,y,z) avec une précision de +/- 8 fois la force gravitationnelle.
+
+Le module ADXL355 permet l'échange de données avec notre FPGA (unité de traitement et de calcule) via des transmissions série synchrones. Il peut ainsi communiquer soit en mode SPI, soit en mode I2C.
+
+ \subsection{Bus SPI}
+
+Une Liaison SPI (Serial Peripheral Interface) est un bus de données synchrone baptisé par Motorola, opèrant en Full-Duplex et qui peut transférer des données sur de courtes distances à des vitesses élevées. Les circuits communiquent selon un schéma Maitre/Esclave, où le maitre s'occupe totalement de la communication. Plusieurs esclave peuvent coexister sur un même bus, dans ce cas, la sélection du destinataire se fait par une ligne dédiée entre le maitre et l'esclave appelée "Chip Select" (CS) ou Slave Select (SS).
+
+  \subsubsection{Principe de fonctionnement}
+
+Durant le transfère de données, le dispositif peut travailler soit en maitre, soit en esclave. L'interface SPI permet de connecter un ou plusieurs esclaves à un seul maitre via le même bus.
+
+\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI1.png}\hss}\hfill\null\newline
+
+Le bus SPI utilise 4 signaux logiques :
+
+\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI2.png}\hss}\hfill\null\newline
+
+\begin{itemize}
+\item SCLK (Serial Clock) : Le signal d'horloge, il est utilisé pour synchroniser les données échangées entre le maître et les esclaves. Cette ligne est nécessairement une sortie sur le maître et une entrée sur le ou les esclaves.
+
+\item MOSI (Master Output, Slave Input) : est utilisé pour transférer les données du maître vers l'esclave.
+
+\item MISO (Master Input, Slave Output) : est utilisé pour transférer les données l'esclave vers le maître.
+
+\item SS (Slave Select) : le maître utilise ce signal pour choisir avec qui il veut dialoguer.Ce signal est actif à l'état bas.Les esclaves ne peuvent pas communiquer entre eux.Seul le maître peut autoriser un esclave à dialoguer, cela dit l'esclave ne peut commencer le dialogue que s'il n'a pas l'autorisation.
+\end{itemize}
+
+On parlera aussi de liaison à 3 fils : Permet de véhiculer l’information dans les 2 sens (bidirectionnelle), un fil différent étant dévolu à chaque sens de transfert d’information. Comme ceci permet la communication simultanée dans les 2 sens de transmission, on parlera de liaison full-duplex :
+pendant que le maître transmet des données sur la ligne MOSI, vers l’esclave sélectionné, il en reçoit de celui-ci par la ligne MISO.
+
+  \subsubsection{Principe de transmission}
+Une transmission SPI typique est une communication simultanée entre un maître et un esclave :
+Tout d'abord, Le maître initie la communication en sélectionnant l'esclave avec qui il veut communiquer par l'utilisation du signal SS qui est actif bas.
+Ensuite, Le maître et l'esclave préparent les données à envoyer dans leur registres à décalage.
+Enfin, Le maître génère des impulsions d'horloge pour synchroniser les données échangées.
+
+À chaque coup d'horloge le maître et l'esclave s'échangent un bit. Après huit coups d'horloges le maître a transmis un octet à l'esclave et vice versa. La vitesse de l'horloge est réglée selon des caractéristiques propres aux périphériques.
+
+\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI3.png}\hss}\hfill\null\newline
+
+pendant que le maître transmet les données sur la ligne MOSI, vers l’esclave sélectionné, il en reçoit de celui-ci par la ligne MISO.
+Voici le tout sous forme de dessins. En rouge les bits reçus, en bleu les bits envoyés :
+
+\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI4.png}\hss}\hfill\null\newline
+
+  \subsubsection{Mode maitre}
+Lorsqu'il est configuré en tant que maître, l'interface SPI n'a aucun contrôle automatique de la ligne de SS.Pour la configuration en mode maitre,nous devons déclarer : MOSI, SS et SCLK en sortie; MISO en entrée ; mettre le bit MSTR à 1 dans le registre SPCR. La mise de SS à l’état bas permet
+d'établir la communication avec l’esclave.
+le principe de transmission suit cette ordre :
+
+    Ecriture d’un octet dans le registre de données (SPDR).
+    génération du signal d'horloge.
+    envoie des données contenue dans le registre de données vers l’esclave via la ligne MOSI.
+    arret du signal d'horloge.
+    mise du bit SPIF = 1 (flag de fin de communication)
+    Si SPIE = 1 (autorisation de l’interruption) : interruption demandée, 2 options :
+        chargement de l’octet suivant dans le registre
+        mise de SS à l’état haut pour signaler la fin du paquet de données
+
+Le dernier octet entrant sera conservés dans le registre tampon pour une utilisation ultérieure.
+
+  \subsubsection{Mode esclave}
+Pour la configuration en mode esclave,nous devons déclarer : MOSI, SS et SCLK en entrée; MISO en sortie ;Mettre le bit MSTR à 0 dans le registre SPCR. L’esclave reste en mode sommeil jusqu’à ce que le maître l'appelle(en mettant la ligne SS à l’état bas). La mise de SS à l’état bas permet d'établir la communication avec l’esclave. Le principe de transmission suit cette ordre :
+
+    sélection de l'esclave avec qui communiquer
+    génération du signal d'horloge par le maître
+    envoie des données contenue dans le registre des données vers l’esclave via la ligne MISO.
+    mise du bit SPIF = 1 (flag de fin de communication)
+    Si SPIE = 1 (autorisation de l’interruption) :
+        interruption demandée
+        chargement de l’octet suivant dans le registre
+        
+  \subsubsection{Avantages}
+
+\begin{itemize}
+\item Communication full-duplex.
+\item Vitesse assez importante par rapport à l’I2C (10-100MBits/s).
+\item Partage d’un bus commun pour l’horloge, MISO et MOSI entre les périphériques.
+\item Simplicité de l’interface matérielle.
+\item Aucun arbitre nécessaire car aucune collision possible.
+\item Les esclaves utilisent l’horloge du maître et n’ont donc pas besoin d’oscillateur de précision.
+\end{itemize}
+
+  \subsubsection{inconvénients}
+
+\begin{itemize}
+\item Utilise plus de pattes d’un boitier que l’I2C qui en utilise seulement 2 (et la masse).
+\item Aucun adressage possible : Il faut une ligne de sélection par esclave en mode non chaîné.
+\item Le protocole n’a pas d’acquittement. Le maître peut parler dans le vide sans le savoir.
+\item Il ne peut y avoir qu’un seul maître sur le bus.
+\item Ne s’utilise que sur de courtes distances contrairement aux liaisons RS-232, RS-485 ou bus CAN.
+\end{itemize}
+
+
+ \subsection{Bus I2C}
+Le bus I2C permet de faire communiquer entre eux des composants électroniques très divers grâce à seulement trois fils : un signal de données (SDA), un signal d'horloge (SCL), et un signal de référence électrique (masse).
+Il s'agit d'une liaison en mode série synchrone (un bit est transmis à chaque coup d’horloge). Le nombre de composants qu'il est ainsi possible de relier est essentiellement limité par la charge capacitive des lignes SDA et SCL : 400 pF.
+un circuit maître et un ou plusieurs circuits esclaves peuvent être connectés au bus. Les échanges se font toujours à l’initiative du maître.La transmission est half duplex : mode écriture ou mode lecture, pas possible de manière simultanée.
+
+  \subsubsection{Connexion électrique}
+Comme indiqué précédemment, pour se connecter à un bus I2C il faut une masse, et deux fils de communication. Le premier fil, SDA (Signal DAta), est utilisé pour transmettre les données. L'autre fil, SCL (Signal CLock) est utilisé pour transmettre un signal d'horloge synchrone (signal qui indique le rythme d'évolution de la ligne SDA). Les tensions associées aux niveaux logiques vont dépendre de la technologie des circuits en présence (CMOS, TTL). Il faudra que tous les circuits connectés au bus I2C utilisent les mêmes potentiels pour définir les niveaux haut et bas. En définitive, cela implique que tous les composants connectés à un même bus soient alimentés de façon identique.
+
+\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI5.png}\hss}\hfill\null\newline
+
+En ce qui concerne la lecture des signaux SDA et SCL, cela ne pose pas de problème. Les signaux peuvent être lus en permanence sans risque d'interférer sur le niveau de la ligne.
+Au repos, tous les circuits connectes doivent imposer un niveau haut sur leurs sorties respectives. Si les lignes SDA et SCL sont au niveau haut dans ces conditions, cela signifie qu'aucun circuit ne tente de prendre le contrôle du bus. Si une des lignes SDA ou SCL passe à un niveau bas dans les mêmes conditions, c'est qu'un des circuits désire prendre le contrôle du bus. Mais il peut aussi y avoir deux circuits qui tentent de prendre le contrôle du bus en même temps (ou à quelques nanosecondes d'écart près). Il faut donc mettre en place un protocole pour gérer les conflits possibles.
+
+  \subsubsection{Protocole I2C}
+Le protocole I2C présent différentes caractéristiques:
+
+\begin{itemize}
+\item maitre-esclaves, car seul un nœud maitre peut communiquer avec les esclaves du réseau (1 ou tous)
+\item multi-maitres, car plusieurs maitres peuvent être présents sur le réseau
+\item synchrone, car on utilise un mécanisme de requête/réponse
+\item half-duplex, car on peut communiquer dans les deux sens, mais pas simultanément
+\end{itemize}
+
+On utilise un adressage sur 7 bits pour identifier les nœuds, ce qui permet (en théorie) jusqu’à 128 nœuds sur le réseau. Certaines adresses sont réservées pour le broadcast (communiquer vers tous les nœuds en même temps). En pratique, les constructeurs on tendance à fixer l’adresse de certains nœuds, ce qui peut causer des collisions.
+
+
+  \subsubsection{Avantages}
+\begin{itemize}
+\item Utilise seulement 2 lignes (+ le fil de masse) et simplicité de connexion (uniquement deux résistances de pull-up à rajouter)
+
+\item Le protocole limite automatiquement la vitesse de transmission à la vitesse de l’élément le plus lent.
+
+\item Le bit de reconnaissance qui permet de savoir si l’esclave est bien connecté et également si les données ont été correctement transmises ou non.
+
+\item Interconnections de multiples périphériques
+\end{itemize}
+
+  \subsubsection{Inconvénients}
+\begin{itemize}
+\item Impossibilité d’utiliser un mode full-duplex
+
+\item Vitesse relativement lente pour la plupart des périphériques esclaves (100 à 400kbits/s)
+
+\item Consommation relativement élevée du à la configuration en collecteur/drain ouvert
+
+\item Distance de communication limitée car les lignes du bus ne sont pas protégées des perturbations et envoient des fronts montants et descendants. Cette distance est donc limitée par la vitesse de communication, les résistances de pull-up, la capacité du bus (en général, autour des 400pF).
+\end{itemize}
+
+ \section{Contrainte et choix de réalisation}
+Concernant les contraintes techniques devant c
+
 
 \part{Bibliographie}
 
@@ -365,6 +520,8 @@ BHLS-CNRS-UPMC-LPNHE-IRCAM.pdf
 
 
 \end{document}
+
+%\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI1.png}\hss}\hfill\null\newline
 
 %Mettre deux éléments l'un à coté de l'autre horizontalement
 % \textsc{\begin{figure}[h]
