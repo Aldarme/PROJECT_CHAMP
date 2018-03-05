@@ -15,7 +15,8 @@ entity spi_DAC is
 		GPIO    		:   INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
 		RECV_DATA	:	 INOUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		DAC_OE_INPUT:	 INOUT STD_LOGIC;
-		DAC_OE_OUTPUT:	 INOUT STD_LOGIC
+		DAC_OE_OUTPUT:	 INOUT STD_LOGIC;
+		RESET_SIGNAL :	 in STD_LOGIC
 	);
 
 end entity;
@@ -79,7 +80,7 @@ signal   spi_read_cpt_zero :  std_logic;
 
 begin
 
-reset_n <= KEY(2);
+reset_n <= RESET_SIGNAL;
 
 GPIO( 5 ) <= spi_sclk;
 GPIO( 6 ) <= spi_ss_n(0);
@@ -140,7 +141,6 @@ sm: entity work.spi_master(SPI_DAC)
 					cState <= WAITst;
 					
 				when WAITst =>
-					DAC_OE_INPUT <= '0';
 					spi_enable <= '0';
 					if DAC_OE_INPUT = '0' then
 						cState <= WAITst;

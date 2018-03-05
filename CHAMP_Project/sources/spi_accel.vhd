@@ -10,13 +10,14 @@ use work.all;
 entity spi_accel is
 	PORT
 	(
-		CLOCK_50   	:   IN STD_LOGIC;		
-		LEDG    		:   OUT STD_LOGIC_VECTOR(8 DOWNTO 0); 
-		LEDR    		:   OUT STD_LOGIC_VECTOR(24 DOWNTO 0); 
-		KEY    		:   IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
-		GPIO    		:   INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
-		DATA_TODAC	:	 out STD_LOGIC_VECTOR(15 DOWNTO 0);
-		DATA_ENABLE	:	 out STD_LOGIC
+		CLOCK_50   	:  IN STD_LOGIC;		
+		LEDG    		:  OUT STD_LOGIC_VECTOR(8 DOWNTO 0); 
+		LEDR    		:  OUT STD_LOGIC_VECTOR(24 DOWNTO 0); 
+		KEY    		:  IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
+		GPIO    		:  INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
+		DATA_TODAC	:	out STD_LOGIC_VECTOR(15 DOWNTO 0);
+		DATA_ENABLE	:	out STD_LOGIC;
+		RESET_SIGNAL:	in STD_LOGIC
 	);
 
 end entity;
@@ -109,7 +110,7 @@ LEDG( 3 ) <= not KEY(3);
 
 LEDG( 1 ) <= not spi_busy;
 
-reset_n <= KEY(3);
+reset_n <= RESET_SIGNAL;
 
 GPIO( 1 ) <= spi_sclk;
 GPIO( 3 ) <= spi_ss_n(0);
