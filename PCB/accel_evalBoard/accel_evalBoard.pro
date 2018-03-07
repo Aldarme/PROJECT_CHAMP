@@ -1,4 +1,4 @@
-update=06/03/2018 10:26:02
+update=07/03/2018 12:56:33
 version=1
 last_client=kicad
 [pcbnew]
@@ -63,3 +63,13 @@ LibName33=librairie/adxl355
 LibName34=librairie/cnt-6pins
 [general]
 version=1
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60
