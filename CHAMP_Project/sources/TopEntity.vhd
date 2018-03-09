@@ -56,8 +56,8 @@ architecture topArchi of TopEntity is
 		KEY    		:   IN STD_LOGIC_VECTOR(3 DOWNTO 0);
 		GPIO    		:   INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
 		RECV_DATA	:	 INOUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-		DAC_OE_INPUT:	 IN STD_LOGIC;
-		DAC_OE_OUTPUT:	 IN STD_LOGIC;
+		DAC_OE_INPUT:	 INOUT STD_LOGIC;
+		DAC_OE_OUTPUT:	 INOUT STD_LOGIC;
 		RESET_SIGNAL :	 in STD_LOGIC
 	);
  END COMPONENT;
@@ -76,8 +76,8 @@ architecture topArchi of TopEntity is
 	signal filter_toDac	:	std_logic_vector(15 downto 0);
 	
 	signal dac_dataz		:	std_logic_vector(15 downto 0);
-	signal dac_oe_input	:	std_logic;
-	signal dac_oe_output	:	std_logic;
+	signal dac_input	:	std_logic;
+	signal dac_output	:	std_logic;
 	
 	signal reset_all	:	STD_LOGIC;
  
@@ -117,8 +117,8 @@ reset_all <= TOP_KEY(3);
 		KEY    			=>  TOP_KEY,
 		GPIO    			=>  TOP_GPIO,
 		RECV_DATA		=>  dac_dataz,
-		DAC_OE_INPUT	=>  dac_oe_input,
-		DAC_OE_OUTPUT	=>  dac_oe_output,
+		DAC_OE_INPUT	=>  dac_input,
+		DAC_OE_OUTPUT	=>  dac_output,
 		RESET_SIGNAL 	=>  reset_all
 	);
  
@@ -131,7 +131,7 @@ reset_all <= TOP_KEY(3);
 	
 		flt_oe_input	<= '0';
 		filter_dataz	<= (others => '0');
-		dac_oe_input	<= '0';
+		dac_input	<= '0';
 		dac_dataz		<= (others => '0');
 		
 		cState <= RESETst;
@@ -157,12 +157,12 @@ reset_all <= TOP_KEY(3);
 					cState <= TREATMENTst;
 				else
 					dac_dataz <= filter_toDac;
-					dac_oe_input <= flt_oe_output;
+					dac_input <= flt_oe_output;
 					cState <= TOANALOGst;
 				end if;
 			
 			when TOANALOGst =>
-				if dac_oe_output = '0' then
+				if dac_output = '0' then
 					cState <= TOANALOGst;
 				else
 					cState <= WAITst;

@@ -72,7 +72,7 @@ constant SPI_CONFIG : T_WORD_ARR:= (
 			);
 
 constant CLOCK_50_FREQ : real:=50.0E6;
-constant SPI_READ_FREQ : real:=3.0E3; 
+constant SPI_READ_FREQ : real:=3.0E3;
 constant SPI_READ_NCLK : natural:=natural( ceil(CLOCK_50_FREQ/SPI_READ_FREQ) );
 signal   spi_read_cpt  : natural range 0 to SPI_READ_NCLK;
 signal   spi_read_cpt_zero :  std_logic;

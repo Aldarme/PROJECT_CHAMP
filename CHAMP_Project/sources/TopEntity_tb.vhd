@@ -1,10 +1,13 @@
+--test ebch for module
+--compose of: SPI accel & filter & SPI DAC
+
 library ieee;
 use ieee.std_logic_1164.all;
 
 entity TopEntity_tb is
 end entity;
 
-architecture arch of TopEntity is
+architecture arch of TopEntity_tb is
 
 	signal CLOCK_50    : std_logic := '0';
 	signal reset_n		 : std_logic;
@@ -46,7 +49,7 @@ architecture arch of TopEntity is
 		TOP_CLOCK_50 => CLOCK_50,
       TOP_KEY 		 => ( 3=> reset_n, others=>'0' ),
       TOP_GPIO		 => GPIO
-	);	
+	);
 
  adxl_sclk <= GPIO( 1 );
  adxl_mosi <= GPIO( 2 );
