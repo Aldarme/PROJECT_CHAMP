@@ -13,10 +13,10 @@ entity spi_DAC is
 		CLOCK_50   	:   IN STD_LOGIC;
 		KEY    		:   IN STD_LOGIC_VECTOR(3 DOWNTO 0);
 		GPIO    		:   INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
-		RECV_DATA	:	 INOUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-		DAC_OE_INPUT:	 INOUT STD_LOGIC;
-		DAC_OE_OUTPUT:	 INOUT STD_LOGIC;
-		RESET_SIGNAL :	 in STD_LOGIC
+		RECV_DATA	:	 IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+		DAC_OE_INPUT:	 IN STD_LOGIC;
+		DAC_OE_OUTPUT:	 OUT STD_LOGIC;
+		RESET_SIGNAL :	 IN STD_LOGIC
 	);
 
 end entity;
@@ -74,9 +74,9 @@ constant SPI_CONFIG : T_WORD_ARR:= (
 constant CLOCK_50_FREQ : real:=50.0E6;
 constant SPI_READ_FREQ : real:=3.0E3;
 constant SPI_READ_NCLK : natural:=natural( ceil(CLOCK_50_FREQ/SPI_READ_FREQ) );
+
 signal   spi_read_cpt  : natural range 0 to SPI_READ_NCLK;
 signal   spi_read_cpt_zero :  std_logic;
-
 
 begin
 
@@ -86,7 +86,7 @@ GPIO( 5 ) <= spi_sclk;
 GPIO( 6 ) <= spi_ss_n(0);
 
 
-sm: entity work.spi_master(SPI_DAC)
+sm_dac: entity work.spi_master(SPI_DAC)
 
   GENERIC MAP (
     slaves  => 1,
@@ -109,8 +109,11 @@ sm: entity work.spi_master(SPI_DAC)
 	 MISOMOSI => GPIO(4)
 	);
 
-	samp: process(reset_n, CLOCK_50) is 
-	-- Declaration(s) 
+	--
+	-- Key reset process
+	--
+	samp: process(reset_n, CLOCK_50) is
+	
 	begin 
 		if(reset_n = '0') then
 			SampKey <= ( others=> '1' );
@@ -125,6 +128,11 @@ sm: entity work.spi_master(SPI_DAC)
 	--
 	statep: process( reset_n, CLOCK_50 )
 	
+		variable insideBuff	: std_logic_vector(15 downto 0) := (others => '0');
+		variable inside_oe	: std_logic := '0';
+		variable	current	: std_logic := '0';
+		variable	previous	: std_logic := '0';
+	
 	begin
 		if reset_n='0' then
 			cState <= RESETst;
@@ -132,25 +140,37 @@ sm: entity work.spi_master(SPI_DAC)
 			spi_pbusy <= '1';
 			
 			
-		elsif rising_edge(CLOCK_50) then
+		elsif rising_edge( CLOCK_50) then
 			
 			case cState is
-				
-				when RESETst =>
-					spi_enable <= '0';
-					cState <= WAITst;
 					
 				when WAITst =>
 					spi_enable <= '0';
+					DAC_OE_OUTPUT <= '0';
+					
 					if DAC_OE_INPUT = '0' then
 						cState <= WAITst;
-					else						
-						cState <= TRANSMITst;
+					else
+						insideBuff := RECV_DATA;
 					end if;
 				
+					current := sclk;
+					previous := current;
+					
+					if (current = '1' AND previous = '0') then
+						inside_oe <= '1';
+					else
+						inside_oe <= '0';
+					end if;
+					
+					if inside_oe = '1' then
+						cState <= TRANSMITst;
+					end if;
+					
 				when TRANSMITst =>
+				
 					spi_enable <= '1';
-					spi_txdata(15 downto 0)	 <= RECV_DATA;
+					spi_txdata(15 downto 0)	 <= insideBuff;
 					spi_txdata(19 downto 16) <= SPI_CONFIG(1);
 					spi_txdata(23 downto 20) <= SPI_CONFIG(0);
 					DAC_OE_OUTPUT <= '1';
@@ -158,14 +178,7 @@ sm: entity work.spi_master(SPI_DAC)
 					
 				when others	=>
 				null;
-				
 			end case;
-			
-			if cState=RESETst then
-				spi_pbusy  <= '0';
-			else
-				spi_pbusy  <= spi_busy;
-			end if;
 		end if;
 		
 	end process statep;
