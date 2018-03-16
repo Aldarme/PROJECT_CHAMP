@@ -14,8 +14,6 @@ architecture arch of TopEntity_tb is
 	signal GPIO        : STD_LOGIC_VECTOR(35 DOWNTO 0); 
 	signal adxl_ss_n   : STD_LOGIC;
 	signal adxl_sclk   : STD_LOGIC;
-	signal adxl_mosi   : STD_LOGIC;
-	signal adxl_miso   : STD_LOGIC;
 	
  COMPONENT TopEntity
 	PORT
@@ -31,10 +29,19 @@ architecture arch of TopEntity_tb is
  COMPONENT adxl355_beh
 	PORT
 	(
-		SCLK : in  STD_LOGIC;	--SPI clock
-	   CSB  : in  STD_LOGIC;	--slave selection
-	   SDI  : in  STD_LOGIC;	--MOSI
-	   SDO  : out STD_LOGIC		--MISO
+		SCLK : in  STD_LOGIC;		--SPI clock
+	   CSB  : in  STD_LOGIC;		--slave selection
+	   SDI_O  : INOUT  STD_LOGIC	--MOSI/Miso
+	);
+ END COMPONENT;
+ 
+ COMPONENT LTC2668_16_beh
+	PORT
+	(
+		CLOCK_50		:	IN STD_LOGIC;
+		LTC_SS		:	IN  STD_LOGIC;
+		LTC_SCLK		:	IN STD_LOGIC;
+		LTC_SDI		:	IN STD_LOGIC
 	);
  END COMPONENT;
 
@@ -42,27 +49,45 @@ architecture arch of TopEntity_tb is
 
  CLOCK_50 <= not CLOCK_50 after 10.0 ns;
  GPIO   <= ( others=>'Z' );
+ reset_n <= '0', '1' after 97.0 ns;
 
+----------------------------------------------------------------
+--
+-- TopEntity composition:
+--	spi_accel / filter / spi_Dac
+--
+----------------------------------------------------------------
  tent: TopEntity
 	PORT MAP
 	(
 		TOP_CLOCK_50 => CLOCK_50,
       TOP_KEY 		 => ( 3=> reset_n, others=>'0' ),
       TOP_GPIO		 => GPIO
-	);
-
+	); 
+ 
+----------------------------------------------------------------
+--
+-- Emulate accelerometer - ADXL355
+--
+----------------------------------------------------------------
  adxl_sclk <= GPIO( 1 );
- adxl_mosi <= GPIO( 2 );
  adxl_ss_n <= GPIO( 3 );
- GPIO( 0 ) <= adxl_miso;
  
  accel:adxl355_beh
 	PORT MAP
 	(
 		SCLK => adxl_sclk,
 	   CSB  => adxl_ss_n,
-	   SDI  => adxl_mosi,
-		SDO  => adxl_miso
+	   SDI_O  => GPIO(0)
 	);
-
+	
+ ltc : LTC2668_16_beh
+	PORT MAP
+	(
+		CLOCK_50		=> CLOCK_50,
+		LTC_SS		=> GPIO(6),
+		LTC_SCLK		=> GPIO(5),
+		LTC_SDI => GPIO( 4 )
+	);
+	
 end arch;

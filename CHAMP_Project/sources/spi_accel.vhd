@@ -10,9 +10,9 @@ use work.all;
 entity spi_accel is
 	PORT
 	(
-		CLOCK_50   	:  IN STD_LOGIC;		
-		LEDG    		:  OUT STD_LOGIC_VECTOR(8 DOWNTO 0); 
-		LEDR    		:  OUT STD_LOGIC_VECTOR(24 DOWNTO 0); 
+		CLOCK_50   	:  IN STD_LOGIC;
+		LEDG    		:  OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
+		LEDR    		:  OUT STD_LOGIC_VECTOR(24 DOWNTO 0);
 		KEY    		:  IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
 		GPIO    		:  INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
 		DATA_TODAC	:	out STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -50,9 +50,9 @@ END COMPONENT;
 signal reset_n : STD_LOGIC;
 signal SampKey : STD_LOGIC_VECTOR(3 DOWNTO 0);
 
-signal ss_n       : STD_LOGIC_VECTOR(0 DOWNTO 0); 
+signal ss_n       : STD_LOGIC_VECTOR(0 DOWNTO 0);
 signal spi_enable : STD_LOGIC;
-signal spi_ss_n   :  STD_LOGIC_VECTOR(0 DOWNTO 0); 
+signal spi_ss_n   :  STD_LOGIC_VECTOR(0 DOWNTO 0);
 signal spi_busy   : STD_LOGIC;
 signal spi_pbusy  : STD_LOGIC;
 signal spi_busydn : STD_LOGIC;
@@ -118,7 +118,7 @@ GPIO( 3 ) <= spi_ss_n(0);
 LEDR(15 downto 0 ) <= spi_dataz;
 
 
-sm: entity work.spi_master(SPI_ACCEL)
+sm_accel: entity work.spi_master(SPI_ACCEL)
 
   GENERIC MAP (
     slaves  => 1,

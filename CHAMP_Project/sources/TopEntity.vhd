@@ -40,11 +40,11 @@ architecture topArchi of TopEntity is
 	PORT
 	(
 		CLOCK_50   		:  IN STD_LOGIC;
-		FLT_OE_INPUT	:	INOUT STD_LOGIC;
-		RCV_TOFILTER	:	INOUT STD_LOGIC_VECTOR( 15 downto 0);
-		FLT_OE_OUTPUT	:	INOUT STD_LOGIC;		
-		TSMT_TOANALOG	:  INOUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-		RESET_SIGNAL	:	in STD_LOGIC
+		FLT_OE_INPUT	:	IN STD_LOGIC;
+		RCV_TOFILTER	:	IN STD_LOGIC_VECTOR( 15 downto 0);
+		FLT_OE_OUTPUT	:	OUT STD_LOGIC;		
+		TSMT_TOANALOG	:  OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+		RESET_SIGNAL	:	IN STD_LOGIC
 	);
  END COMPONENT;
  
@@ -55,10 +55,10 @@ architecture topArchi of TopEntity is
 		CLOCK_50   	:   IN STD_LOGIC;
 		KEY    		:   IN STD_LOGIC_VECTOR(3 DOWNTO 0);
 		GPIO    		:   INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
-		RECV_DATA	:	 INOUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-		DAC_OE_INPUT:	 INOUT STD_LOGIC;
-		DAC_OE_OUTPUT:	 INOUT STD_LOGIC;
-		RESET_SIGNAL :	 in STD_LOGIC
+		RECV_DATA	:	 IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+		DAC_OE_INPUT:	 IN STD_LOGIC;
+		DAC_OE_OUTPUT:	 OUT STD_LOGIC;
+		RESET_SIGNAL :	 IN STD_LOGIC
 	);
  END COMPONENT;
  
@@ -70,16 +70,12 @@ architecture topArchi of TopEntity is
 	signal accel_dataz	:	std_logic_vector(15 downto 0);
 	signal accel_enable	:	std_logic;
 	
-	signal flt_oe_input	:	std_logic;
-	signal filter_dataz	:	std_logic_vector(15 downto 0);
 	signal flt_oe_output	:	std_logic;
 	signal filter_toDac	:	std_logic_vector(15 downto 0);
 	
-	signal dac_dataz		:	std_logic_vector(15 downto 0);
-	signal dac_input	:	std_logic;
 	signal dac_output	:	std_logic;
 	
-	signal reset_all	:	STD_LOGIC;
+	signal reset_all	:	STD_LOGIC := '0';
  
 ------------------ INSTANTIATION
  begin
@@ -98,13 +94,13 @@ reset_all <= TOP_KEY(3);
 		DATA_ENABLE	=>  accel_enable,
 		RESET_SIGNAL=>  reset_all
 	);
-	
- f_flt: filter
+
+ f_flt: entity work.filter(filter_arch)
 	PORT MAP
 	(
 		CLOCK_50   		=> TOP_CLOCK_50,
-		FLT_OE_INPUT	=> flt_oe_input,
-		RCV_TOFILTER	=> filter_dataz,
+		FLT_OE_INPUT	=> accel_enable,
+		RCV_TOFILTER	=> accel_dataz,
 		FLT_OE_OUTPUT	=> flt_oe_output,
 		TSMT_TOANALOG	=> filter_toDac,
 		RESET_SIGNAL	=> reset_all
@@ -116,8 +112,8 @@ reset_all <= TOP_KEY(3);
 		CLOCK_50   		=>  TOP_CLOCK_50,
 		KEY    			=>  TOP_KEY,
 		GPIO    			=>  TOP_GPIO,
-		RECV_DATA		=>  dac_dataz,
-		DAC_OE_INPUT	=>  dac_input,
+		RECV_DATA		=>  filter_toDac,
+		DAC_OE_INPUT	=>  flt_oe_output,
 		DAC_OE_OUTPUT	=>  dac_output,
 		RESET_SIGNAL 	=>  reset_all
 	);
@@ -127,12 +123,7 @@ reset_all <= TOP_KEY(3);
  st_machine: process (reset_all, TOP_CLOCK_50) is
  
  begin
-	if reset_all = '1' then
-	
-		flt_oe_input	<= '0';
-		filter_dataz	<= (others => '0');
-		dac_input	<= '0';
-		dac_dataz		<= (others => '0');
+	if reset_all = '0' then
 		
 		cState <= RESETst;
 		
@@ -147,17 +138,6 @@ reset_all <= TOP_KEY(3);
 				if (accel_enable = '0') then
 					cState <= WAITst;
 				else
-					filter_dataz <= accel_dataz;
-					flt_oe_input <= accel_enable;
-					cState <= TREATMENTst;
-				end if;
-			
-			when TREATMENTst =>
-				if flt_oe_input = '0' then
-					cState <= TREATMENTst;
-				else
-					dac_dataz <= filter_toDac;
-					dac_input <= flt_oe_output;
 					cState <= TOANALOGst;
 				end if;
 			

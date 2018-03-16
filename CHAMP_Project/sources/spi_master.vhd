@@ -57,8 +57,11 @@ ENTITY spi_master IS
 	);
 END spi_master;
 
-
---First architecture for 3 wires SPI to communicate with accelerometer
+--------------------------------------------------------------------------
+--
+-- First architecture for 3 wires SPI to communicate with accelerometer
+--
+--------------------------------------------------------------------------
 ARCHITECTURE SPI_ACCEL OF spi_master IS
 
   TYPE machine IS(ready, execute);                           --state machine data type
@@ -181,7 +184,7 @@ BEGIN
             END IF;
             
             --end of transaction
-            IF((clk_toggles = d_width*2 + 1) AND cont = '0') THEN		
+            IF((clk_toggles = d_width*2 + 1) AND cont = '0') THEN
               busy <= '0';             --clock out not busy signal
               ss_n <= (OTHERS => '1'); --set all slave selects high
 				  sclk <= NOT sclk;
@@ -205,7 +208,11 @@ BEGIN
 END ARCHITECTURE SPI_ACCEL;
 
 
+--------------------------------------------------------------------------
+--
 --Scd architecture for 3 wires SPI to communicate with DAC
+--
+--------------------------------------------------------------------------
 ARCHITECTURE SPI_DAC OF spi_master IS
 
   TYPE machine IS(ready, execute);                           --state machine data type
