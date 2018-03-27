@@ -23,6 +23,7 @@ end entity;
 
 architecture dac_Archi of spi_DAC is
 
+--SPI master component
 COMPONENT spi_master
   GENERIC(
     slaves  : INTEGER := 4;  --number of spi slaves
@@ -46,6 +47,27 @@ COMPONENT spi_master
 	);
 END COMPONENT;
 
+--FIFO component
+COMPONENT FIFO
+	GENERIC
+	(
+		f_deep	: integer := 0;
+		f_wLgth	: integer := 0
+	);
+	PORT
+	(
+		f_clock	: in std_logic;
+		--Write
+		f_write	: in std_logic_vector(f_wLgth-1 downto 0);
+		f_oeW		: in std_logic;
+		--Read
+		f_read	: out std_logic_vector(f_wLgth-1 downto 0);
+		f_oeR		: in std_logic;
+		f_rdStop	: out std_logic;
+		f_reset	: IN STD_LOGIC
+	);
+END COMPONENT;
+
 signal reset_n : STD_LOGIC;
 signal SampKey : STD_LOGIC_VECTOR(3 DOWNTO 0);
 
@@ -58,7 +80,7 @@ signal spi_sclk   : STD_LOGIC;
 signal spi_txdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
 signal spi_rxdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
 
-type   T_SPISTATE is ( RESETst, WAITst, TRANSMITst);
+type   T_SPISTATE is ( WAITst, TRANSMITCONFst, TRANSMITst, WAITENDTRANSst);
 signal cState     : T_SPISTATE;
 
 type    T_WORD_ARR is array (natural range <>) of std_logic_vector;
@@ -77,6 +99,18 @@ constant SPI_READ_NCLK : natural:=natural( ceil(CLOCK_50_FREQ/SPI_READ_FREQ) );
 
 signal   spi_read_cpt  : natural range 0 to SPI_READ_NCLK;
 signal   spi_read_cpt_zero :  std_logic;
+
+signal	previous	: std_logic := '0';
+signal	cpt_spiClock : integer := 24;
+signal	current	: std_logic := '0';
+
+--FIFO SIGNAL
+signal fifo_write : std_logic_vector(15 downto 0);
+signal fifo_oe_w  : std_logic :='0';
+signal fifo_read  : std_logic_vector(15 downto 0) := (others => '0');
+signal fifo_oe_r  : std_logic :='0';
+signal fifo_rdStop: std_logic := '0';
+
 
 begin
 
@@ -109,6 +143,25 @@ sm_dac: entity work.spi_master(SPI_DAC)
 	 MISOMOSI => GPIO(4)
 	);
 
+fifo_c: FIFO
+	GENERIC MAP
+	(
+		f_deep => 12,
+		f_wLgth => 16
+	)
+	PORT MAP
+	(
+		f_clock	=> CLOCK_50,
+		--Write
+		f_write	=> fifo_write,
+		f_oeW		=> fifo_oe_w,
+		--Read
+		f_read	=> fifo_read,
+		f_oeR		=> fifo_oe_r,
+		f_rdStop	=> fifo_rdStop,
+		f_reset	=> RESET_SIGNAL
+	);
+	
 	--
 	-- Key reset process
 	--
@@ -128,56 +181,80 @@ sm_dac: entity work.spi_master(SPI_DAC)
 	--
 	statep: process( reset_n, CLOCK_50 )
 	
-		variable insideBuff	: std_logic_vector(15 downto 0) := (others => '0');
-		variable inside_oe	: std_logic := '0';
-		variable	current	: std_logic := '0';
-		variable	previous	: std_logic := '0';
+		variable risgEdge : std_logic := '0';
+		variable risgEdgeCpt : std_logic := '0';
 	
 	begin
 		if reset_n='0' then
-			cState <= RESETst;
 			spi_enable <= '0';
 			spi_pbusy <= '1';
-			
+			cState <= WAITst;
 			
 		elsif rising_edge( CLOCK_50) then
 			
 			case cState is
 					
 				when WAITst =>
-					spi_enable <= '0';
-					DAC_OE_OUTPUT <= '0';
+					fifo_oe_w		<= '0';
 					
-					if DAC_OE_INPUT = '0' then
+					if DAC_OE_INPUT = '1' then
+						fifo_oe_w <= '1';
+						fifo_write <= RECV_DATA;
+						if cpt_spiClock = 24 then
+							risgEdge := '1';
+						end if;
+					end if;
+					
+					if fifo_rdStop = '0' then					
+						if cpt_spiClock = 24 AND risgEdge = '1' AND spi_ss_n(0) = '1' then						
+							cState <= TRANSMITCONFst;
+						end if;
+					else
 						cState <= WAITst;
-					else
-						insideBuff := RECV_DATA;
 					end if;
 				
-					current := sclk;
-					previous := current;
-					
-					if (current = '1' AND previous = '0') then
-						inside_oe <= '1';
-					else
-						inside_oe <= '0';
-					end if;
-					
-					if inside_oe = '1' then
-						cState <= TRANSMITst;
-					end if;
-					
+				when TRANSMITCONFst =>
+					cpt_spiClock <= 0;
+					fifo_oe_w		<= '0';
+					fifo_oe_r		<= '1';
+					cState <= TRANSMITst;
+				
 				when TRANSMITst =>
-				
-					spi_enable <= '1';
-					spi_txdata(15 downto 0)	 <= insideBuff;
+					fifo_oe_r 		<= '0';
+					spi_enable		<= '1';
+					DAC_OE_OUTPUT	<= '1';
+					spi_txdata(15 downto 0)	 <= fifo_read;
 					spi_txdata(19 downto 16) <= SPI_CONFIG(1);
 					spi_txdata(23 downto 20) <= SPI_CONFIG(0);
-					DAC_OE_OUTPUT <= '1';
-					cState <= WAITst;
+				
+				cState <= WAITENDTRANSst;
+				
+				when WAITENDTRANSst =>
+					
+					spi_enable 		<= '0';
+					DAC_OE_OUTPUT	<= '0';
+					
+					if DAC_OE_INPUT = '1' then
+						fifo_oe_w <= '1';
+						fifo_write <= RECV_DATA;
+					end if;
+					
+					current <= spi_sclk;
+					previous <= current;
+				
+					if (current = '1' AND previous = '0') then
+						cpt_spiClock <= cpt_spiClock + 1;
+					end if;
+					
+					if cpt_spiClock <= 23 then
+						cState <= WAITENDTRANSst;
+					else
+						cState <= WAITst;
+					end if;				
 					
 				when others	=>
 				null;
+				
 			end case;
 		end if;
 		
