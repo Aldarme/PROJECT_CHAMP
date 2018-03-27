@@ -1,5 +1,6 @@
 --------------------------------------------------------------------------------------------------
--- Autor		:	ROMET Pierre	
+-- Autor		:	ROMET Pierre
+-- Date		:	19/03/2018
 -- FileName :  LTC2668-16_beh.vhd
 -- License  :	Code under license creative commun BY-SA, that define
 --					Attribution :	Licensees may copy, distribute, display and perform 
