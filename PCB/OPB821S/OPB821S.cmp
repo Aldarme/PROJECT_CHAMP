@@ -1,0 +1,171 @@
+Cmp-Mod V01 Created by PcbNew   date = 28/03/2018 15:50:44
+
+BeginCmp
+TimeStamp = 5ABA0F8D
+Path = /5AB93280
+Reference = RV1;
+ValeurCmp = 10k - 50k;
+IdModule  = Potentiometers:Potentiometer_Trimmer_Bourns_3296W;
+EndCmp
+
+BeginCmp
+TimeStamp = 5ABA0FAB
+Path = /5AB9283B
+Reference = U2;
+ValeurCmp = OP249;
+IdModule  = Housings_DIP:DIP-8_W7.62mm_LongPads;
+EndCmp
+
+BeginCmp
+TimeStamp = 5ABA0F77
+Path = /5AB9B63B
+Reference = J8;
+ValeurCmp = Screw_Terminal_01x03;
+IdModule  = Connectors_Terminal_Blocks:TerminalBlock_bornier-3_P5.08mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5ABA0F2E
+Path = /5AB91CFF
+Reference = C1;
+ValeurCmp = 100nF;
+IdModule  = Capacitors_SMD:C_1206;
+EndCmp
+
+BeginCmp
+TimeStamp = 5ABA0F34
+Path = /5AB94F19
+Reference = C2;
+ValeurCmp = 100nF;
+IdModule  = Capacitors_SMD:C_1206;
+EndCmp
+
+BeginCmp
+TimeStamp = 5ABA0F3A
+Path = /5AB94F99
+Reference = C3;
+ValeurCmp = 100nF;
+IdModule  = Capacitors_SMD:C_1206;
+EndCmp
+
+BeginCmp
+TimeStamp = 5ABA0F40
+Path = /5AB979FE
+Reference = C4;
+ValeurCmp = 100nF;
+IdModule  = Capacitors_SMD:C_1206;
+EndCmp
+
+BeginCmp
+TimeStamp = 5ABA0F9F
+Path = /5AB11A9E
+Reference = U1;
+ValeurCmp = 74HC14;
+IdModule  = Housings_DIP:DIP-14_W7.62mm_LongPads;
+EndCmp
+
+BeginCmp
+TimeStamp = 5ABA1366
+Path = /5ABA8CEF
+Reference = J10;
+ValeurCmp = Screw_Terminal_01x02;
+IdModule  = Connectors_Terminal_Blocks:TerminalBlock_bornier-2_P5.08mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5ABA1BFC
+Path = /5ABA9D1D
+Reference = J7;
+ValeurCmp = LEMO5;
+IdModule  = LEMO-footprint:LEMO_footprint;
+EndCmp
+
+BeginCmp
+TimeStamp = 5ABA1C09
+Path = /5ABA9E33
+Reference = J9;
+ValeurCmp = LEMO5;
+IdModule  = LEMO-footprint:LEMO_footprint;
+EndCmp
+
+BeginCmp
+TimeStamp = 5ABA46DF
+Path = /5AB91AF8
+Reference = J3;
+ValeurCmp = Conn_01x02;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5ABA49A4
+Path = /5ABB80B2
+Reference = J4;
+ValeurCmp = Conn_02x05_Counter_Clockwise;
+IdModule  = Buttons_Switches_THT:SW_DIP_x5_W7.62mm_Slide_LowProfile;
+EndCmp
+
+BeginCmp
+TimeStamp = 5ABA49B6
+Path = /5AB1164E
+Reference = R2;
+ValeurCmp = 10K;
+IdModule  = Resistors_SMD:R_1206;
+EndCmp
+
+BeginCmp
+TimeStamp = 5ABA49BC
+Path = /5AB11744
+Reference = R3;
+ValeurCmp = 10K;
+IdModule  = Resistors_SMD:R_1206;
+EndCmp
+
+BeginCmp
+TimeStamp = 5ABA49C2
+Path = /5AB11709
+Reference = R4;
+ValeurCmp = 10K;
+IdModule  = Resistors_SMD:R_1206;
+EndCmp
+
+BeginCmp
+TimeStamp = 5ABA49C8
+Path = /5AB11787
+Reference = R5;
+ValeurCmp = 10K;
+IdModule  = Resistors_SMD:R_1206;
+EndCmp
+
+BeginCmp
+TimeStamp = 5ABA49CE
+Path = /5AB92C06
+Reference = R6;
+ValeurCmp = 10K;
+IdModule  = Resistors_SMD:R_1206;
+EndCmp
+
+BeginCmp
+TimeStamp = 5ABA525D
+Path = /5AB98241
+Reference = R1;
+ValeurCmp = 10K;
+IdModule  = Resistors_SMD:R_1206;
+EndCmp
+
+BeginCmp
+TimeStamp = 5ABA52FF
+Path = /5ABAD3E0
+Reference = J1;
+ValeurCmp = Conn_02x02;
+IdModule  = Pin_Headers:Pin_Header_Straight_2x02_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5ABA5306
+Path = /5ABAD576
+Reference = J2;
+ValeurCmp = Conn_02x02;
+IdModule  = Pin_Headers:Pin_Header_Straight_2x02_Pitch2.54mm;
+EndCmp
+
+EndListe

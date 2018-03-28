@@ -1,4 +1,4 @@
-update=27/03/2018 11:10:11
+update=28/03/2018 15:38:48
 version=1
 last_client=kicad
 [pcbnew]
@@ -62,3 +62,13 @@ LibName33=OPB821S-cache
 [cvpcb]
 version=1
 NetIExt=net
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=Pcbnew
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60
