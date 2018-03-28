@@ -1,0 +1,75 @@
+Cmp-Mod V01 Created by PcbNew   date = 28/03/2018 16:13:41
+
+BeginCmp
+TimeStamp = 5AA15E75
+Path = /5A9E8B93
+Reference = C4;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 5AA15E69
+Path = /5A9E5244
+Reference = C2;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 5AA15E6F
+Path = /5A9E511E
+Reference = C3;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 5AA15E7B
+Path = /5A9E54AD
+Reference = C5;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 5AA15E81
+Path = /5A9D7E4D
+Reference = C6;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 5AA15E87
+Path = /5A9E6A0B
+Reference = C8;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 5AA15E8D
+Path = /5A9FFDDD
+Reference = C9;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 5AA15E97
+Path = /5A9E6CCC
+Reference = J1;
+ValeurCmp = Conn_02x03_Odd_Even;
+IdModule  = Pin_Headers:Pin_Header_Straight_2x03_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5AA24817
+Path = /5A9D869E
+Reference = accel1;
+ValeurCmp = ADXL355;
+IdModule  = Accelerometer:ADXL355;
+EndCmp
+
+EndListe
