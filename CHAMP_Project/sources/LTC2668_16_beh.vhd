@@ -31,32 +31,41 @@ end entity;
 
 architecture LTC_beh of LTC2668_16_beh is
 
-constant factor : integer := 16;
-signal d_out : std_logic_vector(15 downto 0) := (others => '0');
-signal I_out : std_logic_vector(15 downto 0) := (others => '0');
+ type   T_SPISTATE is ( UNSERIALst, TRANSMITst);
+ signal cState     : T_SPISTATE;
 
-
-begin
+ constant factor : integer := 16;
+ signal d_out : std_logic_vector(15 downto 0);
+ 
+ 
+ begin
 
  level_I : process (LTC_SS, LTC_SCLK) is
 	
 	variable cpt : integer :=0;
 	variable tmp : integer :=0;
 	variable tmp_I_out : integer := 0;
+	variable buf : std_logic := '0';
+	variable I_out : std_logic_vector(15 downto 0) := (others => 'Z');
 	
 	begin
 	if LTC_SS = '1' then
-		if rising_edge(LTC_SCLK) then
+		d_out <= (others => '0');
+		cpt	:= 0;
+		
+	elsif rising_edge(LTC_SCLK) then
+	
+		if LTC_SDI /= 'Z' then
 			for i in 1 to 15 loop
 				d_out(0) <= LTC_SDI;
 				d_out(i) <= d_out(i-1);
 			end loop;
 			
 			cpt := cpt + 1;
-			if cpt = d_out'length then
+			if cpt = 24 then
 				tmp := to_integer(signed(d_out));
 				tmp_I_out := factor * tmp;
-				I_out <= std_logic_vector(to_signed(tmp_I_out, 16));				
+				I_out := std_logic_vector(to_signed(tmp_I_out, 16));
 			end if;
 		end if;
 	end if;
