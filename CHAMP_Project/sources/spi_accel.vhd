@@ -10,14 +10,17 @@ use work.all;
 entity spi_accel is
 	PORT
 	(
-		CLOCK_50   	:  IN STD_LOGIC;
-		LEDG    		:  OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
-		LEDR    		:  OUT STD_LOGIC_VECTOR(24 DOWNTO 0);
-		KEY    		:  IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
-		GPIO    		:  INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
-		DATA_TODAC	:	out STD_LOGIC_VECTOR(15 DOWNTO 0);
-		DATA_ENABLE	:	out STD_LOGIC;
-		RESET_SIGNAL:	in STD_LOGIC
+		CLOCK_50   		:  IN STD_LOGIC;
+		LEDG    			:  OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
+		LEDR    			:  OUT STD_LOGIC_VECTOR(24 DOWNTO 0);
+		KEY    			:  IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
+--		GPIO    			:  INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
+		GPIO_SPI_CLK	:	INOUT STD_LOGIC;
+		GPIO_SPI_SS		:	INOUT STD_LOGIC;
+		GPIO_SPI_SDIO	:	INOUT STD_LOGIC;
+		DATA_TODAC		:	out STD_LOGIC_VECTOR(15 DOWNTO 0);
+		DATA_ENABLE		:	out STD_LOGIC;
+		RESET_SIGNAL	:	in STD_LOGIC
 	);
 
 end entity;
@@ -90,9 +93,9 @@ constant ACCEL_CONFIG : T_WORD_ARR:= (
 			);
 			
 constant ACCEL_READ : T_WORD_ARR:= (
-			ADXL_DATAZ1_ADD & ADXL_READ_REG & 8x"00", -- DATAZ1 (LSB)
-			ADXL_DATAZ2_ADD & ADXL_READ_REG & 8x"00", -- DATAZ2
-			ADXL_DATAZ3_ADD & ADXL_READ_REG & 8x"00"  -- DATAZ3 (MSB)
+			ADXL_DATAZ1_ADD & ADXL_READ_REG & 8x"00", -- DATAZ1 (LSB) - 2100
+			ADXL_DATAZ2_ADD & ADXL_READ_REG & 8x"00", -- DATAZ2		 - 1F00
+			ADXL_DATAZ3_ADD & ADXL_READ_REG & 8x"00"  -- DATAZ3 (MSB) - 1D00
 			);
 			
 signal ConfAddress: natural;
@@ -112,8 +115,10 @@ LEDG( 1 ) <= not spi_busy;
 
 reset_n <= RESET_SIGNAL;
 
-GPIO( 1 ) <= spi_sclk;
-GPIO( 3 ) <= spi_ss_n(0);
+--GPIO( 1 ) <= spi_sclk;
+GPIO_SPI_CLK	<= spi_sclk;
+--GPIO( 3 ) <= spi_ss_n(0);
+GPIO_SPI_SS		<= spi_ss_n(0);
 
 LEDR(15 downto 0 ) <= spi_dataz;
 
@@ -138,7 +143,7 @@ sm_accel: entity work.spi_master(SPI_ACCEL)
     ss_n     => spi_ss_n,                		--slave select
     busy     => spi_busy,                    --busy / data ready signal
     rx_data  => spi_rxdata,						--data received
-	 MISOMOSI => GPIO(0)
+	 MISOMOSI => GPIO_SPI_SDIO						--GPIO(2)
 	);
 
 	samp: process(reset_n, CLOCK_50) is 
@@ -150,7 +155,7 @@ sm_accel: entity work.spi_master(SPI_ACCEL)
 			SampKey <= KEY;
 
 		end if;
-	end process samp; 
+	end process samp;
 
 	rcpt: process(reset_n, CLOCK_50) is 
 	-- Declaration(s) 

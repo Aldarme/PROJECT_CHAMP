@@ -24,14 +24,17 @@ architecture topArchi of TopEntity is
  COMPONENT spi_accel
 	PORT
 	(
-		CLOCK_50   	:  IN STD_LOGIC;
-		LEDG    		:  OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
-		LEDR    		:  OUT STD_LOGIC_VECTOR(24 DOWNTO 0);
-		KEY    		:  IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
-		GPIO    		:  INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
-		DATA_TODAC	:	out STD_LOGIC_VECTOR(15 DOWNTO 0);
-		DATA_ENABLE	:	out STD_LOGIC;
-		RESET_SIGNAL:	in STD_LOGIC
+		CLOCK_50   		:  IN STD_LOGIC;
+		LEDG    			:  OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
+		LEDR    			:  OUT STD_LOGIC_VECTOR(24 DOWNTO 0);
+		KEY    			:  IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+--		GPIO    			:  INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
+		GPIO_SPI_CLK	:	INOUT STD_LOGIC;
+		GPIO_SPI_SS		:	INOUT STD_LOGIC;
+		GPIO_SPI_SDIO	:	INOUT STD_LOGIC;
+		DATA_TODAC		:	out STD_LOGIC_VECTOR(15 DOWNTO 0);
+		DATA_ENABLE		:	out STD_LOGIC;
+		RESET_SIGNAL	:	in STD_LOGIC
 	);
   END COMPONENT;
   
@@ -54,7 +57,10 @@ architecture topArchi of TopEntity is
 	(
 		CLOCK_50   	:   IN STD_LOGIC;
 		KEY    		:   IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-		GPIO    		:   INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
+--		GPIO    		:   INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
+		GPIO_SPI_CLK	:	INOUT STD_LOGIC;
+		GPIO_SPI_SS		:	INOUT STD_LOGIC;
+		GPIO_SPI_SDIO	:	INOUT STD_LOGIC;
 		RECV_DATA	:	 IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		DAC_OE_INPUT:	 IN STD_LOGIC;
 		DAC_OE_OUTPUT:	 OUT STD_LOGIC;
@@ -85,14 +91,17 @@ reset_all <= TOP_KEY(3);
  s_accel: spi_accel
 	PORT MAP
 	(
-		CLOCK_50   	=>  TOP_CLOCK_50,
-		LEDG    		=>  TOP_LEDG,
-		LEDR    		=>  TOP_LEDR,
-		KEY    		=>  TOP_KEY,
-		GPIO    		=>  TOP_GPIO,
-		DATA_TODAC	=>  accel_dataz,
-		DATA_ENABLE	=>  accel_enable,
-		RESET_SIGNAL=>  reset_all
+		CLOCK_50   		=> TOP_CLOCK_50,
+		LEDG    			=> TOP_LEDG,
+		LEDR    			=> TOP_LEDR,
+		KEY    			=> TOP_KEY,
+		GPIO_SPI_CLK	=> TOP_GPIO(1),
+		GPIO_SPI_SS		=> TOP_GPIO(3),
+		GPIO_SPI_SDIO	=> TOP_GPIO(2),
+--		GPIO    			=> TOP_GPIO,
+		DATA_TODAC		=> accel_dataz,
+		DATA_ENABLE		=> accel_enable,
+		RESET_SIGNAL	=> reset_all
 	);
 
  f_flt: entity work.filter(filter_arch)
@@ -109,13 +118,16 @@ reset_all <= TOP_KEY(3);
  s_dac: spi_DAC
 	PORT MAP
 	(
-		CLOCK_50   		=>  TOP_CLOCK_50,
-		KEY    			=>  TOP_KEY,
-		GPIO    			=>  TOP_GPIO,
-		RECV_DATA		=>  filter_toDac,
-		DAC_OE_INPUT	=>  flt_oe_output,
-		DAC_OE_OUTPUT	=>  dac_output,
-		RESET_SIGNAL 	=>  reset_all
+		CLOCK_50   		=> TOP_CLOCK_50,
+		KEY    			=> TOP_KEY,
+--		GPIO    			=> TOP_GPIO,
+		GPIO_SPI_CLK	=> TOP_GPIO(5),
+		GPIO_SPI_SS		=> TOP_GPIO(7),
+		GPIO_SPI_SDIO	=> TOP_GPIO(6),
+		RECV_DATA		=> filter_toDac,
+		DAC_OE_INPUT	=> flt_oe_output,
+		DAC_OE_OUTPUT	=> dac_output,
+		RESET_SIGNAL 	=> reset_all
 	);
  
 ------------------ PROCESS

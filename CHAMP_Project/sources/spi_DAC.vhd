@@ -10,13 +10,16 @@ use work.all;
 entity spi_DAC is
 	PORT
 	(
-		CLOCK_50   	:   IN STD_LOGIC;
-		KEY    		:   IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-		GPIO    		:   INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
-		RECV_DATA	:	 IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-		DAC_OE_INPUT:	 IN STD_LOGIC;
-		DAC_OE_OUTPUT:	 OUT STD_LOGIC;
-		RESET_SIGNAL :	 IN STD_LOGIC
+		CLOCK_50   		:  IN STD_LOGIC;
+		KEY    			:  IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+--		GPIO    			:  INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
+		GPIO_SPI_CLK	:	INOUT STD_LOGIC;
+		GPIO_SPI_SS		:	INOUT STD_LOGIC;
+		GPIO_SPI_SDIO	:	INOUT STD_LOGIC;
+		RECV_DATA		:	IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+		DAC_OE_INPUT	:	IN STD_LOGIC;
+		DAC_OE_OUTPUT	:	OUT STD_LOGIC;
+		RESET_SIGNAL 	:	IN STD_LOGIC
 	);
 
 end entity;
@@ -116,8 +119,10 @@ begin
 
 reset_n <= RESET_SIGNAL;
 
-GPIO( 5 ) <= spi_sclk;
-GPIO( 6 ) <= spi_ss_n(0);
+--GPIO( 5 ) <= spi_sclk;
+GPIO_SPI_CLK	<= spi_sclk;
+--GPIO( 7 ) <= spi_ss_n(0);
+GPIO_SPI_SS		<= spi_ss_n(0);
 
 
 sm_dac: entity work.spi_master(SPI_DAC)
@@ -140,7 +145,7 @@ sm_dac: entity work.spi_master(SPI_DAC)
     ss_n     => spi_ss_n,                		--slave select
     busy     => spi_busy,                    --busy / data ready signal
     rx_data  => spi_rxdata,						--data received
-	 MISOMOSI => GPIO(4)
+	 MISOMOSI => GPIO_SPI_SDIO 					--GPIO(6)
 	);
 
 fifo_c: FIFO
@@ -226,8 +231,7 @@ fifo_c: FIFO
 					spi_txdata(15 downto 0)	 <= fifo_read;
 					spi_txdata(19 downto 16) <= SPI_CONFIG(1);
 					spi_txdata(23 downto 20) <= SPI_CONFIG(0);
-				
-				cState <= WAITENDTRANSst;
+					cState <= WAITENDTRANSst;
 				
 				when WAITENDTRANSst =>
 					

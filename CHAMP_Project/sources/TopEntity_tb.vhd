@@ -78,16 +78,16 @@ architecture arch of TopEntity_tb is
 	(
 		SCLK => adxl_sclk,
 	   CSB  => adxl_ss_n,
-	   SDI_O  => GPIO(0)
+	   SDI_O  => GPIO(2)
 	);
 	
  ltc : LTC2668_16_beh
 	PORT MAP
 	(
 		CLOCK_50		=> CLOCK_50,
-		LTC_SS		=> GPIO(6),
+		LTC_SS		=> GPIO(7),
 		LTC_SCLK		=> GPIO(5),
-		LTC_SDI => GPIO( 4 )
+		LTC_SDI => GPIO( 6 )
 	);
 	
 end arch;
