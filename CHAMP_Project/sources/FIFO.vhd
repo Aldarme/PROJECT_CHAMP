@@ -21,8 +21,8 @@ use ieee.std_logic_1164.all;
 entity FIFO is
 	generic
 	(
-		f_deep	: integer :=0;
-		f_wLgth	: integer :=0
+		f_deep	: integer :=0; -- FIFO's depth
+		f_wLgth	: integer :=0	-- word's length
 	);
 	port
 	(
