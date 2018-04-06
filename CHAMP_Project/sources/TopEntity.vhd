@@ -28,7 +28,6 @@ architecture topArchi of TopEntity is
 		LEDG    			:  OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
 		LEDR    			:  OUT STD_LOGIC_VECTOR(24 DOWNTO 0);
 		KEY    			:  IN STD_LOGIC_VECTOR(3 DOWNTO 0);
---		GPIO    			:  INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
 		GPIO_SPI_CLK	:	INOUT STD_LOGIC;
 		GPIO_SPI_SS		:	INOUT STD_LOGIC;
 		GPIO_SPI_SDIO	:	INOUT STD_LOGIC;
@@ -57,7 +56,6 @@ architecture topArchi of TopEntity is
 	(
 		CLOCK_50   	:   IN STD_LOGIC;
 		KEY    		:   IN STD_LOGIC_VECTOR(3 DOWNTO 0);
---		GPIO    		:   INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
 		GPIO_SPI_CLK	:	INOUT STD_LOGIC;
 		GPIO_SPI_SS		:	INOUT STD_LOGIC;
 		GPIO_SPI_SDIO	:	INOUT STD_LOGIC;
@@ -98,7 +96,6 @@ reset_all <= TOP_KEY(3);
 		GPIO_SPI_CLK	=> TOP_GPIO(1),
 		GPIO_SPI_SS		=> TOP_GPIO(3),
 		GPIO_SPI_SDIO	=> TOP_GPIO(2),
---		GPIO    			=> TOP_GPIO,
 		DATA_TODAC		=> accel_dataz,
 		DATA_ENABLE		=> accel_enable,
 		RESET_SIGNAL	=> reset_all
@@ -120,7 +117,6 @@ reset_all <= TOP_KEY(3);
 	(
 		CLOCK_50   		=> TOP_CLOCK_50,
 		KEY    			=> TOP_KEY,
---		GPIO    			=> TOP_GPIO,
 		GPIO_SPI_CLK	=> TOP_GPIO(5),
 		GPIO_SPI_SS		=> TOP_GPIO(7),
 		GPIO_SPI_SDIO	=> TOP_GPIO(6),

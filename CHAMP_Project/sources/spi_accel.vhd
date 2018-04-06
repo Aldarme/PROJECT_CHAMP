@@ -14,7 +14,6 @@ entity spi_accel is
 		LEDG    			:  OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
 		LEDR    			:  OUT STD_LOGIC_VECTOR(24 DOWNTO 0);
 		KEY    			:  IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
---		GPIO    			:  INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
 		GPIO_SPI_CLK	:	INOUT STD_LOGIC;
 		GPIO_SPI_SS		:	INOUT STD_LOGIC;
 		GPIO_SPI_SDIO	:	INOUT STD_LOGIC;
@@ -115,10 +114,8 @@ LEDG( 1 ) <= not spi_busy;
 
 reset_n <= RESET_SIGNAL;
 
---GPIO( 1 ) <= spi_sclk;
-GPIO_SPI_CLK	<= spi_sclk;
---GPIO( 3 ) <= spi_ss_n(0);
-GPIO_SPI_SS		<= spi_ss_n(0);
+GPIO_SPI_CLK	<= spi_sclk;		--GPIO(1)
+GPIO_SPI_SS		<= spi_ss_n(0);	--GPIO(3)
 
 LEDR(15 downto 0 ) <= spi_dataz;
 
