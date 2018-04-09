@@ -126,12 +126,14 @@ signal ackInArray			: oeInputTab; --WRITE FIFO process
 signal index : integer := 0;
 
 --FIFO SIGNAL
-signal fifo_write : std_logic_vector(23 downto 0);
-signal fifo_oe_w  : std_logic :='0';
-signal fifo_read  : std_logic_vector(23 downto 0) := (others => '0');
-signal fifo_oe_r  : std_logic :='0';
-signal fifo_rdStop: std_logic := '0';
+type f_stLgVect is array (0 downto NBROFMODULE-1) of std_logic_vector(23 downto 0);
+type f_stdLG 	 is array (0 downto NBROFMODULE-1) of std_logic;
 
+signal fifo_write : f_stLgVect;
+signal fifo_oe_w  : f_stdLG
+signal fifo_read  : f_stLgVect;
+signal fifo_oe_r  : f_stdLG;
+signal fifo_rdStop: f_stdLG;
 
 begin
 
@@ -198,24 +200,28 @@ sm_dac: entity work.spi_master(SPI_DAC)
 	 MISOMOSI => GPIO_SPI_SDIO 					--GPIO(6)
 	);
 
-fifo_c: FIFO
-	GENERIC MAP
-	(
-		f_deep => 12,
-		f_wLgth => 24
-	)
-	PORT MAP
-	(
-		f_clock	=> CLOCK_50,
-		--Write
-		f_write	=> fifo_write,
-		f_oeW		=> fifo_oe_w,
-		--Read
-		f_read	=> fifo_read,
-		f_oeR		=> fifo_oe_r,
-		f_rdStop	=> fifo_rdStop,
-		f_reset	=> RESET_SIGNAL
+ gen_ FIFO : for I in 0 to NBROFMODULE-1 generate
+ 
+	fifo_c: FIFO
+		GENERIC MAP
+		(
+			f_deep => 100,
+			f_wLgth => 24
+		)
+		PORT MAP
+		(
+			f_clock	=> CLOCK_50,
+			--Write
+			f_write	=> fifo_write(I),
+			f_oeW		=> fifo_oe_w(I),
+			--Read
+			f_read	=> fifo_read(I),
+			f_oeR		=> fifo_oe_r(I),
+			f_rdStop	=> fifo_rdStop(I),
+			f_reset	=> RESET_SIGNAL
 	);
+	
+ end generate gen_FIFO;
 	
 	--
 	-- Key reset process
@@ -273,31 +279,39 @@ fifo_c: FIFO
 		case cState_0 is
 			when WAITst =>
 				
-				for index in 0 to NBROFMODULE-1 loop
-					if oeInputArray(index) = '1' then
-						ackInArray(index) <= '1';
-						cState_0 <= FWRITEst;
+				for I in 0 to NBROFMODULE-1 loop
+					if oeInputArray(I) = '1' then
+						ackInArray(I) <= '1';						
 					end if;
 				end loop;
-				
-			when FWRITEst =>
-				
-				fifo_oe_w <= '1';
-				fifo_write <= DAC_COMMAND(6) & DAC_ADRS(index) & RECV_DATA(index);
-				ackInArray(index) <= '0';
-				cState_0 <= FWCONFst;
-				
-			when FWCONFst =>
-				
-				fifo_oe_w <= '0';
-				
-				if index < NBROFMODULE-1 then
-					index <=  index + 1;
-				else
-					index <= 0;
-				end if;
-				
-				cState_0 <= WAITst;
+--				cState_0 <= checkFWrite;
+--				
+--			when checkFWrite =>
+--				
+--				if ackInArray(index) = '1' then
+--					cState_0 <= FWRITEst;
+--				else
+--					cState_0 <= WAITst;--------------
+--				end if;
+--				
+--			when FWRITEst =>
+--				
+--				fifo_oe_w <= '1';
+--				fifo_write <= DAC_COMMAND(6) & DAC_ADRS(index) & RECV_DATA(index);
+--				ackInArray(index) <= '0';
+--				cState_0 <= FWCONFst;
+--				
+--			when FWCONFst =>
+--				
+--				fifo_oe_w <= '0';
+--				
+--				if index >= NBROFMODULE then
+--					index <= 0;
+--				else
+--					index <=  index +1;
+--				end if;
+--				
+--				cState_0 <= checkFWrite;
 				
 			when others =>
 				null;
