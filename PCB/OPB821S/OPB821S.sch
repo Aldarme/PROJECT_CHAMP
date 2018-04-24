@@ -46,13 +46,13 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-Text GLabel 1750 2650 2    60   Input ~ 0
+Text GLabel 1200 2550 0    60   Input ~ 0
 Blue
-Text GLabel 1750 2350 2    60   Input ~ 0
+Text GLabel 1700 2650 2    60   Input ~ 0
 White
-Text GLabel 1200 2450 0    60   Input ~ 0
+Text GLabel 1200 2400 0    60   Input ~ 0
 Green
-Text GLabel 1200 2600 0    60   Input ~ 0
+Text GLabel 1700 2300 2    60   Input ~ 0
 Orange
 $Comp
 L R R2
@@ -511,28 +511,6 @@ Wire Wire Line
 	1800 4400 2750 4400
 Connection ~ 2150 4400
 Connection ~ 2150 4700
-$Comp
-L Conn_02x02_Counter_Clockwise J1
-U 1 1 5ABAD3E0
-P 1600 2550
-F 0 "J1" H 1650 2650 50  0000 C CNN
-F 1 "Conn_02x02" H 1600 2250 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_2x02_Pitch2.54mm" H 1600 2550 50  0001 C CNN
-F 3 "" H 1600 2550 50  0001 C CNN
-	1    1600 2550
-	-1   0    0    1   
-$EndComp
-$Comp
-L Conn_02x02_Counter_Clockwise J2
-U 1 1 5ABAD576
-P 1600 3300
-F 0 "J2" H 1650 3400 50  0000 C CNN
-F 1 "Conn_02x02" H 1650 3000 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_2x02_Pitch2.54mm" H 1600 3300 50  0001 C CNN
-F 3 "" H 1600 3300 50  0001 C CNN
-	1    1600 3300
-	-1   0    0    1   
-$EndComp
 Wire Wire Line
 	2050 3700 2950 3700
 Wire Wire Line
@@ -559,20 +537,7 @@ $EndComp
 Wire Wire Line
 	2100 2650 2150 2650
 Wire Wire Line
-	2100 2550 1800 2550
-Wire Wire Line
-	1800 2450 2150 2450
-Wire Wire Line
 	2050 3400 2150 3400
-Wire Wire Line
-	2050 3300 1800 3300
-Wire Wire Line
-	1800 3200 2150 3200
-Wire Wire Line
-	1300 2450 1300 3550
-Connection ~ 1300 2550
-Connection ~ 1300 3200
-Connection ~ 1300 3300
 $Comp
 L 74HC14 U1
 U 2 1 5AB11AFD
@@ -621,14 +586,49 @@ White
 Text GLabel 1700 3400 2    60   Input ~ 0
 Blue
 $Comp
-L Conn_02x05_Counter_Clockwise J4
-U 1 1 5ABB80B2
+L Conn_02x05_Odd_Even J4
+U 1 1 5ADF7432
 P 5300 3450
 F 0 "J4" H 5350 3750 50  0000 C CNN
-F 1 "Conn_02x05_Counter_Clockwise" H 5350 3150 50  0000 C CNN
-F 2 "Buttons_Switches_THT:SW_DIP_x5_W7.62mm_Slide_LowProfile" H 5300 3450 50  0001 C CNN
+F 1 "Conn_02x05_Odd_Even" H 5350 3150 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_2x05_Pitch2.54mm" H 5300 3450 50  0001 C CNN
 F 3 "" H 5300 3450 50  0001 C CNN
 	1    5300 3450
 	1    0    0    -1  
 $EndComp
+$Comp
+L Conn_02x02_Odd_Even J1
+U 1 1 5ADF8A8E
+P 1500 2550
+F 0 "J1" H 1550 2650 50  0000 C CNN
+F 1 "Conn_02x02" H 1500 2200 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_2x02_Pitch2.54mm" H 1500 2550 50  0001 C CNN
+F 3 "" H 1500 2550 50  0001 C CNN
+	1    1500 2550
+	1    0    0    1   
+$EndComp
+$Comp
+L Conn_02x02_Odd_Even J2
+U 1 1 5ADF9006
+P 1500 3300
+F 0 "J2" H 1550 3400 50  0000 C CNN
+F 1 "Conn_02x02" H 1550 3000 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_2x02_Pitch2.54mm" H 1500 3300 50  0001 C CNN
+F 3 "" H 1500 3300 50  0001 C CNN
+	1    1500 3300
+	1    0    0    1   
+$EndComp
+Wire Wire Line
+	1300 2450 1300 3550
+Connection ~ 1300 2550
+Connection ~ 1300 3200
+Connection ~ 1300 3300
+Wire Wire Line
+	2150 2450 1800 2450
+Wire Wire Line
+	2100 2550 1800 2550
+Wire Wire Line
+	2150 3200 1800 3200
+Wire Wire Line
+	1800 3300 2050 3300
 $EndSCHEMATC
