@@ -64,8 +64,8 @@ architecture arch of GenEntity_tb is
 	PORT MAP
 	(
 		TOP_CLOCK_50 => CLOCK_50,
-      TOP_KEY 		 => ( 3=> reset_n, others=>'0' ),
-      TOP_GPIO		 => GPIO,
+		TOP_KEY 		 => ( 3=> reset_n, others=>'0' ),
+		TOP_GPIO		 => GPIO,
 		TOP_HSMC		 => HSMC
 	); 
  
@@ -80,8 +80,8 @@ architecture arch of GenEntity_tb is
 	PORT MAP
 	(
 		SCLK 	=> GPIO(3*I),
-	   CSB  	=> GPIO((3*I)+1),
-	   SDI_O => GPIO((3*I)+2)
+	  CSB  	=> GPIO((3*I)+1),
+	  SDI_O => GPIO((3*I)+2)
 	);
 	
  end generate gen_ADXL355_beh;

@@ -100,7 +100,7 @@ constant ACCEL_READ : T_WORD_ARR:= (
 signal ConfAddress: natural;
 
 constant CLOCK_50_FREQ : real:=50.0E6;
-constant SPI_READ_FREQ : real:=3.0E3; 
+constant SPI_READ_FREQ : real:=1.0E3; 	--MODIFY FOR A SPEED ADAPT TO ADXL355 -> 1KHz		--old value 3.0E3;
 constant SPI_READ_NCLK : natural:=natural( ceil(CLOCK_50_FREQ/SPI_READ_FREQ) );
 signal   spi_read_cpt  : natural range 0 to SPI_READ_NCLK;
 signal   spi_read_cpt_zero :  std_logic;

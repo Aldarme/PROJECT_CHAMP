@@ -27,9 +27,9 @@ architecture GenEntity of GenEntity is
 	PORT
 	(
 		CLOCK_50   		:  IN STD_LOGIC;
---		LEDG    			:  OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
---		LEDR    			:  OUT STD_LOGIC_VECTOR(24 DOWNTO 0);
---		KEY    			:  IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+--	LEDG    			:  OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
+--	LEDR    			:  OUT STD_LOGIC_VECTOR(24 DOWNTO 0);
+--	KEY    				:  IN STD_LOGIC_VECTOR(3 DOWNTO 0);
 		GPIO_SPI_CLK	:	INOUT STD_LOGIC;
 		GPIO_SPI_SS		:	INOUT STD_LOGIC;
 		GPIO_SPI_SDIO	:	INOUT STD_LOGIC;
@@ -61,11 +61,11 @@ architecture GenEntity of GenEntity is
 	PORT
 	(
 		CLOCK_50   		:  IN STD_LOGIC;
-		KEY    			:  IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+		KEY    				:  IN STD_LOGIC_VECTOR(3 DOWNTO 0);
 		GPIO_SPI_CLK	:	INOUT STD_LOGIC;
 		GPIO_SPI_SS		:	INOUT STD_LOGIC;
 		GPIO_SPI_SDIO	:	INOUT STD_LOGIC;
-		RECV_DATA		:	IN INARRAY(0 to 11)(15 downto 0);
+		RECV_DATA			:	IN INARRAY(0 to 11)(15 downto 0);
 		DAC_OE_INPUT	:	IN INSTDARRAY(0 to 11);
 		DAC_OE_OUTPUT	:	OUT STD_LOGIC;
 		RESET_SIGNAL 	:	IN STD_LOGIC		
@@ -77,14 +77,14 @@ architecture GenEntity of GenEntity is
 	type   T_SPISTATE is (RESETst, WAITSt, TREATMENTst, TOANALOGst);
 	signal cState0	: T_SPISTATE;
 	signal cState1	: T_SPISTATE;
-	signal cState2 : T_SPISTATE;
+	signal cState2	: T_SPISTATE;
 	signal cState3	: T_SPISTATE;
-	signal cState4 : T_SPISTATE;
-	signal cState5 : T_SPISTATE;
-	signal cState6 : T_SPISTATE;
-	signal cState7 : T_SPISTATE;
-	signal cState8 : T_SPISTATE;
-	signal cState9 : T_SPISTATE;
+	signal cState4 	: T_SPISTATE;
+	signal cState5 	: T_SPISTATE;
+	signal cState6 	: T_SPISTATE;
+	signal cState7 	: T_SPISTATE;
+	signal cState8 	: T_SPISTATE;
+	signal cState9 	: T_SPISTATE;
 	signal cState10 : T_SPISTATE;
 	signal cState11 : T_SPISTATE;
 	
@@ -118,9 +118,9 @@ architecture GenEntity of GenEntity is
 		PORT MAP
 		(
 			CLOCK_50   		=> TOP_CLOCK_50,
---			LEDG    			=> TOP_LEDG,
---			LEDR    			=> TOP_LEDR,
---			KEY    			=> TOP_KEY,
+--		LEDG    			=> TOP_LEDG,
+--		LEDR    			=> TOP_LEDR,
+--		KEY    				=> TOP_KEY,
 			GPIO_SPI_CLK	=> TOP_GPIO(3*I),
 			GPIO_SPI_SS		=> TOP_GPIO((3*I)+1),
 			GPIO_SPI_SDIO	=> TOP_GPIO((3*I)+2),
@@ -149,17 +149,17 @@ architecture GenEntity of GenEntity is
 	PORT MAP
 	(
 		CLOCK_50   		=> TOP_CLOCK_50,
-		KEY    			=> TOP_KEY,
+		KEY    				=> TOP_KEY,
 		GPIO_SPI_CLK	=> TOP_HSMC(0),	--Need to use HSMC connectors to have more GPIO
 		GPIO_SPI_SS		=> TOP_HSMC(1),
 		GPIO_SPI_SDIO	=> TOP_HSMC(2),
-		RECV_DATA		=> filter_toDac,
+		RECV_DATA			=> filter_toDac,
 		DAC_OE_INPUT	=> flt_oe_output,
 		DAC_OE_OUTPUT	=>	dac_output,
 		RESET_SIGNAL 	=>	reset_all		
 	);
  
------------------- PROCESS
+------------------ PROCESS -----------------------------------------------
 
  st_mach_0: process (reset_all, TOP_CLOCK_50) is
  
