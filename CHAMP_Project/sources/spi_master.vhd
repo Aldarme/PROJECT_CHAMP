@@ -142,13 +142,13 @@ BEGIN
             END IF;
             
             --spi clock toggle needed
-            IF(clk_toggles <= d_width*2 AND ss_n(slave) = '0') THEN 
+            IF(clk_toggles <= d_width*2 AND ss_n(slave) = '0') THEN
               sclk <= NOT sclk; --toggle spi clock
             END IF;
             
             --receive spi clock toggle
-            IF(assert_data = '0' AND clk_toggles < last_bit_rx + 1 AND ss_n(slave) = '0') THEN					
-					rx_buffer <= rx_buffer(d_width-2 DOWNTO 0) & MISOMOSI; --shift in received bit				  
+            IF(assert_data = '0' AND clk_toggles < last_bit_rx + 1 AND ss_n(slave) = '0') THEN
+					rx_buffer <= rx_buffer(d_width-2 DOWNTO 0) & MISOMOSI; --shift in received bit
             END IF;
 				
             --transmit spi clock toggle

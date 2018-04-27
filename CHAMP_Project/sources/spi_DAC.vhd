@@ -11,11 +11,11 @@ entity spi_DAC is
 	PORT
 	(
 		CLOCK_50   		:  IN STD_LOGIC;
-		KEY    			:  IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+		KEY    				:  IN STD_LOGIC_VECTOR(3 DOWNTO 0);
 		GPIO_SPI_CLK	:	INOUT STD_LOGIC;
 		GPIO_SPI_SS		:	INOUT STD_LOGIC;
 		GPIO_SPI_SDIO	:	INOUT STD_LOGIC;
-		RECV_DATA		:	IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+		RECV_DATA			:	IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		DAC_OE_INPUT	:	IN STD_LOGIC;
 		DAC_OE_OUTPUT	:	OUT STD_LOGIC;
 		RESET_SIGNAL 	:	IN STD_LOGIC
@@ -96,7 +96,7 @@ constant SPI_CONFIG : T_WORD_ARR:= (
 			);
 
 constant CLOCK_50_FREQ : real:=50.0E6;
-constant SPI_READ_FREQ : real:=3.0E3;
+constant SPI_READ_FREQ : real:=1.0E3;
 constant SPI_READ_NCLK : natural:=natural( ceil(CLOCK_50_FREQ/SPI_READ_FREQ) );
 
 signal   spi_read_cpt  : natural range 0 to SPI_READ_NCLK;

@@ -13,11 +13,11 @@ entity spi_accel is
 		CLOCK_50   		:  IN STD_LOGIC;
 		LEDG    			:  OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
 		LEDR    			:  OUT STD_LOGIC_VECTOR(24 DOWNTO 0);
-		KEY    			:  IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
+		KEY    				:  IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
 		GPIO_SPI_CLK	:	INOUT STD_LOGIC;
 		GPIO_SPI_SS		:	INOUT STD_LOGIC;
 		GPIO_SPI_SDIO	:	INOUT STD_LOGIC;
-		DATA_TODAC		:	out STD_LOGIC_VECTOR(15 DOWNTO 0);
+		DATA_OUT			:	out STD_LOGIC_VECTOR(23 DOWNTO 0);
 		DATA_ENABLE		:	out STD_LOGIC;
 		RESET_SIGNAL	:	in STD_LOGIC
 	);
@@ -62,7 +62,7 @@ signal spi_sclk   : STD_LOGIC;
 signal spi_txdata : STD_LOGIC_VECTOR(15 DOWNTO 0);
 signal spi_rxdata : STD_LOGIC_VECTOR(15 DOWNTO 0);
 alias  spi_rxbyte is spi_rxdata( 7 downto 0);
-signal spi_dataz  : STD_LOGIC_VECTOR(15 DOWNTO 0);
+signal spi_dataz  : STD_LOGIC_VECTOR(23 DOWNTO 0);
 signal new_accel_data  : STD_LOGIC;
 
 -- signal spi_start_button : STD_LOGIC;
@@ -93,14 +93,14 @@ constant ACCEL_CONFIG : T_WORD_ARR:= (
 			
 constant ACCEL_READ : T_WORD_ARR:= (
 			ADXL_DATAZ1_ADD & ADXL_READ_REG & 8x"00", -- DATAZ1 (LSB) - 2100
-			ADXL_DATAZ2_ADD & ADXL_READ_REG & 8x"00", -- DATAZ2		 - 1F00
+			ADXL_DATAZ2_ADD & ADXL_READ_REG & 8x"00", -- DATAZ2		 		- 1F00
 			ADXL_DATAZ3_ADD & ADXL_READ_REG & 8x"00"  -- DATAZ3 (MSB) - 1D00
 			);
 			
 signal ConfAddress: natural;
 
 constant CLOCK_50_FREQ : real:=50.0E6;
-constant SPI_READ_FREQ : real:=3.0E3; 
+constant SPI_READ_FREQ : real:=1.0E3; 	--MODIFY FOR A SPEED ADAPT TO ADXL355 -> 1KHz		--old value 3.0E3;
 constant SPI_READ_NCLK : natural:=natural( ceil(CLOCK_50_FREQ/SPI_READ_FREQ) );
 signal   spi_read_cpt  : natural range 0 to SPI_READ_NCLK;
 signal   spi_read_cpt_zero :  std_logic;
@@ -117,7 +117,7 @@ reset_n <= RESET_SIGNAL;
 GPIO_SPI_CLK	<= spi_sclk;		--GPIO(1)
 GPIO_SPI_SS		<= spi_ss_n(0);	--GPIO(3)
 
-LEDR(15 downto 0 ) <= spi_dataz;
+LEDR(15 downto 0 ) <= spi_dataz(15 downto 0);
 
 
 sm_accel: entity work.spi_master(SPI_ACCEL)
@@ -242,25 +242,23 @@ sm_accel: entity work.spi_master(SPI_ACCEL)
 					
 						case spi_txdata( SPI_ADD_FIELD'RANGE ) is
 							when ADXL_DATAZ1_ADD & ADXL_READ_REG =>
-								spi_dataz(  7 downto 0 ) <= spi_rxdata( 7 downto 0 );
+								spi_dataz( 3 downto 0 )	<= spi_rxdata( 3 downto 0 );
 								
 							when ADXL_DATAZ2_ADD & ADXL_READ_REG =>
-								spi_dataz( 15 downto 8 ) <= spi_rxdata( 7 downto 0 );		
+								spi_dataz( 11 downto 4 )	<= spi_rxdata( 7 downto 0 );
 								
-							--Don't use the last 4 bits, beacause of SPI DAC, that is a 16 bits input
-							--when ADXL_DATAZ3_ADD & ADXL_READ_REG =>
-							--	spi_dataz( 19 downto 16 ) <= spi_rxdata( 7 downto 4 );
+							when ADXL_DATAZ3_ADD & ADXL_READ_REG =>
+								spi_dataz( 19 downto 12 )	<= spi_rxdata( 7 downto 0 );
 								
 							when others =>
 								null; --modif null to delete latch
 						end case;
 						
-						DATA_ENABLE <= '1';
-						DATA_TODAC <= spi_dataz(15 downto 0);
-						
 						if ConfAddress=ACCEL_READ'LENGTH-1 then
-							cState <=  IDLEst;
 							new_accel_data <= '1';
+							DATA_ENABLE <= '1';
+							DATA_OUT <= spi_dataz;
+							cState <=  IDLEst;							
 						else
 							ConfAddress <= ConfAddress+1;
 							cState <= READst;

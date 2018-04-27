@@ -49,9 +49,9 @@ signal SpiReg      : std_logic_vector( 7 downto 0);
 constant ADXL_READ_REG    : std_logic := '1';
 constant ADXL_WRITE_REG   : std_logic := '0';
 
-constant ADXL_DATAZ1_ADD  : std_logic_vector(5 downto 0):=6x"10";
-constant ADXL_DATAZ2_ADD  : std_logic_vector(5 downto 0):=6x"0F";
-constant ADXL_DATAZ3_ADD  : std_logic_vector(5 downto 0):=6x"0E";
+constant ADXL_DATAZ1_ADD  : std_logic_vector(7 downto 1):=7x"10";
+constant ADXL_DATAZ2_ADD  : std_logic_vector(7 downto 1):=7x"0F";
+constant ADXL_DATAZ3_ADD  : std_logic_vector(7 downto 1):=7x"0E";
 
 constant SPI_ADD_FIELD    : std_logic_vector(15 downto 8):=(others=>'0');	--Champ d'addresses
 constant SPI_DATA_FIELD   : std_logic_vector(7 downto 0):=(others=>'0');	--Champ de données
