@@ -88,7 +88,7 @@ constant SPI_DATA_FIELD   : std_logic_vector(7 downto 0):=(others=>'0');
 constant ACCEL_CONFIG : T_WORD_ARR:= (
 			7x"2D" & ADXL_WRITE_REG & 8x"01",		--initiate protocol to configure registers (standby <- 1 : standby mode)
 			7x"2C" & ADXL_WRITE_REG & 8x"03",
-			7x"28" & ADXL_WRITE_REG & 8x"60",		--HPF conf at 0.238*10-3 * ODR
+			7x"28" & ADXL_WRITE_REG & 8x"50",		--HPF conf at 0.238*10-3 * ODR
 			7x"2D" & ADXL_WRITE_REG & 8x"02"		--End protocol to configure registers (standby mode <- 0 : mesurement mode)
 			);
 			
