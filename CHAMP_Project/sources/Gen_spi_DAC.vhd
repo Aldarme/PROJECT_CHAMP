@@ -258,37 +258,23 @@ begin
 	
 		begin
 	
-		if reset_n = '0' then
+		if rising_edge(CLOCK_50) then
 			
-			cState_0 <= WAITst;
-			
-		elsif rising_edge(CLOCK_50) then
+			for I in 0 to NBROFMODULE-1 loop
+				if fifo_fulFlg(I) /= '1' then
+					if DAC_OE_INPUT(I) = '1' then
+						fifo_oe_w(I) <= '1';
+						fifo_write(I) <= DAC_COMMAND(6) & DAC_ADRS(I) & RECV_DATA(I);
+					end if;
+				end if;
+			end loop;		
 		
-			case cState_0 is
+		elsif falling_edge(CLOCK_50) then
 			
-				when WAITst	=>
-					for I in 0 to NBROFMODULE-1 loop
-						if fifo_fulFlg(I) /= '1' then
-							if DAC_OE_INPUT(I) = '1' then
-								fifo_oe_w(I) <= '1';
-								fifo_write(I) <= DAC_COMMAND(6) & DAC_ADRS(I) & RECV_DATA(I);
-							end if;
-						end if;
-					end loop;
-					
-					cState_0 <= FLUSHWst;
-					
-				when FLUSHWst =>
-					for I in 0 to NBROFMODULE-1 loop
-							fifo_oe_w(I) <= '0';
-					end loop;
-					
-					cState_0 <= WAITst;
-					
-				when others =>
-					null; --modif null to delete latch
-				
-			end case;
+			for I in 0 to NBROFMODULE-1 loop
+					fifo_oe_w(I) <= '0';
+			end loop;
+			
 		end if;
 	end process CheckINnW;
 
@@ -318,7 +304,7 @@ begin
 			case cState_1 is
 					
 				when CHECKINst =>
-				
+					
 					index := 0;
 					for I in 0 to NBROFMODULE-1 loop
 						if fifo_emtFlg(I) /= '1' then
