@@ -12,7 +12,7 @@ entity Gen_filter is
 	(
 		CLOCK_50   		:  IN STD_LOGIC;
 		FLT_OE_INPUT	:	IN STD_LOGIC;
-		RCV_TOFILTER	:	IN STD_LOGIC_VECTOR( 15 downto 0);
+		RCV_TOFILTER	:	IN STD_LOGIC_VECTOR( 23 downto 0);
 		FLT_OE_OUTPUT	:	OUT STD_LOGIC;		
 		TSMT_TOANALOG	:  OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		RESET_SIGNAL	:	IN STD_LOGIC
@@ -60,7 +60,7 @@ architecture filter_arch of Gen_filter is
 				end if;
 			
 			when TREATMENTst =>				
-				TSMT_TOANALOG <= RCV_TOFILTER;
+				TSMT_TOANALOG <= RCV_TOFILTER(19) & 3x"0" & RCV_TOFILTER(18 downto 7);
 				FLT_OE_OUTPUT <= '1';
 				cState <= WAITst;
 			

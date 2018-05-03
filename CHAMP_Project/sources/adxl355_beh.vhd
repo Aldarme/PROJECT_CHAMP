@@ -59,7 +59,7 @@ constant SPI_DATA_FIELD   : std_logic_vector(7 downto 0):=(others=>'0');	--Champ
 --
 -- ADXL355
 --
-constant ADXL_DATA_RATE : REAL:= 3.4E3; -- 3400 Hz
+constant ADXL_DATA_RATE : REAL:= 1.0E3; 							--Output Data Rate (ODR) of ADXL355 is 1KHz
 constant ADXL_DATA_PER  : REAL:= 1.0/ ADXL_DATA_RATE;
 signal   Z              : REAL;
 

@@ -17,7 +17,7 @@ entity Gen_spi_accel is
 		GPIO_SPI_CLK	:	INOUT STD_LOGIC;
 		GPIO_SPI_SS		:	INOUT STD_LOGIC;
 		GPIO_SPI_SDIO	:	INOUT STD_LOGIC;
-		DATA_TODAC		:	out STD_LOGIC_VECTOR(15 DOWNTO 0);
+		DATA_TODAC		:	out STD_LOGIC_VECTOR(23 DOWNTO 0);
 		DATA_ENABLE		:	out STD_LOGIC;
 		RESET_SIGNAL	:	in STD_LOGIC
 	);
@@ -62,7 +62,7 @@ signal spi_sclk   : STD_LOGIC;
 signal spi_txdata : STD_LOGIC_VECTOR(15 DOWNTO 0);
 signal spi_rxdata : STD_LOGIC_VECTOR(15 DOWNTO 0);
 alias  spi_rxbyte is spi_rxdata( 7 downto 0);
-signal spi_dataz  : STD_LOGIC_VECTOR(15 DOWNTO 0);
+signal spi_dataz  : STD_LOGIC_VECTOR(23 DOWNTO 0);
 signal new_accel_data  : STD_LOGIC;
 
 -- signal spi_start_button : STD_LOGIC;
@@ -86,7 +86,7 @@ constant SPI_ADD_FIELD    : std_logic_vector(15 downto 8):=(others=>'0');
 constant SPI_DATA_FIELD   : std_logic_vector(7 downto 0):=(others=>'0');
 
 constant ACCEL_CONFIG : T_WORD_ARR:= (
-			7x"2D" & ADXL_WRITE_REG & 8x"01",	--initiate protocol to configure registers (standby <- 1 : standby mode)
+			7x"2D" & ADXL_WRITE_REG & 8x"01",		--initiate protocol to configure registers (standby <- 1 : standby mode)
 			7x"2C" & ADXL_WRITE_REG & 8x"03",
 			7x"2D" & ADXL_WRITE_REG & 8x"02"		--End protocol to configure registers (standby mode <- 0 : mesurement mode)
 			);
@@ -242,25 +242,24 @@ sm_accel: entity work.spi_master(spi_accel)
 					
 						case spi_txdata( SPI_ADD_FIELD'RANGE ) is
 							when ADXL_DATAZ1_ADD & ADXL_READ_REG =>
-								spi_dataz(  7 downto 0 ) <= spi_rxdata( 7 downto 0 );
+								spi_dataz( 3 downto 0 ) <= spi_rxdata( 3 downto 0 );
 								
 							when ADXL_DATAZ2_ADD & ADXL_READ_REG =>
-								spi_dataz( 15 downto 8 ) <= spi_rxdata( 7 downto 0 );		
+								spi_dataz( 11 downto 4 ) <= spi_rxdata( 7 downto 0 );		
 								
-							--Don't use the last 4 bits, beacause of SPI DAC, that is a 16 bits input
-							--when ADXL_DATAZ3_ADD & ADXL_READ_REG =>
-							--	spi_dataz( 19 downto 16 ) <= spi_rxdata( 7 downto 4 );
+							when ADXL_DATAZ3_ADD & ADXL_READ_REG =>
+								spi_dataz( 19 downto 12 ) <= spi_rxdata( 7 downto 0 );
 								
 							when others =>
 								null; --modif null to delete latch
 						end case;
 						
-						DATA_ENABLE <= '1';
-						DATA_TODAC <= spi_dataz(15 downto 0);
-						
-						if ConfAddress=ACCEL_READ'LENGTH-1 then
-							cState <=  IDLEst;
+						if ConfAddress=ACCEL_READ'LENGTH-1 then							
 							new_accel_data <= '1';
+							DATA_ENABLE <= '1';
+							DATA_TODAC <= spi_dataz;
+							cState <=  IDLEst;
+							
 						else
 							ConfAddress <= ConfAddress+1;
 							cState <= READst;

@@ -33,7 +33,7 @@ architecture GenEntity of GenEntity is
 		GPIO_SPI_CLK	:	INOUT STD_LOGIC;
 		GPIO_SPI_SS		:	INOUT STD_LOGIC;
 		GPIO_SPI_SDIO	:	INOUT STD_LOGIC;
-		DATA_TODAC		:	out STD_LOGIC_VECTOR(15 DOWNTO 0);
+		DATA_TODAC		:	out STD_LOGIC_VECTOR(23 DOWNTO 0);
 		DATA_ENABLE		:	out STD_LOGIC;
 		RESET_SIGNAL	:	in STD_LOGIC
 	);
@@ -45,7 +45,7 @@ architecture GenEntity of GenEntity is
 	(
 		CLOCK_50   		:  IN STD_LOGIC;
 		FLT_OE_INPUT	:	IN STD_LOGIC;
-		RCV_TOFILTER	:	IN STD_LOGIC_VECTOR( 15 downto 0);
+		RCV_TOFILTER	:	IN STD_LOGIC_VECTOR( 23 downto 0);
 		FLT_OE_OUTPUT	:	OUT STD_LOGIC;		
 		TSMT_TOANALOG	:  OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		RESET_SIGNAL	:	IN STD_LOGIC
@@ -91,7 +91,7 @@ architecture GenEntity of GenEntity is
 	
 	constant nbrOfGenerate : integer := 12;
 	
-	type accel_dataz_tab is array (0 to nbrOfGenerate-1) of std_logic_vector(15 downto 0);
+	type accel_dataz_tab is array (0 to nbrOfGenerate-1) of std_logic_vector(23 downto 0);
 	type accel_oe_tab		is array (0 to nbrOfGenerate-1) of std_logic;
 	
 	signal accel_dataz	:	accel_dataz_tab;
