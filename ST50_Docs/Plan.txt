@@ -1,0 +1,42 @@
+
+Dans cette partie, on cherche à introduire le travail réaliser, pour cela on va tout d'abord introduire la chaine de mesure dans son ensemble.
+le rôle de la chaine
+les éléments et leur rôle
+
+	La chaine de mesure
+		dans son ensemble avec un p'tit shéma
+		les éléments un par un
+			accé
+			FGPA
+				FILTRE
+			DAC
+			Controlleur moteur
+			moteurs
+
+
+****************************************************************************************************************
+
+Ensuite, on commence à rentrer dans le vif du sujet
+
+on aborde l'aspect technique sur chaqun des composants
+ainsi que l'approche effectué
+
+accé
+filtre
+	présenter la manip pour sortir la fonction de transfère
+dac
+
+****************************************************************************************************************
+
+On passe à la présentation de modelisation et leur rôle
+
+****************************************************************************************************************
+
+Les cartes réalisé pour le projet
+
+
+****************************************************************************************************************
+
+Conclusion
+
+Piste d'ouverture et d'amélioration/évolution
