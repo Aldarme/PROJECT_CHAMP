@@ -44,3 +44,11 @@ CHAMP_Project/test_accel2/
 *.bak
 
 CHAMP_Project/unused_sources/
+
+*.aux
+
+*.log
+
+*.gz
+
+*.toc
