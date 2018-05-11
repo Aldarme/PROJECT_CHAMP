@@ -2,6 +2,8 @@
 --
 --	This Documents describe the usage of UART protocol
 --	for RS232 communication
+--
+--	Author: ROMET Pierre
 -------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
@@ -10,8 +12,7 @@ entity rs232_uart is
 	generic
 	(
 		baudRate : integer := 0
-	);
-	
+	);	
 	port
 	(
 		clock 				: in std_logic;
