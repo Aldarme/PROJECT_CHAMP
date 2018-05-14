@@ -19,7 +19,7 @@
   )
 
   (layers
-    (0 F.Cu signal)
+    (0 F.Cu signal hide)
     (31 B.Cu signal)
     (32 B.Adhes user)
     (33 F.Adhes user)
@@ -42,7 +42,7 @@
   )
 
   (setup
-    (last_trace_width 0.6)
+    (last_trace_width 0.25)
     (user_trace_width 0.2)
     (user_trace_width 0.3)
     (user_trace_width 0.4)
@@ -101,7 +101,7 @@
       (mirror false)
       (drillshape 1)
       (scaleselection 1)
-      (outputdirectory Docs/))
+      (outputdirectory Docs/2.3/))
   )
 
   (net 0 "")
@@ -513,18 +513,18 @@
   (gr_line (start 188.746 72.8472) (end 163.746 72.8472) (angle 90) (layer F.Fab) (width 0.2))
   (gr_line (start 188.73 63.873) (end 188.73 72.873) (angle 90) (layer F.Fab) (width 0.2))
 
-  (segment (start 165.989 68.4022) (end 164.5412 68.4022) (width 0.6) (layer F.Cu) (net 1) (status 400000))
+  (segment (start 165.989 68.4022) (end 164.5412 68.4022) (width 0.6) (layer F.Cu) (net 1))
   (via (at 164.2745 64.4525) (size 1) (drill 0.8) (layers F.Cu B.Cu) (net 1))
   (segment (start 164.2745 68.1355) (end 164.2745 64.4525) (width 0.6) (layer F.Cu) (net 1) (tstamp 5AE08B9A))
   (segment (start 164.5412 68.4022) (end 164.2745 68.1355) (width 0.6) (layer F.Cu) (net 1) (tstamp 5AE08B97))
-  (segment (start 165.989 70.9422) (end 165.6588 70.9422) (width 0.6) (layer F.Cu) (net 1) (status C00000))
-  (segment (start 165.6588 70.9422) (end 164.338 72.263) (width 0.6) (layer F.Cu) (net 1) (tstamp 5AE08B8A) (status 400000))
+  (segment (start 165.989 70.9422) (end 165.6588 70.9422) (width 0.6) (layer F.Cu) (net 1))
+  (segment (start 165.6588 70.9422) (end 164.338 72.263) (width 0.6) (layer F.Cu) (net 1) (tstamp 5AE08B8A))
   (via (at 164.338 72.263) (size 1) (drill 0.8) (layers F.Cu B.Cu) (net 1))
   (segment (start 184.5945 72.136) (end 188.0235 72.136) (width 0.6) (layer F.Cu) (net 1))
   (segment (start 187.69 71.866) (end 187.96 72.136) (width 0.6) (layer F.Cu) (net 1) (tstamp 5AE08B5A))
   (segment (start 187.96 72.136) (end 188.0235 72.136) (width 0.6) (layer F.Cu) (net 1) (tstamp 5AE08B61))
   (via (at 188.0235 72.136) (size 1) (drill 0.8) (layers F.Cu B.Cu) (net 1))
-  (segment (start 187.69 71.866) (end 187.69 70.6882) (width 0.6) (layer F.Cu) (net 1) (status 800000))
+  (segment (start 187.69 71.866) (end 187.69 70.6882) (width 0.6) (layer F.Cu) (net 1))
   (via (at 184.5945 72.136) (size 1) (drill 0.8) (layers F.Cu B.Cu) (net 1))
   (segment (start 183.206 69.4982) (end 184.3062 69.4982) (width 0.6) (layer F.Cu) (net 1))
   (segment (start 184.3062 69.4982) (end 184.531 69.723) (width 0.6) (layer F.Cu) (net 1) (tstamp 5AE07D23))
