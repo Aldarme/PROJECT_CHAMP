@@ -42,14 +42,11 @@ architecture filter_arch of filter is
 	if reset = '0' then
 		FLT_OE_OUTPUT <= '0';
 		--TSMT_TOANALOG <= (others => '0');
-		cState <= RESETst;
+		cState <= WAITst;
 		
 	elsif rising_edge(CLOCK_50) then
+		
 		case cstate is
-			when RESETst	=>
-			FLT_OE_OUTPUT <= '0';
-			--TSMT_TOANALOG <= (others => '0');
-			cState <= WAITst;
 			
 			when WAITst		=>
 				FLT_OE_OUTPUT <= '0';
@@ -61,6 +58,7 @@ architecture filter_arch of filter is
 			
 			when TREATMENTst =>				
 				TSMT_TOANALOG <= RCV_TOFILTER;
+--				TSMT_TOANALOG <= std_logic_vector(signed(RCV_TOFILTER) / 2);
 				FLT_OE_OUTPUT <= '1';
 				cState <= WAITst;
 			

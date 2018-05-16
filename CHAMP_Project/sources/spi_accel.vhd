@@ -78,9 +78,9 @@ type    T_WORD_ARR is array (natural range <>) of std_logic_vector;
 constant ADXL_READ_REG    : std_logic := '1';
 constant ADXL_WRITE_REG   : std_logic := '0';
 
-constant ADXL_DATAZ1_ADD  : std_logic_vector(6 downto 0):=7x"10";
+constant ADXL_DATAZ1_ADD  : std_logic_vector(6 downto 0):=7x"0E";
 constant ADXL_DATAZ2_ADD  : std_logic_vector(6 downto 0):=7x"0F";
-constant ADXL_DATAZ3_ADD  : std_logic_vector(6 downto 0):=7x"0E";
+constant ADXL_DATAZ3_ADD  : std_logic_vector(6 downto 0):=7x"10";
 
 constant SPI_ADD_FIELD    : std_logic_vector(15 downto 8):=(others=>'0');
 constant SPI_DATA_FIELD   : std_logic_vector(7 downto 0):=(others=>'0');
@@ -88,14 +88,14 @@ constant SPI_DATA_FIELD   : std_logic_vector(7 downto 0):=(others=>'0');
 constant ACCEL_CONFIG : T_WORD_ARR:= (
 			7x"2D" & ADXL_WRITE_REG & 8x"01",		--initiate protocol to configure registers (standby <- 1 : standby mode)
 			7x"2C" & ADXL_WRITE_REG & 8x"03",
-			7x"28" & ADXL_WRITE_REG & 8x"50",		--HPF conf at 0.238*10-3 * ODR
+			7x"28" & ADXL_WRITE_REG & 8x"00",		--HPF conf at 0.954*10-3 * ODR
 			7x"2D" & ADXL_WRITE_REG & 8x"02"		--End protocol to configure registers (standby mode <- 0 : mesurement mode)
 			);
 			
 constant ACCEL_READ : T_WORD_ARR:= (
-			ADXL_DATAZ1_ADD & ADXL_READ_REG & 8x"00", -- DATAZ1 (LSB) - 2100
+			ADXL_DATAZ1_ADD & ADXL_READ_REG & 8x"00", -- DATAZ1 (MSB) - 2100
 			ADXL_DATAZ2_ADD & ADXL_READ_REG & 8x"00", -- DATAZ2		 		- 1F00
-			ADXL_DATAZ3_ADD & ADXL_READ_REG & 8x"00"  -- DATAZ3 (MSB) - 1D00
+			ADXL_DATAZ3_ADD & ADXL_READ_REG & 8x"00"  -- DATAZ3 (LSB)	- 1D00
 			);
 			
 signal ConfAddress: natural;
@@ -242,14 +242,15 @@ sm_accel: entity work.spi_master(SPI_ACCEL)
 					if spi_busydn='1' then
 					
 						case spi_txdata( SPI_ADD_FIELD'RANGE ) is
+						
 							when ADXL_DATAZ1_ADD & ADXL_READ_REG =>
-								spi_dataz( 3 downto 0 )	<= spi_rxdata( 3 downto 0 );
+								spi_dataz(19 downto 12)	<= spi_rxdata( 7 downto 0 );
 								
 							when ADXL_DATAZ2_ADD & ADXL_READ_REG =>
-								spi_dataz( 11 downto 4 )	<= spi_rxdata( 7 downto 0 );
+								spi_dataz(11 downto 4)	<= spi_rxdata( 7 downto 0 );
 								
-							when ADXL_DATAZ3_ADD & ADXL_READ_REG =>
-								spi_dataz( 19 downto 12 )	<= spi_rxdata( 7 downto 0 );
+							when ADXL_DATAZ3_ADD & ADXL_READ_REG =>								
+								spi_dataz(3 downto 0 )	<= spi_rxdata( 7 downto 4 );
 								
 							when others =>
 								null; --modif null to delete latch

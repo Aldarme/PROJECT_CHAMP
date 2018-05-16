@@ -131,7 +131,7 @@ architecture tx_trcver of uart_transceiver is
 					else
 						idxMin 	<= idxMin + wordsize;
 						idxMax 	<= idxMax + wordsize;
-						if cptOfWord < 3 then
+						if cptOfWord < nbrofiteration then
 							cptOfWord <= cptOfWord +1;
 							txState 	<= DataLoadingSt;
 						else
