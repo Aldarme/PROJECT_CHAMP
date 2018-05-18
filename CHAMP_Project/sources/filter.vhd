@@ -12,9 +12,9 @@ entity filter is
 	(
 		CLOCK_50   		: IN STD_LOGIC;
 		FLT_OE_INPUT	:	IN STD_LOGIC;
-		RCV_TOFILTER	:	IN STD_LOGIC_VECTOR(23 downto 0);
+		RCV_TOFILTER	:	IN STD_LOGIC_VECTOR(19 downto 0);
 		FLT_OE_OUTPUT	:	OUT STD_LOGIC;		
-		TSMT_TOANALOG	: OUT STD_LOGIC_VECTOR(23 downto 0);
+		TSMT_TOANALOG	: OUT STD_LOGIC_VECTOR(15 downto 0);
 		RESET_SIGNAL	:	IN STD_LOGIC
 	);
 	
@@ -28,42 +28,70 @@ END ENTITY;
 ----------------------------------------------------------------
 architecture filter_arch of filter is
 
- type   T_SPISTATE is ( RESETst, WAITst, TREATMENTst);
- signal cState     : T_SPISTATE;
+ constant G 			: integer := 131072;
+ constant in_min	: integer := 0;
+ constant in_max	: integer := 1048575;	--19 bits at '1';
+ constant out_min	: integer := 0;
+ constant out_max	: integer := 65536;		--15 bits at '1';
+
+ type   T_SPISTATE is ( IDLEst, Testst, CALIBst, Mapst, TRANSMITst);
+ signal cState	: T_SPISTATE;
  
- signal reset	:	std_logic;
+ signal tmpData : integer;
  
  begin
  
- reset <= RESET_SIGNAL;
- 
- flt: process(reset, CLOCK_50) is
+ flt: process(RESET_SIGNAL, CLOCK_50) is
   begin
-	if reset = '0' then
+	if RESET_SIGNAL = '0' then
+		tmpData <= 0;
 		FLT_OE_OUTPUT <= '0';
-		--TSMT_TOANALOG <= (others => '0');
-		cState <= WAITst;
+		cState <= IDLEst;
 		
 	elsif rising_edge(CLOCK_50) then
 		
 		case cstate is
 			
-			when WAITst		=>
+			when IDLEst		=>
+				
 				FLT_OE_OUTPUT <= '0';
+				
 				if(FLT_OE_INPUT = '0') then
-					cState <= WAITst;
+					cState <= IDLEst;
 				else
-					cState <= TREATMENTst;
+					cState 	<= Testst;
 				end if;
-			
-			when TREATMENTst =>				
-				TSMT_TOANALOG <= RCV_TOFILTER;
---				TSMT_TOANALOG <= std_logic_vector(signed(RCV_TOFILTER) / 2);
+				
+			when Testst =>
+				
+				if RCV_TOFILTER(19) = '1' then
+					cState <= IDLEst;
+				else
+					tmpData <= to_integer(signed(RCV_TOFILTER)) - G;
+					cState	<= CALIBst;
+				end if;
+				
+			when CALIBst	=>
+				
+				if tmpData < 0 then
+					cState <= IDLEst;
+				else
+					cState <= MAPst;
+				end if;
+				
+			when Mapst =>
+				
+				tmpData <= (tmpData - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+				cState	<= TrANSMITst;
+				
+			when TRANSMITst =>
+				
+				TSMT_TOANALOG <= std_logic_vector(to_signed(tmpData, TSMT_TOANALOG'length));
 				FLT_OE_OUTPUT <= '1';
-				cState <= WAITst;
-			
+				cState	<= IDLEst;
+				
 			when others	=>
-				null;
+				cState <= IDLEst;
 				
 		end case;
 	end if;
@@ -71,91 +99,98 @@ architecture filter_arch of filter is
 
 end filter_arch;
 
---------------------------------------------------------------
+-----------------------------------------------
 --
--- Finit Implulse Response archi
---	return input filter through FIR
+-- Average filter
 --
---------------------------------------------------------------
---architecture FIR_Filt of filter is
+-----------------------------------------------
+--architecture filter_arch of filter_avg is
 --
---	type t_coef is array (0 to 3) of signed(15 downto 0);
---	type t_dataIn is array (0 to 3) of signed(15 downto 0);
---	type t_mult is array (0 to 3) of signed(31 downto 0);
---	type t_subAdd is array (0 to 3) of signed(16 downto 0);
+-- constant G : integer := 10;
+--
+-- type   T_SPISTATE is ( IDLEst, STCKst, AVGst, CALIBst, RGHTSHIFTst, SLIDINGst, TRANSMITst);
+-- signal cState	: T_SPISTATE;
+-- 
+-- type		myArray is array (0 to 2) of std_logic_vector(23 downto 0);
+-- signal myStock : myArray;
+-- 
+-- signal reset		:	std_logic;
+-- signal cptData : integer;
+-- signal average	:	signed(23 downto 0);
+-- signal tmpData : std_logic_vector(23 downto 0);
+-- 
+-- begin
+-- 
+-- reset <= RESET_SIGNAL;
+-- 
+-- flt: process(reset, CLOCK_50) is
+--  begin
+--	if reset = '0' then
 --	
---	signal my_coef	 : t_coef;
---	signal my_dataIn: t_dataIn;
---	signal my_mult	 : t_mult;
---	signal my_subAdd: t_subAdd;
---	signal my_total: signed(16 downto 0);
---	
---begin
---
---	init: process(FLT_OE_INPUT, CLOCK_50)
---		begin
---			if FLT_OE_INPUT = '0' then
---				my_dataIn <= (others =>(others => '0'));
---				my_coef	 <= (others => (others => '0'));
+--		FLT_OE_OUTPUT <= '0';
+--		cptData				<= 0;
+--		tmpData				<= (others => '0');		
+--		cState <= IDLEst;
+--		
+--	elsif rising_edge(CLOCK_50) then
+--		
+--		case cstate is
 --			
---			elsif rising_edge(CLOCK_50) then
---				my_dataIn(0) <= signed(RCV_TOFILTER);
---				my_dataIn(1) <= signed(RCV_TOFILTER);
---				my_dataIn(2) <= signed(RCV_TOFILTER);
---				my_dataIn(3) <= signed(RCV_TOFILTER);
---				my_coef(0)<= 16x"01";
---				my_coef(1)<= 16x"01";
---				my_coef(2)<= 16x"01";
---				my_coef(3)<= 16x"01";
---			end if;
---	end process init;
---	
---	multi: process(FLT_OE_INPUT, CLOCK_50)
---	begin
---		if FLT_OE_INPUT = '0' then
---			my_mult <= (others => (others => '0'));
---		
---		elsif rising_edge (CLOCK_50) then
---			for i in 0 to 3 loop
---				my_mult(i) <= my_dataIn(i) * my_coef(i);
---			end loop;
---		end if;
---	end process multi;
---	
---	subSom: process(FLT_OE_INPUT, CLOCK_50)
---	begin
---		if FLT_OE_INPUT = '0' then
---			my_subAdd <= (others => (others=> ('0'));
---		
---		elsif rising_edge (CLOCK_50) then
---			for i in 0 to 1 loop
---				my_subAdd(i) <= resize(my_dataIn(2*i), 16) + resize(my_dataIn(2*i+1), 16);
---			end loop;
---		end if;
---	end process subSom;
---	
---	total: process(FLT_OE_INPUT, CLOCK_50)
---	begin
---		if FLT_OE_INPUT = '0' then
---			my_total <= (others => (others => '0'));
---		
---		elsif rising_edge (CLOCK_50) then
---			my_total <= resize(my_subAdd(0), 17) + resize(my_subAdd(1), 17);
---		
---		end if;
---	end process total;
---	
---	output: process(FLT_OE_INPUT, CLOCK_50)
---	begin
---		if FLT_OE_INPUT = '0' then
---			TSMT_TOANALOG <= (others => '0');
---		
---		elsif rising_edge(CLOCK_50) then
---			tsmT_TOANALOG <= std_logic_vector(my_total(my_subAdd'length downto 2));
---		end if;
---	end process output;
---	
---end FIR_Filt;
+--			when IDLEst		=>
+--				
+--				FLT_OE_OUTPUT <= '0';
+--				if(FLT_OE_INPUT = '0') then
+--					cState <= STCKst;
+--				else
+--					cState 	<= RGHTSHIFTst;
+--				end if;
+--				
+--			when STCKst =>
+--				
+--				myStock(cptData) <= RCV_TOFILTER;
+--				if cptData < 2 then
+--					cptData <= cptData +1;
+--					cState	<= IDLEst;
+--				else
+--					cptData <= 0;
+--					cState	<= AVGst;
+--				end if;				
+--				
+--			when AVGst =>				
+--				
+--				average <= (signed(myStock(0)) + signed(myStock(1)) + signed(myStock(2)))/3 ;
+--				cState	<= RGHTSHIFTst;
+--				
+--			when CALIBst	=>
+--				
+--				tmpData <= std_logic_vector(average - G);
+--				
+--			when RGHTSHIFTst =>
+--				
+--				tmpData <= std_logic_vector(shift_right(signed(RCV_TOFILTER), 2));
+--				cState	<= SLIDINGst;
+--				
+--			when SLIDINGst =>
+--				
+--				tmpData <= std_logic_vector(signed(tmpData)+32768);
+--				cState	<= TRANSMITst;
+--				
+--			when TRANSMITst =>
+--				
+--				TSMT_TOANALOG <= tmpData;
+--				FLT_OE_OUTPUT <= '1';
+--				cState <= IDLEst;
+--				
+--			when others	=>
+--				cState <= IDLEst;
+--				
+--		end case;
+--	end if;
+-- end process flt;
+--
+--end filter_arch;
+
+
 
 
 
