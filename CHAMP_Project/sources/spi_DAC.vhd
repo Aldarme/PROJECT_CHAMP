@@ -242,7 +242,7 @@ fifo_c: FIFO
 					
 					current <= spi_sclk;
 					previous <= current;
-				
+					
 					if (current = '1' AND previous = '0') then
 						cpt_spiClock <= cpt_spiClock + 1;
 					end if;
@@ -254,8 +254,8 @@ fifo_c: FIFO
 					end if;				
 					
 				when others	=>
-				null;
-				
+					cState <= WAITst;
+					
 			end case;
 		end if;
 		

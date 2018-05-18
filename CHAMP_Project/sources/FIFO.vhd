@@ -104,12 +104,11 @@ entity FIFO is
 				
 					if tail = head and tail > 0 and head > 0 then
 						f_rdStop <= '1';
-					end if;
-					
+					end if;					
 					cState <= waitst;
 					
 				when others =>
-					null;
+					cState <= waitst;
 					
 			end case;
 		end if;		

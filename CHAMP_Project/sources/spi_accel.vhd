@@ -17,7 +17,7 @@ entity spi_accel is
 		GPIO_SPI_CLK	:	INOUT STD_LOGIC;
 		GPIO_SPI_SS		:	INOUT STD_LOGIC;
 		GPIO_SPI_SDIO	:	INOUT STD_LOGIC;
-		DATA_OUT			:	out STD_LOGIC_VECTOR(23 DOWNTO 0);
+		DATA_OUT			:	out STD_LOGIC_VECTOR(19 DOWNTO 0);
 		DATA_ENABLE		:	out STD_LOGIC;
 		RESET_SIGNAL	:	in STD_LOGIC
 	);
@@ -62,7 +62,7 @@ signal spi_sclk   : STD_LOGIC;
 signal spi_txdata : STD_LOGIC_VECTOR(15 DOWNTO 0);
 signal spi_rxdata : STD_LOGIC_VECTOR(15 DOWNTO 0);
 alias  spi_rxbyte is spi_rxdata( 7 downto 0);
-signal spi_dataz  : STD_LOGIC_VECTOR(23 DOWNTO 0);
+signal spi_dataz  : STD_LOGIC_VECTOR(19 DOWNTO 0);
 signal new_accel_data  : STD_LOGIC;
 
 -- signal spi_start_button : STD_LOGIC;
@@ -87,8 +87,9 @@ constant SPI_DATA_FIELD   : std_logic_vector(7 downto 0):=(others=>'0');
 
 constant ACCEL_CONFIG : T_WORD_ARR:= (
 			7x"2D" & ADXL_WRITE_REG & 8x"01",		--initiate protocol to configure registers (standby <- 1 : standby mode)
-			7x"2C" & ADXL_WRITE_REG & 8x"03",
-			7x"28" & ADXL_WRITE_REG & 8x"00",		--HPF conf at 0.954*10-3 * ODR
+			7x"2F" & ADXL_WRITE_REG & 8x"52",		--Power-on reset, code 0x52
+			7x"2C" & ADXL_WRITE_REG & 8x"03",		--G range [+-8g : 3] ; [+- 4g : 2] ; [+-2g : 1] ; [disable : 0]
+			7x"28" & ADXL_WRITE_REG & 8x"00",		--HPF [0.238 : 6] ; [0.954 : 5] ; [3.862 : 4]
 			7x"2D" & ADXL_WRITE_REG & 8x"02"		--End protocol to configure registers (standby mode <- 0 : mesurement mode)
 			);
 			
@@ -195,11 +196,11 @@ sm_accel: entity work.spi_master(SPI_ACCEL)
 				when RESETst =>
 					DATA_ENABLE <= '0';
 					ConfAddress <= 0;
-					spi_enable <= '0';
-					cState <= CONFst;
+					spi_enable <= '0';					
 					spi_dataz <= ( others=> '0');
 					new_accel_data <= '0';
 					spi_read_restart <= '0';
+					cState <= CONFst;
 					
 				when CONFst =>
 					spi_enable <= '1';
@@ -254,13 +255,14 @@ sm_accel: entity work.spi_master(SPI_ACCEL)
 								
 							when others =>
 								null; --modif null to delete latch
+								
 						end case;
 						
 						if ConfAddress=ACCEL_READ'LENGTH-1 then
 							new_accel_data <= '1';
 							DATA_ENABLE <= '1';
 							DATA_OUT <= spi_dataz;
-							cState <=  IDLEst;							
+							cState <=  IDLEst;
 						else
 							ConfAddress <= ConfAddress+1;
 							cState <= READst;
@@ -268,9 +270,10 @@ sm_accel: entity work.spi_master(SPI_ACCEL)
 					else
 						cState <= READBUSYst;
 					end if;
-
+					
 				when others =>
-					null;
+					cState <= RESETst;
+					
 			end case;
 			
 			if cState=RESETst then

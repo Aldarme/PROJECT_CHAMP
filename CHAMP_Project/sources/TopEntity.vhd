@@ -31,7 +31,7 @@ architecture topArchi of TopEntity is
 		GPIO_SPI_CLK	:	INOUT STD_LOGIC;
 		GPIO_SPI_SS		:	INOUT STD_LOGIC;
 		GPIO_SPI_SDIO	:	INOUT STD_LOGIC;
-		DATA_OUT			:	out STD_LOGIC_VECTOR(23 DOWNTO 0);
+		DATA_OUT			:	out STD_LOGIC_VECTOR(19 DOWNTO 0);
 		DATA_ENABLE		:	out STD_LOGIC;
 		RESET_SIGNAL	:	in STD_LOGIC
 	);
@@ -43,9 +43,9 @@ architecture topArchi of TopEntity is
 	(
 		CLOCK_50   		: IN STD_LOGIC;
 		FLT_OE_INPUT	:	IN STD_LOGIC;
-		RCV_TOFILTER	:	IN STD_LOGIC_VECTOR(23 downto 0);
+		RCV_TOFILTER	:	IN STD_LOGIC_VECTOR(19 downto 0);
 		FLT_OE_OUTPUT	:	OUT STD_LOGIC;		
-		TSMT_TOANALOG	: OUT STD_LOGIC_VECTOR(23 downto 0);
+		TSMT_TOANALOG	: OUT STD_LOGIC_VECTOR(15 downto 0);
 		RESET_SIGNAL	:	IN STD_LOGIC
 	);
  END COMPONENT;
@@ -71,11 +71,11 @@ architecture topArchi of TopEntity is
 	type   T_SPISTATE is (RESETst, WAITSt, TREATMENTst, TOANALOGst);
 	signal cState : T_SPISTATE;
  
-	signal accel_dataz		:	std_logic_vector(23 downto 0);
+	signal accel_dataz		:	std_logic_vector(19 downto 0);
 	signal accel_enable		:	std_logic;
 	
 	signal flt_oe_output	:	std_logic;
-	signal filter_toDac		:	std_logic_vector(23 downto 0);
+	signal filter_toDac		:	std_logic_vector(15 downto 0);
 	
 	signal dac_output		:	std_logic;
 	
@@ -120,7 +120,7 @@ reset_all <= TOP_KEY(3);
 		GPIO_SPI_CLK	=> TOP_GPIO(5),
 		GPIO_SPI_SS		=> TOP_GPIO(7),
 		GPIO_SPI_SDIO	=> TOP_GPIO(6),
-		RECV_DATA			=> filter_toDac(18 downto 3),	--filter_toDac(19) & 3x"0"
+		RECV_DATA			=> filter_toDac,
 		DAC_OE_INPUT	=> flt_oe_output,
 		DAC_OE_OUTPUT	=> dac_output,
 		RESET_SIGNAL 	=> reset_all
