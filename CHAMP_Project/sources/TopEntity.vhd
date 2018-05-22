@@ -11,10 +11,10 @@ entity TopEntity is
 	port
 	(
 		TOP_CLOCK_50:	IN STD_LOGIC;
-		TOP_LEDG		:   OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
-		TOP_LEDR		:   OUT STD_LOGIC_VECTOR(24 DOWNTO 0);
-		TOP_KEY 		:   IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
-		TOP_GPIO		:   INOUT STD_LOGIC_VECTOR(35 DOWNTO 0)
+		TOP_LEDG		:	OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
+		TOP_LEDR		:	OUT STD_LOGIC_VECTOR(24 DOWNTO 0);
+		TOP_KEY 		:	IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
+		TOP_GPIO		:	INOUT STD_LOGIC_VECTOR(35 DOWNTO 0)
 	);
 end entity;
 
@@ -24,10 +24,10 @@ architecture topArchi of TopEntity is
  COMPONENT spi_accel
 	PORT
 	(
-		CLOCK_50   		:  IN STD_LOGIC;
-		LEDG    			:  OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
-		LEDR    			:  OUT STD_LOGIC_VECTOR(24 DOWNTO 0);
-		KEY    				:  IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+		CLOCK_50   		:	IN STD_LOGIC;
+		LEDG    			:	OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
+		LEDR    			:	OUT STD_LOGIC_VECTOR(24 DOWNTO 0);
+		KEY    				:	IN STD_LOGIC_VECTOR(3 DOWNTO 0);
 		GPIO_SPI_CLK	:	INOUT STD_LOGIC;
 		GPIO_SPI_SS		:	INOUT STD_LOGIC;
 		GPIO_SPI_SDIO	:	INOUT STD_LOGIC;
@@ -41,11 +41,11 @@ architecture topArchi of TopEntity is
  COMPONENT filter
 	PORT
 	(
-		CLOCK_50   		: IN STD_LOGIC;
+		CLOCK_50   		:	IN STD_LOGIC;
 		FLT_OE_INPUT	:	IN STD_LOGIC;
 		RCV_TOFILTER	:	IN STD_LOGIC_VECTOR(19 downto 0);
 		FLT_OE_OUTPUT	:	OUT STD_LOGIC;		
-		TSMT_TOANALOG	: OUT STD_LOGIC_VECTOR(15 downto 0);
+		TSMT_TOANALOG	:	OUT STD_LOGIC_VECTOR(15 downto 0);
 		RESET_SIGNAL	:	IN STD_LOGIC
 	);
  END COMPONENT;
@@ -54,15 +54,15 @@ architecture topArchi of TopEntity is
  COMPONENT spi_DAC
 	PORT
 	(
-		CLOCK_50   		:   IN STD_LOGIC;
-		KEY    				:   IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+		CLOCK_50   		:	IN STD_LOGIC;
+		KEY    				:	IN STD_LOGIC_VECTOR(3 DOWNTO 0);
 		GPIO_SPI_CLK	:	INOUT STD_LOGIC;
 		GPIO_SPI_SS		:	INOUT STD_LOGIC;
 		GPIO_SPI_SDIO	:	INOUT STD_LOGIC;
-		RECV_DATA			:	 IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-		DAC_OE_INPUT	:	 IN STD_LOGIC;
-		DAC_OE_OUTPUT	:	 OUT STD_LOGIC;
-		RESET_SIGNAL 	:	 IN STD_LOGIC
+		RECV_DATA			:	IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+		DAC_OE_INPUT	:	IN STD_LOGIC;
+		DAC_OE_OUTPUT	:	OUT STD_LOGIC;
+		RESET_SIGNAL 	:	IN STD_LOGIC
 	);
  END COMPONENT;
  
@@ -71,11 +71,11 @@ architecture topArchi of TopEntity is
 	type   T_SPISTATE is (RESETst, WAITSt, TREATMENTst, TOANALOGst);
 	signal cState : T_SPISTATE;
  
-	signal accel_dataz		:	std_logic_vector(19 downto 0);
-	signal accel_enable		:	std_logic;
+	signal accel_dataz	:	std_logic_vector(19 downto 0);
+	signal accel_enable	:	std_logic;
 	
-	signal flt_oe_output	:	std_logic;
-	signal filter_toDac		:	std_logic_vector(15 downto 0);
+	signal flt_oe_output:	std_logic;
+	signal filter_toDac	:	std_logic_vector(15 downto 0);
 	
 	signal dac_output		:	std_logic;
 	
@@ -101,7 +101,7 @@ reset_all <= TOP_KEY(3);
 		RESET_SIGNAL	=> reset_all
 	);
 
- f_flt: entity work.filter(filter_arch)
+ f_flt: entity work.filter(trivial_ftl) --trivial_ftl / filter_arch
 	PORT MAP
 	(
 		CLOCK_50   		=> TOP_CLOCK_50,

@@ -22,14 +22,60 @@ END ENTITY;
 
 ----------------------------------------------------------------
 --
--- test archi
---	return the input filter
+--	Filter
+--	Return input
+--
+----------------------------------------------------------------
+architecture trivial_ftl of filter is
+ type   T_SPISTATE is ( RESETst, WAITst, TREATMENTst);
+ signal cState     : T_SPISTATE;
+ 
+ signal reset  :  std_logic;
+ 
+ begin
+ 
+ flt: process(RESET_SIGNAL, CLOCK_50) is
+  begin
+  if RESET_SIGNAL = '0' then
+    FLT_OE_OUTPUT <= '0';
+    cState <= WAITst;
+    
+  elsif rising_edge(CLOCK_50) then
+    case cstate is
+		
+      when WAITst    =>
+        FLT_OE_OUTPUT <= '0';
+        if(FLT_OE_INPUT = '0') then
+          cState <= WAITst;
+        else
+          cState <= TREATMENTst;
+        end if;
+      
+      when TREATMENTst =>        
+        TSMT_TOANALOG <= RCV_TOFILTER(19 downto 4);
+        FLT_OE_OUTPUT <= '1';
+        cState <= WAITst;
+      
+      when others  =>
+        cState <= WAITst;
+        
+    end case;
+  end if;
+ end process flt;
+
+
+end trivial_ftl;
+
+----------------------------------------------------------------
+--
+--	Filter
+--	Return positive value & sup to 1g from accéléro
 --
 ----------------------------------------------------------------
 architecture filter_arch of filter is
 
- constant G 			: integer := 131072;
- constant in_min	: integer := 0;
+ constant G 			: integer := 131072;	--131071
+ constant in_min	: integer := 0;				--0
  constant in_max	: integer := 1048575;	--19 bits at '1';
  constant out_min	: integer := 0;
  constant out_max	: integer := 65536;		--15 bits at '1';
@@ -76,6 +122,7 @@ architecture filter_arch of filter is
 				if tmpData < 0 then
 					cState <= IDLEst;
 				else
+					tmpData <= tmpData / 2;
 					cState <= MAPst;
 				end if;
 				
@@ -98,100 +145,4 @@ architecture filter_arch of filter is
  end process flt;
 
 end filter_arch;
-
------------------------------------------------
---
--- Average filter
---
------------------------------------------------
---architecture filter_arch of filter_avg is
---
--- constant G : integer := 10;
---
--- type   T_SPISTATE is ( IDLEst, STCKst, AVGst, CALIBst, RGHTSHIFTst, SLIDINGst, TRANSMITst);
--- signal cState	: T_SPISTATE;
--- 
--- type		myArray is array (0 to 2) of std_logic_vector(23 downto 0);
--- signal myStock : myArray;
--- 
--- signal reset		:	std_logic;
--- signal cptData : integer;
--- signal average	:	signed(23 downto 0);
--- signal tmpData : std_logic_vector(23 downto 0);
--- 
--- begin
--- 
--- reset <= RESET_SIGNAL;
--- 
--- flt: process(reset, CLOCK_50) is
---  begin
---	if reset = '0' then
---	
---		FLT_OE_OUTPUT <= '0';
---		cptData				<= 0;
---		tmpData				<= (others => '0');		
---		cState <= IDLEst;
---		
---	elsif rising_edge(CLOCK_50) then
---		
---		case cstate is
---			
---			when IDLEst		=>
---				
---				FLT_OE_OUTPUT <= '0';
---				if(FLT_OE_INPUT = '0') then
---					cState <= STCKst;
---				else
---					cState 	<= RGHTSHIFTst;
---				end if;
---				
---			when STCKst =>
---				
---				myStock(cptData) <= RCV_TOFILTER;
---				if cptData < 2 then
---					cptData <= cptData +1;
---					cState	<= IDLEst;
---				else
---					cptData <= 0;
---					cState	<= AVGst;
---				end if;				
---				
---			when AVGst =>				
---				
---				average <= (signed(myStock(0)) + signed(myStock(1)) + signed(myStock(2)))/3 ;
---				cState	<= RGHTSHIFTst;
---				
---			when CALIBst	=>
---				
---				tmpData <= std_logic_vector(average - G);
---				
---			when RGHTSHIFTst =>
---				
---				tmpData <= std_logic_vector(shift_right(signed(RCV_TOFILTER), 2));
---				cState	<= SLIDINGst;
---				
---			when SLIDINGst =>
---				
---				tmpData <= std_logic_vector(signed(tmpData)+32768);
---				cState	<= TRANSMITst;
---				
---			when TRANSMITst =>
---				
---				TSMT_TOANALOG <= tmpData;
---				FLT_OE_OUTPUT <= '1';
---				cState <= IDLEst;
---				
---			when others	=>
---				cState <= IDLEst;
---				
---		end case;
---	end if;
--- end process flt;
---
---end filter_arch;
-
-
-
-
-
 
