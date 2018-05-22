@@ -67,7 +67,7 @@ signal new_accel_data  : STD_LOGIC;
 
 -- signal spi_start_button : STD_LOGIC;
 
-type   T_SPISTATE is ( RESETst, CONFst, CONFBUSYst, IDLEst, READst, READBUSYst );
+type   T_SPISTATE is ( RESETst, CONFst, CONFBUSYst, IDLEst, TSTACCESS, TSTBUSY, READst, READBUSYst );
 signal cState     : T_SPISTATE;
 
 type    T_WORD_ARR is array (natural range <>) of std_logic_vector;
@@ -78,25 +78,27 @@ type    T_WORD_ARR is array (natural range <>) of std_logic_vector;
 constant ADXL_READ_REG    : std_logic := '1';
 constant ADXL_WRITE_REG   : std_logic := '0';
 
-constant ADXL_DATAZ1_ADD  : std_logic_vector(6 downto 0):=7x"0E";
+constant ADXL_DATAZ1_ADD  : std_logic_vector(6 downto 0):=7x"0E";	
 constant ADXL_DATAZ2_ADD  : std_logic_vector(6 downto 0):=7x"0F";
 constant ADXL_DATAZ3_ADD  : std_logic_vector(6 downto 0):=7x"10";
+constant ADXL_STATUS_ADD  : std_logic_vector(6 downto 0):=7x"04";
 
 constant SPI_ADD_FIELD    : std_logic_vector(15 downto 8):=(others=>'0');
 constant SPI_DATA_FIELD   : std_logic_vector(7 downto 0):=(others=>'0');
 
-constant ACCEL_CONFIG : T_WORD_ARR:= (
+constant ACCEL_CONFIG : T_WORD_ARR:= (			
 			7x"2D" & ADXL_WRITE_REG & 8x"01",		--initiate protocol to configure registers (standby <- 1 : standby mode)
-			7x"2F" & ADXL_WRITE_REG & 8x"52",		--Power-on reset, code 0x52
+			7x"2F" & ADXL_WRITE_REG & 8x"52",		--Power-on reset, code 0x52		
 			7x"2C" & ADXL_WRITE_REG & 8x"03",		--G range [+-8g : 3] ; [+- 4g : 2] ; [+-2g : 1] ; [disable : 0]
-			7x"28" & ADXL_WRITE_REG & 8x"00",		--HPF [0.238 : 6] ; [0.954 : 5] ; [3.862 : 4]
+			--7x"28" & ADXL_WRITE_REG & 8x"00",		--HPF [0.238 : 6] ; [0.954 : 5] ; [3.862 : 4]
 			7x"2D" & ADXL_WRITE_REG & 8x"02"		--End protocol to configure registers (standby mode <- 0 : mesurement mode)
 			);
 			
 constant ACCEL_READ : T_WORD_ARR:= (
 			ADXL_DATAZ1_ADD & ADXL_READ_REG & 8x"00", -- DATAZ1 (MSB) - 2100
 			ADXL_DATAZ2_ADD & ADXL_READ_REG & 8x"00", -- DATAZ2		 		- 1F00
-			ADXL_DATAZ3_ADD & ADXL_READ_REG & 8x"00"  -- DATAZ3 (LSB)	- 1D00
+			ADXL_DATAZ3_ADD & ADXL_READ_REG & 8x"00", -- DATAZ3 (LSB)	- 1D00
+			ADXL_STATUS_ADD & ADXL_READ_REG & 8x"04"	-- NVM_BUSY to check if memory can be access
 			);
 			
 signal ConfAddress: natural;
@@ -225,10 +227,30 @@ sm_accel: entity work.spi_master(SPI_ACCEL)
 					ConfAddress <= 0;
 					spi_enable <= '0';
 					if spi_read_cpt_zero='1' then
-						cState <= READst;
 						spi_read_restart <= '1';
+						cState <= TSTACCESS;						
 					end if;
 					new_accel_data <= '0';
+					
+				when TSTACCESS =>
+					DATA_ENABLE <= '0';
+					spi_read_restart <= '0';
+					spi_enable <= '1';
+					spi_txdata <= ACCEL_READ(3);
+					cState <= TSTBUSY;
+					
+				when TSTBUSY =>
+					DATA_ENABLE <= '0';
+					spi_enable <= '0';
+					if spi_busydn='1' then
+						if spi_rxdata = "1" then
+							cState	<= TSTACCESS;
+						else
+							cState <= READst;
+						end if;
+					else
+						cState <= TSTBUSY;
+					end if;
 					
 				when READst =>
 					DATA_ENABLE <= '0';
@@ -236,7 +258,7 @@ sm_accel: entity work.spi_master(SPI_ACCEL)
 					spi_enable <= '1';
 					spi_txdata <= ACCEL_READ(ConfAddress);
 					cState <= READBUSYst;
-				
+					
 				when READBUSYst =>
 					DATA_ENABLE <= '0';
 					spi_enable <= '0';
@@ -265,7 +287,7 @@ sm_accel: entity work.spi_master(SPI_ACCEL)
 							cState <=  IDLEst;
 						else
 							ConfAddress <= ConfAddress+1;
-							cState <= READst;
+							cState <= TSTACCESS;
 						end if;
 					else
 						cState <= READBUSYst;
