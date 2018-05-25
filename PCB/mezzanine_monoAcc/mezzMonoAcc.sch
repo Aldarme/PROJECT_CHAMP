@@ -113,7 +113,7 @@ F 3 "" H 4750 2800 50  0001 C CNN
 $EndComp
 Text Label 3750 2800 2    60   ~ 0
 VDD(5V)
-Text Label 6200 2350 2    60   ~ 0
+Text Label 7200 2350 0    60   ~ 0
 VDD(5V)
 $Comp
 L GNDREF #PWR04
@@ -177,8 +177,6 @@ Wire Wire Line
 	4500 2800 4750 2800
 Wire Wire Line
 	3750 2800 4000 2800
-Wire Wire Line
-	6200 2350 6450 2350
 Wire Wire Line
 	4500 3200 4750 3200
 Wire Wire Line
@@ -535,4 +533,6 @@ Text Label 7350 5050 3    60   ~ 0
 ACC_CLK_2
 Text Label 7800 5050 3    60   ~ 0
 ACC_MI/MO_2
+Wire Wire Line
+	6950 2350 7200 2350
 $EndSCHEMATC
