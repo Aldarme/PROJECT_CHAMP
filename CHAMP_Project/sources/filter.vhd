@@ -15,6 +15,7 @@ entity filter is
 		RCV_TOFILTER	:	IN STD_LOGIC_VECTOR(19 downto 0);
 		FLT_OE_OUTPUT	:	OUT STD_LOGIC;		
 		TSMT_TOANALOG	: OUT STD_LOGIC_VECTOR(15 downto 0);
+		SWITCH				:	IN STD_LOGIC_VECTOR(17 downto 0);
 		RESET_SIGNAL	:	IN STD_LOGIC
 	);
 	
@@ -74,11 +75,11 @@ end trivial_ftl;
 ----------------------------------------------------------------
 architecture filter_arch of filter is
 
- constant G 			: integer := 131072;	--131071
- constant in_min	: integer := 0;				--0
+ constant G 			: integer := 131071;	--131071
+ constant in_min	: integer := 131071;				
  constant in_max	: integer := 1048575;	--19 bits at '1';
  constant out_min	: integer := 0;
- constant out_max	: integer := 65536;		--15 bits at '1';
+ constant out_max	: integer := 65535;		--15 bits at '1';
 
  type   T_SPISTATE is ( IDLEst, Testst, CALIBst, Mapst, TRANSMITst);
  signal cState	: T_SPISTATE;
@@ -122,7 +123,7 @@ architecture filter_arch of filter is
 				if tmpData < 0 then
 					cState <= IDLEst;
 				else
-					tmpData <= tmpData / 2;
+					tmpData <= tmpData / to_integer(signed(SWITCH));
 					cState <= MAPst;
 				end if;
 				

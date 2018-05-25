@@ -14,7 +14,8 @@ entity TopEntity is
 		TOP_LEDG		:	OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
 		TOP_LEDR		:	OUT STD_LOGIC_VECTOR(24 DOWNTO 0);
 		TOP_KEY 		:	IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
-		TOP_GPIO		:	INOUT STD_LOGIC_VECTOR(35 DOWNTO 0)
+		TOP_GPIO		:	INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
+		SW					: IN STD_LOGIC_VECTOR(17 DOWNTO 0)
 	);
 end entity;
 
@@ -46,6 +47,7 @@ architecture topArchi of TopEntity is
 		RCV_TOFILTER	:	IN STD_LOGIC_VECTOR(19 downto 0);
 		FLT_OE_OUTPUT	:	OUT STD_LOGIC;		
 		TSMT_TOANALOG	:	OUT STD_LOGIC_VECTOR(15 downto 0);
+		SWITCH				:	IN STD_LOGIC_VECTOR(17 downto 0);
 		RESET_SIGNAL	:	IN STD_LOGIC
 	);
  END COMPONENT;
@@ -93,15 +95,15 @@ reset_all <= TOP_KEY(3);
 		LEDG    			=> TOP_LEDG,
 		LEDR    			=> TOP_LEDR,
 		KEY    				=> TOP_KEY,
-		GPIO_SPI_CLK	=> TOP_GPIO(1),
-		GPIO_SPI_SS		=> TOP_GPIO(3),
-		GPIO_SPI_SDIO	=> TOP_GPIO(2),
+		GPIO_SPI_CLK	=> TOP_GPIO(31),
+		GPIO_SPI_SS		=> TOP_GPIO(33),
+		GPIO_SPI_SDIO	=> TOP_GPIO(29),
 		DATA_OUT			=> accel_dataz,
 		DATA_ENABLE		=> accel_enable,
 		RESET_SIGNAL	=> reset_all
 	);
 
- f_flt: entity work.filter(trivial_ftl) --trivial_ftl / filter_arch
+ f_flt: entity work.filter(filter_arch) --trivial_ftl / filter_arch
 	PORT MAP
 	(
 		CLOCK_50   		=> TOP_CLOCK_50,
@@ -109,6 +111,7 @@ reset_all <= TOP_KEY(3);
 		RCV_TOFILTER	=> accel_dataz,
 		FLT_OE_OUTPUT	=> flt_oe_output,
 		TSMT_TOANALOG	=> filter_toDac,
+		SWITCH				=> SW,
 		RESET_SIGNAL	=> reset_all
 	);
 	
@@ -118,8 +121,8 @@ reset_all <= TOP_KEY(3);
 		CLOCK_50   		=> TOP_CLOCK_50,
 		KEY    				=> TOP_KEY,
 		GPIO_SPI_CLK	=> TOP_GPIO(5),
-		GPIO_SPI_SS		=> TOP_GPIO(7),
-		GPIO_SPI_SDIO	=> TOP_GPIO(6),
+		GPIO_SPI_SS		=> TOP_GPIO(3),
+		GPIO_SPI_SDIO	=> TOP_GPIO(1),
 		RECV_DATA			=> filter_toDac,
 		DAC_OE_INPUT	=> flt_oe_output,
 		DAC_OE_OUTPUT	=> dac_output,
