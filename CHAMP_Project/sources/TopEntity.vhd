@@ -15,7 +15,9 @@ entity TopEntity is
 		TOP_LEDR		:	OUT STD_LOGIC_VECTOR(24 DOWNTO 0);
 		TOP_KEY 		:	IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
 		TOP_GPIO		:	INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
-		SW					: IN STD_LOGIC_VECTOR(17 DOWNTO 0)
+		SW					: IN STD_LOGIC_VECTOR(17 DOWNTO 0);
+		HEX4				: OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
+		HEX5				: OUT STD_LOGIC_VECTOR(6 DOWNTO 0)
 	);
 end entity;
 
@@ -48,6 +50,8 @@ architecture topArchi of TopEntity is
 		FLT_OE_OUTPUT	:	OUT STD_LOGIC;		
 		TSMT_TOANALOG	:	OUT STD_LOGIC_VECTOR(15 downto 0);
 		SWITCH				:	IN STD_LOGIC_VECTOR(17 downto 0);
+		HEX4Disp			: OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
+		HEX5Disp			: OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
 		RESET_SIGNAL	:	IN STD_LOGIC
 	);
  END COMPONENT;
@@ -112,6 +116,8 @@ reset_all <= TOP_KEY(3);
 		FLT_OE_OUTPUT	=> flt_oe_output,
 		TSMT_TOANALOG	=> filter_toDac,
 		SWITCH				=> SW,
+		HEX4Disp			=> HEX4,
+		HEX5Disp			=> HEX5,
 		RESET_SIGNAL	=> reset_all
 	);
 	

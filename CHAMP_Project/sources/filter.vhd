@@ -10,12 +10,14 @@ use work.all;
 entity filter is
 	PORT
 	(
-		CLOCK_50   		: IN STD_LOGIC;
+		CLOCK_50   		:	IN STD_LOGIC;
 		FLT_OE_INPUT	:	IN STD_LOGIC;
 		RCV_TOFILTER	:	IN STD_LOGIC_VECTOR(19 downto 0);
 		FLT_OE_OUTPUT	:	OUT STD_LOGIC;		
-		TSMT_TOANALOG	: OUT STD_LOGIC_VECTOR(15 downto 0);
+		TSMT_TOANALOG	:	OUT STD_LOGIC_VECTOR(15 downto 0);
 		SWITCH				:	IN STD_LOGIC_VECTOR(17 downto 0);
+		HEX4Disp			: OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
+		HEX5Disp			: OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
 		RESET_SIGNAL	:	IN STD_LOGIC
 	);
 	
@@ -75,8 +77,8 @@ end trivial_ftl;
 ----------------------------------------------------------------
 architecture filter_arch of filter is
 
- constant G 			: integer := 131071;	--131071
- constant in_min	: integer := 131071;				
+ constant G 			: integer := 131072;	--131071
+ constant in_min	: integer := 0;				
  constant in_max	: integer := 1048575;	--19 bits at '1';
  constant out_min	: integer := 0;
  constant out_max	: integer := 65535;		--15 bits at '1';
@@ -86,7 +88,27 @@ architecture filter_arch of filter is
  
  signal tmpData : integer;
  
+ component HexDisplay
+	port
+	(
+		hex_4		: out	std_logic_vector(6 downto 0);
+		hex_5		: out	std_logic_vector(6 downto 0);
+		inNumb	: in	integer;
+		reset		: in std_logic
+	);
+ end component;
+ 
  begin
+ 
+ sevDisp : HexDisplay
+	port map
+	(
+		hex_4		=> HEX4Disp,
+		hex_5		=> HEX5Disp,
+		inNumb	=> to_integer(signed(SWITCH)),
+		reset		=> RESET_SIGNAL
+	);
+ 
  
  flt: process(RESET_SIGNAL, CLOCK_50) is
   begin
@@ -114,7 +136,8 @@ architecture filter_arch of filter is
 				if RCV_TOFILTER(19) = '1' then
 					cState <= IDLEst;
 				else
-					tmpData <= to_integer(signed(RCV_TOFILTER)) - G;
+					--tmpData <= to_integer(signed(RCV_TOFILTER)) - G;
+					tmpData <= to_integer(signed(RCV_TOFILTER));
 					cState	<= CALIBst;
 				end if;
 				
@@ -123,8 +146,13 @@ architecture filter_arch of filter is
 				if tmpData < 0 then
 					cState <= IDLEst;
 				else
-					tmpData <= tmpData / to_integer(signed(SWITCH));
-					cState <= MAPst;
+					if to_integer(signed(SWITCH)) = 0 then
+						cState <= IDLEst;
+					else
+						tmpData <= tmpData / to_integer(signed(SWITCH));
+						cState <= MAPst;
+					end if;
+					
 				end if;
 				
 			when Mapst =>
