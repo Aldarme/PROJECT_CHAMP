@@ -12,7 +12,7 @@ entity spi_accel is
 	(
 		CLOCK_50   		:  IN STD_LOGIC;
 		LEDG    			:  OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
-		LEDR    			:  OUT STD_LOGIC_VECTOR(24 DOWNTO 0);
+		LEDR    			:  OUT STD_LOGIC_VECTOR(17 DOWNTO 0);
 		KEY    				:  IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
 		GPIO_SPI_CLK	:	INOUT STD_LOGIC;
 		GPIO_SPI_SS		:	INOUT STD_LOGIC;
@@ -67,7 +67,7 @@ signal new_accel_data  : STD_LOGIC;
 
 -- signal spi_start_button : STD_LOGIC;
 
-type   T_SPISTATE is ( RESETst, CONFst, CONFBUSYst, IDLEst, TSTACCESS, TSTBUSY, READst, READBUSYst );
+type   T_SPISTATE is ( RESETst, ACCESSCONFst, ACSCBUSYst, CONFst, CONFBUSYst, IDLEst, TSTACCESS, TSTBUSY, READst, READBUSYst );
 signal cState     : T_SPISTATE;
 
 type    T_WORD_ARR is array (natural range <>) of std_logic_vector;
@@ -90,7 +90,7 @@ constant ACCEL_CONFIG : T_WORD_ARR:= (
 			7x"2D" & ADXL_WRITE_REG & 8x"01",		--initiate protocol to configure registers (standby <- 1 : standby mode)
 			7x"2F" & ADXL_WRITE_REG & 8x"52",		--Power-on reset, code 0x52		
 			7x"2C" & ADXL_WRITE_REG & 8x"03",		--G range [+-8g : 3] ; [+- 4g : 2] ; [+-2g : 1] ; [disable : 0]
-			--7x"28" & ADXL_WRITE_REG & 8x"00",		--HPF [0.238 : 6] ; [0.954 : 5] ; [3.862 : 4]
+			7x"28" & ADXL_WRITE_REG & 8x"00",		--HPF [0.238 : 6] ; [0.954 : 5] ; [3.862 : 4]
 			7x"2D" & ADXL_WRITE_REG & 8x"02"		--End protocol to configure registers (standby mode <- 0 : mesurement mode)
 			);
 			
@@ -121,8 +121,8 @@ reset_n <= RESET_SIGNAL;
 GPIO_SPI_CLK	<= spi_sclk;		--GPIO(1)
 GPIO_SPI_SS		<= spi_ss_n(0);	--GPIO(3)
 
-LEDR(15 downto 0 ) <= spi_dataz(15 downto 0);
-
+LEDR	<= spi_dataz(19 downto 2);
+LEDG(7 downto 6)	<= spi_dataz(1 downto 0);
 
 sm_accel: entity work.spi_master(SPI_ACCEL)
 
@@ -195,6 +195,7 @@ sm_accel: entity work.spi_master(SPI_ACCEL)
 			
 		elsif rising_edge(CLOCK_50) then
 			case cState is
+			
 				when RESETst =>
 					DATA_ENABLE <= '0';
 					ConfAddress <= 0;

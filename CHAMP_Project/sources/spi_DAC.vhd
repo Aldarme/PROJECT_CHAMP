@@ -133,14 +133,14 @@ sm_dac: entity work.spi_master(SPI_DAC)
     reset_n  => reset_n,
     enable   => spi_enable,
     cpol     => '1',
-    cpha     => '1',                         --spi clock phase
-    cont     => '0',                         --continuous mode command
-    clk_div  => 5,									--system clock cycles, based on 1/2 period of clock (~10MHz -> 3 ; 100K -> 250)
-    addr     => 0,                           --address of slave
-    tx_data  => spi_txdata,                	--data to transmit
-    sclk     => spi_sclk,                    --spi clock
-    ss_n     => spi_ss_n,                		--slave select
-    busy     => spi_busy,                    --busy / data ready signal
+    cpha     => '1',                  --spi clock phase
+    cont     => '0',                  --continuous mode command
+    clk_div  => 5,										--system clock cycles, based on 1/2 period of clock (~10MHz -> 3 ; 100K -> 250)
+    addr     => 0,                    --address of slave
+    tx_data  => spi_txdata,           --data to transmit
+    sclk     => spi_sclk,             --spi clock
+    ss_n     => spi_ss_n,             --slave select
+    busy     => spi_busy,             --busy / data ready signal
     rx_data  => spi_rxdata,						--data received
 	 MISOMOSI => GPIO_SPI_SDIO 					--GPIO(6)
 	);
