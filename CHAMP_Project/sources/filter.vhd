@@ -76,17 +76,23 @@ end trivial_ftl;
 --
 ----------------------------------------------------------------
 architecture filter_arch of filter is
-
- constant G 			: integer := 131072;	--131071
- constant in_min	: integer := 0;				
- constant in_max	: integer := 1048575;	--19 bits at '1';
- constant out_min	: integer := 0;
- constant out_max	: integer := 65535;		--15 bits at '1';
+ 
+ constant positive_in_min		: integer := 0;				
+ constant positive_in_max		: integer := 1048575;
+ constant negative_in_min		: integer := 2097151;
+ constant negative_in_max		: integer := 1048576;
+ 
+ constant positive_out_max	: integer := 65535;
+ constant positive_out_min	: integer := 32768;
+ constant negative_out_max	: integer := 32767;
+ constant negative_out_min	: integer := 0;
+ 
 
  type   T_SPISTATE is ( IDLEst, Testst, CALIBst, Mapst, TRANSMITst);
  signal cState	: T_SPISTATE;
  
  signal tmpData : integer;
+ signal tmpArray: signed(15 downto 0);
  
  component HexDisplay
 	port
@@ -133,36 +139,30 @@ architecture filter_arch of filter is
 				
 			when Testst =>
 				
-				if RCV_TOFILTER(19) = '1' then
-					cState <= IDLEst;
+				if RCV_TOFILTER(19) = '0' then
+					
+					tmpData <= ( to_integer(unsigned(RCV_TOFILTER)) - positive_in_min) * (positive_out_max - positive_out_min)	/ (positive_in_max - positive_in_min) + positive_out_min;
+					
 				else
-					--tmpData <= to_integer(signed(RCV_TOFILTER)) - G;
-					tmpData <= to_integer(signed(RCV_TOFILTER));
-					cState	<= CALIBst;
-				end if;
-				
-			when CALIBst	=>
-				
-				if tmpData < 0 then
-					cState <= IDLEst;
-				else
-					if to_integer(signed(SWITCH)) = 0 then
-						cState <= IDLEst;
-					else
-						tmpData <= tmpData / to_integer(signed(SWITCH));
-						cState <= MAPst;
-					end if;
+					
+					tmpData <= ( to_integer(unsigned(RCV_TOFILTER)) - negative_in_min) * (negative_out_max - negative_out_min)	/ (negative_in_max - negative_in_min) + negative_out_min;
 					
 				end if;
 				
-			when Mapst =>
+				cState	<= CALIBst;
 				
-				tmpData <= (tmpData - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-				cState	<= TrANSMITst;
+			when CALIBst	=>
+			
+				if to_integer(unsigned(SWITCH)) = 0 then
+					cState <= IDLEst;
+				else
+					tmpArray <= shift_right( signed( std_logic_vector( to_signed(tmpData, tmpArray'length) ) ) ,to_integer(unsigned(SWITCH)));
+					cState <= TRANSMITst;
+				end if;
 				
 			when TRANSMITst =>
 				
-				TSMT_TOANALOG <= std_logic_vector(to_signed(tmpData, TSMT_TOANALOG'length));
+				TSMT_TOANALOG <= std_logic_vector(tmpArray);
 				FLT_OE_OUTPUT <= '1';
 				cState	<= IDLEst;
 				
