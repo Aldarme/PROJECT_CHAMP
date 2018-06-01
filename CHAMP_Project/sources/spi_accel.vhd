@@ -64,10 +64,11 @@ signal spi_rxdata : STD_LOGIC_VECTOR(15 DOWNTO 0);
 alias  spi_rxbyte is spi_rxdata( 7 downto 0);
 signal spi_dataz  : STD_LOGIC_VECTOR(19 DOWNTO 0);
 signal new_accel_data  : STD_LOGIC;
+signal cptConf		: integer := 0;
 
 -- signal spi_start_button : STD_LOGIC;
 
-type   T_SPISTATE is ( RESETst, ACCESSCONFst, ACSCBUSYst, CONFst, CONFBUSYst, IDLEst, TSTACCESS, TSTBUSY, READst, READBUSYst );
+type   T_SPISTATE is ( RESETst, ACCESSCONFst, ACSCBUSYst, CONFst, CONFIDLEst, CONFBUSYst, IDLEst, TSTACCESS, TSTBUSY, READst, READBUSYst );
 signal cState     : T_SPISTATE;
 
 type    T_WORD_ARR is array (natural range <>) of std_logic_vector;
@@ -208,8 +209,18 @@ sm_accel: entity work.spi_master(SPI_ACCEL)
 				when CONFst =>
 					spi_enable <= '1';
 					spi_txdata <= ACCEL_CONFIG(ConfAddress);
-					cState <= CONFBUSYst;
-				
+					cState <= CONFIDLEst;
+					--cState <= CONFBUSYst;
+					
+				when CONFIDLEst =>					
+					if cptConf >= 9000 then			-- 180us between to access of config register
+						cptConf <= cptConf +1;		-- 50MHz <-> 0.02 us
+						cState <= CONFIDLEst;			-- 180 us = 0.02 * 9000
+					else
+						cptConf <= 0;
+						cState <= CONFBUSYst;
+					end if;
+					
 				when CONFBUSYst =>
 					spi_enable <= '0';
 					if spi_busydn='1' then
