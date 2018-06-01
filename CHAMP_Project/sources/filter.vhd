@@ -69,115 +69,12 @@ architecture trivial_ftl of filter is
 
 end trivial_ftl;
 
-----------------------------------------------------------------
---
---	Filter
---	map integer map function
---
-----------------------------------------------------------------
-architecture filter_mapFct of filter is
- 
- constant positive_in_min		: integer := 0;
- constant positive_in_max		: integer := 524287;
- constant negative_in_min		: integer := 1048575;
- constant negative_in_max		: integer := 524288;
- 
- constant positive_out_max	: integer := 65535;
- constant positive_out_min	: integer := 32768;
- constant negative_out_max	: integer := 32767;
- constant negative_out_min	: integer := 0;
- 
-
- type   T_SPISTATE is ( IDLEst, Testst, CALIBst, Mapst, TRANSMITst);
- signal cState	: T_SPISTATE;
- 
- signal tmpData : integer;
- --signal tmpArray: signed(15 downto 0);
- 
- component HexDisplay
-	port
-	(
-		hex_4		: out	std_logic_vector(6 downto 0);
-		hex_5		: out	std_logic_vector(6 downto 0);
-		inNumb	: in	integer;
-		reset		: in std_logic
-	);
- end component;
- 
- begin
- 
- sevDisp : HexDisplay
-	port map
-	(
-		hex_4		=> HEX4Disp,
-		hex_5		=> HEX5Disp,
-		inNumb	=> to_integer(signed(SWITCH)),
-		reset		=> RESET_SIGNAL
-	);
- 
- 
- flt: process(RESET_SIGNAL, CLOCK_50) is
-  begin
-	if RESET_SIGNAL = '0' then
-		tmpData <= 0;
-		FLT_OE_OUTPUT <= '0';
-		cState <= IDLEst;
-		
-	elsif rising_edge(CLOCK_50) then
-		
-		case cstate is
-			
-			when IDLEst		=>
-				
-				FLT_OE_OUTPUT <= '0';
-				
-				if(FLT_OE_INPUT = '0') then
-					cState <= IDLEst;
-				else
-					cState 	<= Testst;
-				end if;
-				
-			when Testst =>
-				
-				if to_integer(unsigned(SWITCH)) = 0 then
-					cState <= IDLEst;
-				else
-					tmpData <= to_integer(signed(RCV_TOFILTER)) / to_integer(unsigned(SWITCH));
-					--tmpArray <= shift_right( signed( std_logic_vector( to_signed(tmpData, tmpArray'length) ) ) ,to_integer(unsigned(SWITCH)));
-					cState	<= CALIBst;
-				end if;
-				
-			when CALIBst	=>
-			
-				if RCV_TOFILTER(19) = '0' then	--									0										65535								32768									524287						0									32768
-					tmpData <= ( to_integer(unsigned(RCV_TOFILTER)) - positive_in_min) * (positive_out_max - positive_out_min)	/ (positive_in_max - positive_in_min) + positive_out_min;					
-				else														--									1048575							32767								0											524288						1048575						0
-					tmpData <= ( to_integer(unsigned(RCV_TOFILTER)) - negative_in_min) * (negative_out_max - negative_out_min)	/ (negative_in_max - negative_in_min) + negative_out_min;					
-				end if;
-				
-				cState <= TRANSMITst;
-				
-			when TRANSMITst =>
-				
-				TSMT_TOANALOG <= std_logic_vector(to_unsigned(tmpData, TSMT_TOANALOG'length));
-				--TSMT_TOANALOG <= std_logic_vector(tmpArray);
-				FLT_OE_OUTPUT <= '1';
-				cState	<= IDLEst;
-				
-			when others	=>
-				cState <= IDLEst;
-				
-		end case;
-	end if;
- end process flt;
-
-end filter_mapFct;
 
 
 ----------------------------------------------------------------
 --
---	Filter
---	map with bit manipulation
+--	Filter - All amplitude data
+--	Map with bit manipulation
 --
 ----------------------------------------------------------------
 architecture filter_mapBit of filter is
@@ -187,7 +84,7 @@ architecture filter_mapBit of filter is
  type   T_SPISTATE is ( IDLEst, Testst, CALIBst, Mapst, TRANSMITst);
  signal cState	: T_SPISTATE;
  
- signal tmp17b		: std_logic_vector(16 downto 0);
+ signal tmp17b		: signed(16 downto 0);
  signal signedTmp	: signed(16 downto 0);
  
  
@@ -208,7 +105,7 @@ architecture filter_mapBit of filter is
 	(
 		hex_4		=> HEX4Disp,
 		hex_5		=> HEX5Disp,
-		inNumb	=> to_integer(signed(SWITCH)),
+		inNumb	=> to_integer(unsigned(SWITCH)),
 		reset		=> RESET_SIGNAL
 	);
  
@@ -234,17 +131,12 @@ architecture filter_mapBit of filter is
 				
 			when Testst =>
 				
-				if RCV_TOFILTER(19) = '0' then
-					tmp17b <= '0' & RCV_TOFILTER(19 downto 4);
-				else
-					tmp17b <= '1' & RCV_TOFILTER(19 downto 4);
-				end if;
-				
+				tmp17b <= shift_right(resize(signed(RCV_TOFILTER(19 downto 4)), tmp17b'length),to_integer(unsigned(SWITCH(3 downto 0))));
 				cState 	<= CALIBst;
 				
 			when CALIBst	=>
 				
-				signedTmp <= signed(tmp17b) + offset;
+				signedTmp <= tmp17b + offset;
 				cState 	<= TRANSMITst;
 				
 			when TRANSMITst =>
