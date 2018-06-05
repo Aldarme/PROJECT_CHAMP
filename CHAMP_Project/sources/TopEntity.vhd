@@ -107,7 +107,7 @@ reset_all <= TOP_KEY(3);
 		RESET_SIGNAL	=> reset_all
 	);
 
- f_flt: entity work.filter(filter_arch) --trivial_ftl / filter_arch
+ f_flt: entity work.filter(filter_mapBit)
 	PORT MAP
 	(
 		CLOCK_50   		=> TOP_CLOCK_50,
@@ -121,7 +121,7 @@ reset_all <= TOP_KEY(3);
 		RESET_SIGNAL	=> reset_all
 	);
 	
- s_dac: spi_DAC
+ s_dac: entity work.spi_DAC(dac_IPFifo)
 	PORT MAP
 	(
 		CLOCK_50   		=> TOP_CLOCK_50,

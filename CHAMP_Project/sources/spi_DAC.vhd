@@ -23,10 +23,16 @@ entity spi_DAC is
 
 end entity;
 
-architecture dac_Archi of spi_DAC is
 
---SPI master component
-COMPONENT spi_master
+---------------------------------------------------------
+--
+--	Archi with personnal FIFO
+--
+---------------------------------------------------------
+architecture dac_handMaidFifo of spi_DAC is
+
+ --SPI master component
+ COMPONENT spi_master
   GENERIC(
     slaves  : INTEGER := 4;  --number of spi slaves
     d_width : INTEGER := 2
@@ -47,10 +53,10 @@ COMPONENT spi_master
     rx_data : OUT    STD_LOGIC_VECTOR(d_width-1 DOWNTO 0);	--data received
 	 MISOMOSI: INOUT	STD_LOGIC
 	);
-END COMPONENT;
+ END COMPONENT;
 
---FIFO component
-COMPONENT FIFO
+ --FIFO component
+ COMPONENT FIFO
 	GENERIC
 	(
 		f_deep	: integer := 0;
@@ -68,61 +74,61 @@ COMPONENT FIFO
 		f_rdStop	: out std_logic;
 		f_reset	: IN STD_LOGIC
 	);
-END COMPONENT;
+ END COMPONENT;
 
-signal reset_n : STD_LOGIC;
-signal SampKey : STD_LOGIC_VECTOR(3 DOWNTO 0);
+ signal reset_n : STD_LOGIC;
+ signal SampKey : STD_LOGIC_VECTOR(3 DOWNTO 0);
 
-signal ss_n       : STD_LOGIC_VECTOR(0 DOWNTO 0); 
-signal spi_enable : STD_LOGIC;
-signal spi_ss_n   : STD_LOGIC_VECTOR(0 DOWNTO 0); 
-signal spi_busy   : STD_LOGIC;
-signal spi_pbusy  : STD_LOGIC;
-signal spi_sclk   : STD_LOGIC;
-signal spi_txdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
-signal spi_rxdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
+ signal ss_n       : STD_LOGIC_VECTOR(0 DOWNTO 0); 
+ signal spi_enable : STD_LOGIC;
+ signal spi_ss_n   : STD_LOGIC_VECTOR(0 DOWNTO 0); 
+ signal spi_busy   : STD_LOGIC;
+ signal spi_pbusy  : STD_LOGIC;
+ signal spi_sclk   : STD_LOGIC;
+ signal spi_txdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
+ signal spi_rxdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
 
-type   T_SPISTATE is ( WAITst, TRANSMITCONFst, TRANSMITst, WAITENDTRANSst);
-signal cState     : T_SPISTATE;
+ type   T_SPISTATE is ( WAITst, TRANSMITCONFst, TRANSMITst, WAITENDTRANSst);
+ signal cState     : T_SPISTATE;
 
-type    T_WORD_ARR is array (natural range <>) of std_logic_vector;
+ type    T_WORD_ARR is array (natural range <>) of std_logic_vector;
 
-constant WRITEnUPDATE  	: std_logic_vector(3 downto 0) := 4x"3";
-constant DAC_ADDRESS		: std_logic_vector(3 downto 0) := 4x"0";
+ constant WRITEnUPDATE  	: std_logic_vector(3 downto 0) := 4x"3";
+ constant DAC_ADDRESS		: std_logic_vector(3 downto 0) := 4x"0";
 
-constant SPI_CONFIG : T_WORD_ARR:= (
+ constant SPI_CONFIG : T_WORD_ARR:= (
 			WRITEnUPDATE,
 			DAC_ADDRESS			
 			);
 
-constant CLOCK_50_FREQ : real:=50.0E6;
-constant SPI_READ_FREQ : real:=1.0E3;
-constant SPI_READ_NCLK : natural:=natural( ceil(CLOCK_50_FREQ/SPI_READ_FREQ) );
+ constant CLOCK_50_FREQ : real:=50.0E6;
+ constant SPI_READ_FREQ : real:=1.0E3;
+ constant SPI_READ_NCLK : natural:=natural( ceil(CLOCK_50_FREQ/SPI_READ_FREQ) );
 
-signal   spi_read_cpt  : natural range 0 to SPI_READ_NCLK;
-signal   spi_read_cpt_zero :  std_logic;
+ signal   spi_read_cpt  : natural range 0 to SPI_READ_NCLK;
+ signal   spi_read_cpt_zero :  std_logic;
 
-signal	previous	: std_logic := '0';
-signal	cpt_spiClock : integer := 24;
-signal	current	: std_logic := '0';
+ signal	previous	: std_logic := '0';
+ signal	cpt_spiClock : integer := 24;
+ signal	current	: std_logic := '0';
 
 --FIFO SIGNAL
-signal fifo_write : std_logic_vector(15 downto 0);
-signal fifo_oe_w  : std_logic :='0';
-signal fifo_read  : std_logic_vector(15 downto 0) := (others => '0');
-signal fifo_oe_r  : std_logic :='0';
-signal fifo_rdStop: std_logic := '0';
+ signal fifo_write : std_logic_vector(15 downto 0);
+ signal fifo_oe_w  : std_logic :='0';
+ signal fifo_read  : std_logic_vector(15 downto 0) := (others => '0');
+ signal fifo_oe_r  : std_logic :='0';
+ signal fifo_rdStop: std_logic := '0';
 
 
 begin
 
-reset_n <= RESET_SIGNAL;
+ reset_n <= RESET_SIGNAL;
 
-GPIO_SPI_CLK	<= spi_sclk;		--GPIO( 5 )
-GPIO_SPI_SS		<= spi_ss_n(0);	--GPIO( 7 )
+ GPIO_SPI_CLK	<= spi_sclk;		--GPIO( 5 )
+ GPIO_SPI_SS		<= spi_ss_n(0);	--GPIO( 7 )
 
 
-sm_dac: entity work.spi_master(SPI_DAC)
+ sm_dac: entity work.spi_master(SPI_DAC)
 
   GENERIC MAP (
     slaves  => 1,
@@ -222,7 +228,7 @@ fifo_c: FIFO
 					cState <= TRANSMITst;
 				
 				when TRANSMITst =>
-					fifo_oe_r 		<= '0';
+					--fifo_oe_r 		<= '0';
 					spi_enable		<= '1';
 					DAC_OE_OUTPUT	<= '1';
 					spi_txdata(15 downto 0)	 <= fifo_read;
@@ -232,6 +238,7 @@ fifo_c: FIFO
 				
 				when WAITENDTRANSst =>
 					
+					fifo_oe_r 		<= '0';
 					spi_enable 		<= '0';
 					DAC_OE_OUTPUT	<= '0';
 					
@@ -261,4 +268,210 @@ fifo_c: FIFO
 		
 	end process statep;
 
-end dac_Archi;
+end dac_handMaidFifo;
+
+
+
+---------------------------------------------------------
+--
+--	Archi with IP catalog FIFO
+--
+---------------------------------------------------------
+architecture dac_IPFifo of spi_DAC is
+
+--SPI master component
+ COMPONENT spi_master
+  GENERIC(
+    slaves  : INTEGER := 4;  --number of spi slaves
+    d_width : INTEGER := 2
+	 ); --data bus width
+  PORT(
+    clock   : IN     STD_LOGIC;                             --system clock
+    reset_n : IN     STD_LOGIC;                             --asynchronous reset
+    enable  : IN     STD_LOGIC;                             --initiate transaction
+    cpol    : IN     STD_LOGIC;                             --spi clock polarity
+    cpha    : IN     STD_LOGIC;                             --spi clock phase
+    cont    : IN     STD_LOGIC;                             --continuous mode command
+    clk_div : IN     INTEGER;                               --system clock cycles, based on 1/2 period of clock (~10MHz -> 3 ; 100K -> 250)
+    addr    : IN     INTEGER;                               --address of slave
+    tx_data : IN     STD_LOGIC_VECTOR(d_width-1 DOWNTO 0);	--data to transmit
+    sclk    : BUFFER STD_LOGIC;                             --spi clock
+    ss_n    : BUFFER STD_LOGIC_VECTOR(slaves-1 DOWNTO 0);   --slave select
+    busy    : OUT    STD_LOGIC;                             --busy / data ready signal
+    rx_data : OUT    STD_LOGIC_VECTOR(d_width-1 DOWNTO 0);	--data received
+	 MISOMOSI: INOUT	STD_LOGIC
+	);
+ END COMPONENT;
+
+--FIFO component
+COMPONENT IP_FIFO
+	PORT
+	(
+		clock		: IN STD_LOGIC ;
+		data		: IN STD_LOGIC_VECTOR (15 DOWNTO 0);
+		rdreq		: IN STD_LOGIC ;
+		wrreq		: IN STD_LOGIC ;
+		empty		: OUT STD_LOGIC ;
+		full		: OUT STD_LOGIC ;
+		q				: OUT STD_LOGIC_VECTOR (15 DOWNTO 0)
+	);
+END COMPONENT;
+
+signal reset_n : STD_LOGIC;
+signal SampKey : STD_LOGIC_VECTOR(3 DOWNTO 0);
+
+signal ss_n       : STD_LOGIC_VECTOR(0 DOWNTO 0); 
+signal spi_enable : STD_LOGIC;
+signal spi_ss_n   : STD_LOGIC_VECTOR(0 DOWNTO 0); 
+signal spi_busy   : STD_LOGIC;
+signal spi_pbusy  : STD_LOGIC;
+signal spi_sclk   : STD_LOGIC;
+signal spi_txdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
+signal spi_rxdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
+
+type   T_SPISTATE is ( IDLEst, WRITEst, TRANSMITCONFst, TRANSMITst, WAITENDTRANSst);
+signal cState     : T_SPISTATE;
+
+type    T_WORD_ARR is array (natural range <>) of std_logic_vector;
+
+constant WRITEnUPDATE  	: std_logic_vector(3 downto 0) := 4x"3";
+constant DAC_ADDRESS		: std_logic_vector(3 downto 0) := 4x"0";
+
+constant SPI_CONFIG : T_WORD_ARR:= (
+			WRITEnUPDATE,
+			DAC_ADDRESS			
+			);
+
+signal	previous			: std_logic 	:= '0';
+signal	current				: std_logic			:= '0';
+signal	cpt_spiClock	: integer 	:= 0;
+
+--FIFO SIGNAL
+signal fifo_write : std_logic_vector(15 downto 0);
+signal fifo_oe_w  : std_logic :='0';
+signal fifo_read  : std_logic_vector(15 downto 0) := (others => '0');
+signal fifo_oe_r  : std_logic :='0';
+signal isEmpty		:	std_logic :='0';
+signal isFull			: std_logic :='0';
+
+begin
+ reset_n <= RESET_SIGNAL;
+
+ GPIO_SPI_CLK	<= spi_sclk;		--GPIO( 5 )
+ GPIO_SPI_SS		<= spi_ss_n(0);	--GPIO( 7 )
+
+ sm_dac: entity work.spi_master(SPI_DAC)
+
+  GENERIC MAP (
+    slaves  => 1,
+    d_width => 24
+	 )
+  PORT MAP(
+    clock    => CLOCK_50,
+    reset_n  => reset_n,
+    enable   => spi_enable,
+    cpol     => '1',
+    cpha     => '1',                  --spi clock phase
+    cont     => '0',                  --continuous mode command
+    clk_div  => 5,										--system clock cycles, based on 1/2 period of clock (~10MHz -> 3 ; 100K -> 250)
+    addr     => 0,                    --address of slave
+    tx_data  => spi_txdata,           --data to transmit
+    sclk     => spi_sclk,             --spi clock
+    ss_n     => spi_ss_n,             --slave select
+    busy     => spi_busy,             --busy / data ready signal
+    rx_data  => spi_rxdata,						--data received
+	 MISOMOSI => GPIO_SPI_SDIO 					--GPIO(6)
+	);
+
+fifo_ip: IP_FIFO
+	PORT MAP
+	(
+		clock	=> CLOCK_50,
+		data	=> fifo_write,
+		rdreq	=> fifo_oe_r, 
+		wrreq	=> fifo_oe_w,
+		empty	=> isEmpty,
+		full	=> isFull,
+		q			=> fifo_read
+	);
+	
+	--
+	-- Key reset process
+	--
+	samp: process(reset_n, CLOCK_50) is
+	
+	begin 
+		if(reset_n = '0') then
+			
+			SampKey <= ( others=> '1' );
+			
+		elsif(rising_edge(CLOCK_50)) then
+			
+			SampKey <= KEY;
+			
+		end if;
+	end process samp;
+
+	--
+	-- SPI DAC state machine
+	--
+
+	statep: process( reset_n, CLOCK_50 )
+	
+	begin
+		if reset_n = '0' then
+			spi_enable <= '0';
+			spi_pbusy <= '1';
+			cState <= IDLEst;
+			
+		elsif rising_edge( CLOCK_50) then
+			
+			case cState is
+					
+				when IDLEst =>
+--					cpt_spiClock <= 0;
+					
+					if DAC_OE_INPUT = '0' then
+						cState <= IDLEst;						
+					else
+						if isFull = '0' then
+							fifo_oe_w <= '1';
+							cState		<= WRITEst;
+						else
+							cState <= IDLEst;
+						end if;
+					end if;
+					
+				when WRITEst =>
+					fifo_write	<= RECV_DATA;
+					fifo_oe_r		<= '1';
+					spi_enable	<= '1';
+					DAC_OE_OUTPUT	<= '1';
+					
+					cState			<= TRANSMITst;
+					
+				when TRANSMITst =>
+					fifo_oe_w <= '0';
+					spi_txdata(15 downto 0)	 <= fifo_read;
+					spi_txdata(19 downto 16) <= SPI_CONFIG(1);
+					spi_txdata(23 downto 20) <= SPI_CONFIG(0);
+					
+					cState <= TRANSMITCONFst;
+					
+				when TRANSMITCONFst =>
+					
+					fifo_oe_r			<= '0';
+					spi_enable		<= '0';
+					DAC_OE_OUTPUT	<= '0';
+					
+					cState <= IDLEst;
+					
+				when others	=>
+					cState <= IDLEst;
+					
+			end case;
+		end if;
+		
+	end process statep;
+
+end dac_IPFifo;
