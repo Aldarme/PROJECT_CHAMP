@@ -1,0 +1,24 @@
+Anlg Ch State  Units/Div   Position  Coupling  BW Limit  Invert 
+ Ch 1:    On     500mV/   -1.31900V     DC        Off      Off  
+ Ch 2:    On     500mV/    1.50000V     DC        Off      Off  
+
+Anlg Ch Impedance   Probe  
+ Ch 1:    50 Ohm   1.0 : 1 
+ Ch 2:    1M Ohm   1.0 : 1 
+
+Trigger Mode  Coupling  Holdoff 
+   TV   Auto     TV       60ns  
+
+Trigger Source  Polarity  Standard   Mode  
+   TV    Ch 1   Positive    NTSC    Field1 
+
+ Time  Time Ref  Main s/div  Delay 
+Normal  Center    100.0ms/    0.0s 
+
+Acquisition # Avgs  Realtime  Vectors  Inf Persist 
+ Averaging     8       Off       On        Off     
+
+   Measure   Current  Mean  Min  Max  Std Dev  Count 
+Frequency(1)  10.0Hz                             0   
+  Pk-Pk(1)    400mV                              0   
+
