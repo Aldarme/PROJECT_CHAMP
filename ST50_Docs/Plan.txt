@@ -17,6 +17,7 @@ caractérisation du projet
 	planning daté du travail 
 		OK - prévisionnel
 		OK - réel
+		OK - rédaction
 	
 Travaux réalisés
 
