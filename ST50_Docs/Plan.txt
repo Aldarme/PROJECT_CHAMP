@@ -1,5 +1,41 @@
+PLAN DU RAPPORT
 
-Dans cette partie, on cherche à introduire le travail réaliser, pour cela on va tout d'abord introduire la chaine de mesure dans son ensemble.
+Présentation du projet
+Cara
+	OK - sujet défini avant votre arrivée
+
+caractérisation du projet	
+
+	OK - synthèse du projet
+	OK - présention des travaux
+	OK - objectifs visés
+
+	OK - place (rôle, fonction) occupée dans le service
+
+	OK - introduction au travaux réalisé
+	
+	planning daté du travail 
+		OK - prévisionnel
+		OK - réel
+	
+Travaux réalisés
+
+	déroulement du travail
+
+Conclusion
+
+	synthèse des résultats
+	observations
+	estimation du gain financier apporté par votre activité (cette info peut être monnayable lors d’une embauche)
+
+
+
+
+*************************************************************************************************
+
+Dans cette partie, on cherche à introduire le travail réaliser, pour cela on va tout 
+d'abord introduire la chaine de mesure dans son ensemble.
+
 le rôle de la chaine
 les éléments et leur rôle
 
@@ -14,7 +50,7 @@ les éléments et leur rôle
 			moteurs
 
 
-****************************************************************************************************************
+*************************************************************************************************
 
 Ensuite, on commence à rentrer dans le vif du sujet
 
@@ -26,16 +62,16 @@ filtre
 	présenter la manip pour sortir la fonction de transfère
 dac
 
-****************************************************************************************************************
+*************************************************************************************************
 
 On passe à la présentation de modelisation et leur rôle
 
-****************************************************************************************************************
+*************************************************************************************************
 
 Les cartes réalisé pour le projet
 
 
-****************************************************************************************************************
+*************************************************************************************************
 
 Conclusion
 

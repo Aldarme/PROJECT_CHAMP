@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="Projet_CHAMP" company="Laboratoire de Physique nucléaire et des Hautes Energies" webLink="http://" view-date="2018-02-18" view-index="0" gantt-divider-location="384" resource-divider-location="300" version="2.8.7" locale="fr">
+    <description/>
+    <view zooming-state="default:6" id="gantt-chart">
+        <field id="tpd3" name="Nom" width="226" order="0"/>
+        <field id="tpd4" name="Date de début" width="62" order="1"/>
+        <field id="tpd5" name="Date de fin" width="92" order="2"/>
+        <timeline>
+            <![CDATA[0]]>
+        </timeline>
+        <option id="color.recent">
+            <![CDATA[#cccccc]]>
+        </option>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Nom" width="210" order="0"/>
+        <field id="1" name="Rôle par défaut" width="86" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+        <date year="" month="1" date="1" type="HOLIDAY">
+            <![CDATA[New Year's Day]]>
+        </date>
+        <date year="" month="5" date="1" type="HOLIDAY">
+            <![CDATA[Labour Day]]>
+        </date>
+        <date year="" month="5" date="8" type="HOLIDAY">
+            <![CDATA[V-E Day]]>
+        </date>
+        <date year="" month="7" date="14" type="HOLIDAY">
+            <![CDATA[Bastille Day]]>
+        </date>
+        <date year="" month="8" date="15" type="HOLIDAY">
+            <![CDATA[Assumption Day]]>
+        </date>
+        <date year="" month="11" date="1" type="HOLIDAY">
+            <![CDATA[All Saints Day]]>
+        </date>
+        <date year="" month="11" date="11" type="HOLIDAY">
+            <![CDATA[Armistice Day]]>
+        </date>
+        <date year="" month="12" date="25" type="HOLIDAY">
+            <![CDATA[Christmas Day]]>
+        </date>
+        <date year="2008" month="5" date="12" type="HOLIDAY">
+            <![CDATA[Whitmonday]]>
+        </date>
+        <date year="2009" month="6" date="1" type="HOLIDAY">
+            <![CDATA[Whitmonday]]>
+        </date>
+        <date year="2009" month="7" date="13" type="NEUTRAL">
+            <![CDATA[Bastille Day]]>
+        </date>
+        <date year="2010" month="4" date="5" type="HOLIDAY">
+            <![CDATA[Easter Monday]]>
+        </date>
+        <date year="2010" month="5" date="13" type="HOLIDAY">
+            <![CDATA[Ascension Day]]>
+        </date>
+        <date year="2010" month="5" date="24" type="HOLIDAY">
+            <![CDATA[Whitmonday]]>
+        </date>
+        <date year="2011" month="4" date="25" type="HOLIDAY">
+            <![CDATA[Easter Monday]]>
+        </date>
+        <date year="2011" month="5" date="29" type="NEUTRAL">
+            <![CDATA[Mothers Day]]>
+        </date>
+        <date year="2011" month="6" date="2" type="HOLIDAY">
+            <![CDATA[Ascension Day]]>
+        </date>
+        <date year="2011" month="6" date="13" type="HOLIDAY">
+            <![CDATA[Whitmonday]]>
+        </date>
+        <date year="2011" month="6" date="19" type="NEUTRAL">
+            <![CDATA[Fathers Day]]>
+        </date>
+        <date year="2012" month="1" date="2" type="HOLIDAY">
+            <![CDATA[New Years Day (in lieu)]]>
+        </date>
+        <date year="2012" month="4" date="9" type="HOLIDAY">
+            <![CDATA[Easter Monday]]>
+        </date>
+        <date year="2012" month="5" date="17" type="HOLIDAY">
+            <![CDATA[Ascension Day]]>
+        </date>
+        <date year="2012" month="5" date="28" type="HOLIDAY">
+            <![CDATA[Whitmonday]]>
+        </date>
+        <date year="2012" month="6" date="3" type="NEUTRAL">
+            <![CDATA[Mothers Day]]>
+        </date>
+        <date year="2012" month="6" date="17" type="NEUTRAL">
+            <![CDATA[Fathers Day]]>
+        </date>
+        <date year="2012" month="11" date="12" type="HOLIDAY">
+            <![CDATA[Armistice Day (in Lieu)]]>
+        </date>
+        <date year="2012" month="12" date="25" type="HOLIDAY">
+            <![CDATA[Christmas Day]]>
+        </date>
+        <date year="2013" month="4" date="1" type="HOLIDAY">
+            <![CDATA[Easter Monday]]>
+        </date>
+        <date year="2013" month="5" date="9" type="HOLIDAY">
+            <![CDATA[Ascension Day]]>
+        </date>
+        <date year="2013" month="5" date="20" type="HOLIDAY">
+            <![CDATA[Whitmonday]]>
+        </date>
+        <date year="2013" month="5" date="26" type="NEUTRAL">
+            <![CDATA[Mothers Day]]>
+        </date>
+        <date year="2013" month="6" date="16" type="NEUTRAL">
+            <![CDATA[Fathers Day]]>
+        </date>
+        <date year="2014" month="4" date="21" type="HOLIDAY">
+            <![CDATA[Easter Monday]]>
+        </date>
+        <date year="2014" month="5" date="25" type="NEUTRAL">
+            <![CDATA[Mothers Day]]>
+        </date>
+        <date year="2014" month="5" date="29" type="NEUTRAL">
+            <![CDATA[Ascension Day]]>
+        </date>
+        <date year="2014" month="6" date="9" type="HOLIDAY">
+            <![CDATA[Whitmonday]]>
+        </date>
+        <date year="2014" month="6" date="15" type="HOLIDAY">
+            <![CDATA[Fathers Day]]>
+        </date>
+        <date year="2015" month="4" date="6" type="HOLIDAY">
+            <![CDATA[Easter Monday]]>
+        </date>
+        <date year="2015" month="5" date="14" type="HOLIDAY">
+            <![CDATA[Ascension Day]]>
+        </date>
+        <date year="2015" month="5" date="24" type="NEUTRAL">
+            <![CDATA[Mothers Day]]>
+        </date>
+        <date year="2015" month="5" date="25" type="HOLIDAY">
+            <![CDATA[Whitmonday]]>
+        </date>
+        <date year="2015" month="6" date="21" type="NEUTRAL">
+            <![CDATA[Fathers Day]]>
+        </date>
+        <date year="2016" month="3" date="28" type="HOLIDAY">
+            <![CDATA[Easter Monday]]>
+        </date>
+        <date year="2016" month="5" date="5" type="HOLIDAY">
+            <![CDATA[Ascension Day]]>
+        </date>
+        <date year="2016" month="5" date="16" type="HOLIDAY">
+            <![CDATA[Whitmonday]]>
+        </date>
+        <date year="2016" month="5" date="29" type="NEUTRAL">
+            <![CDATA[Mothers Day]]>
+        </date>
+        <date year="2016" month="6" date="19" type="NEUTRAL">
+            <![CDATA[Fathers Day]]>
+        </date>
+        <date year="2016" month="12" date="26" type="HOLIDAY">
+            <![CDATA[Christmas Day (observed)]]>
+        </date>
+        <date year="2017" month="4" date="17" type="HOLIDAY">
+            <![CDATA[Easter Monday]]>
+        </date>
+        <date year="2017" month="5" date="25" type="HOLIDAY">
+            <![CDATA[Ascension Day]]>
+        </date>
+        <date year="2017" month="5" date="28" type="NEUTRAL">
+            <![CDATA[Mother's Day]]>
+        </date>
+        <date year="2017" month="6" date="5" type="HOLIDAY">
+            <![CDATA[Whitmonday]]>
+        </date>
+        <date year="2017" month="6" date="18" type="NEUTRAL">
+            <![CDATA[Father's Day]]>
+        </date>
+        <date year="2018" month="4" date="2" type="HOLIDAY">
+            <![CDATA[Easter Monday]]>
+        </date>
+        <date year="2018" month="5" date="10" type="HOLIDAY">
+            <![CDATA[Ascension Day]]>
+        </date>
+        <date year="2018" month="5" date="21" type="HOLIDAY">
+            <![CDATA[Whit Monday]]>
+        </date>
+        <date year="2018" month="5" date="27" type="NEUTRAL">
+            <![CDATA[Mother's Day]]>
+        </date>
+        <date year="2018" month="6" date="17" type="NEUTRAL">
+            <![CDATA[Father's Day]]>
+        </date>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="0" name="Arrivé &amp; prise de contact" color="#cccccc" shape="1,0,1,0,0,1,0,1,1,0,1,0,0,1,0,1" meeting="false" start="2018-02-05" duration="5" complete="0" thirdDate="2018-02-05" thirdDate-constraint="0" expand="true">
+            <notes>
+                <![CDATA[
+                
+                
+                
+                
+                
+                
+                
+                Suite à mon arrivé au laboratoire,
+j'ai lors de ces deux semaines, pris mes marques au sein du laboratoire,
+rencontré les membres du bureau électronique, avec qui j'allais être amené à travailler.
+Par la suite, des rendez-vous ont été mise en place avec mon maitre de stage et le directeur de recherche en charge du projet, afin de définir ce derniers et de me présenter les premières pistes de recherches qui ont été exploré.
+            
+            
+            
+            
+            
+            
+            
+            ]]>
+            </notes>
+        </task>
+        <task id="1" name="Prise en main du projet" meeting="false" start="2018-02-12" duration="5" complete="0" expand="true"/>
+        <task id="3" name="Découverte &amp; apprentissage du VHDL" meeting="false" start="2018-02-19" duration="2" complete="0" expand="true"/>
+        <task id="7" name="mise en pratique VHDL" meeting="false" start="2018-02-22" duration="5" complete="0" expand="true"/>
+        <task id="16" name="Prototype maquette piano à une touche" meeting="false" start="2018-03-01" duration="53" complete="0" expand="true">
+            <task id="8" name="Module accéléromètre" meeting="false" start="2018-03-01" duration="17" complete="0" expand="true">
+                <task id="9" name="étude comparative I2C vs SPI" meeting="false" start="2018-03-01" duration="2" complete="0" expand="true"/>
+                <task id="10" name="étude des registres de contrôle à paramétrer" meeting="false" start="2018-03-05" duration="2" complete="0" expand="true"/>
+                <task id="11" name="Hack du controle SPI accéléromètre" meeting="false" start="2018-03-07" duration="3" complete="0" expand="true"/>
+                <task id="13" name="Dev. code VHDL communication accéléromètre" meeting="false" start="2018-03-12" duration="10" complete="0" expand="true"/>
+            </task>
+            <task id="14" name="Module FIltre" meeting="false" start="2018-03-26" duration="19" complete="0" expand="true">
+                <task id="15" name="Acquisition des données" meeting="false" start="2018-03-26" duration="2" complete="0" expand="true"/>
+                <task id="19" name="caractérisation des données et interprétation" meeting="false" start="2018-03-28" duration="3" complete="0" expand="true"/>
+                <task id="20" name="Asservissement numérique" meeting="false" start="2018-04-03" duration="14" complete="0" expand="true">
+                    <task id="22" name="expérence en labo pour production des données" meeting="false" start="2018-04-03" duration="4" complete="0" expand="true"/>
+                    <task id="21" name="étude de graph-établir fonction de transfère" meeting="false" start="2018-04-09" duration="5" complete="0" expand="true"/>
+                    <task id="23" name="calcule de la fonction de transfère" meeting="false" start="2018-04-16" duration="3" complete="0" expand="true"/>
+                    <task id="24" name="intégration fonction transfère au module vhdl" meeting="false" start="2018-04-19" duration="2" complete="0" expand="true"/>
+                </task>
+            </task>
+            <task id="25" name="Module DAC" meeting="false" start="2018-04-23" duration="17" complete="0" expand="true">
+                <task id="26" name="reception des données" meeting="false" start="2018-04-23" duration="2" complete="0" expand="true"/>
+                <task id="28" name="transmision sous module SPI" meeting="false" start="2018-04-25" duration="2" complete="0" expand="true"/>
+                <task id="29" name="Adaptation module spi existant" meeting="false" start="2018-04-27" duration="3" complete="0" expand="true"/>
+                <task id="30" name="configuration des registre de contrôle du DAC" meeting="false" start="2018-05-03" duration="2" complete="0" expand="true"/>
+                <task id="31" name="mesure physique en sortie de DAC et débugage" meeting="false" start="2018-05-07" duration="8" complete="0" expand="true"/>
+            </task>
+        </task>
+        <task id="32" name="Conception carte électronique" meeting="false" start="2018-05-23" duration="22" complete="0" expand="true">
+            <task id="36" name="formation au plassement routage sous KICAD" meeting="false" start="2018-05-23" duration="2" complete="0" expand="true"/>
+            <task id="33" name="PCB miniaturisation accéléromètre" meeting="false" start="2018-05-25" duration="6" complete="0" expand="true"/>
+            <task id="34" name="PCB amplificateur de signaux" meeting="false" start="2018-06-04" duration="5" complete="0" expand="true"/>
+            <task id="35" name="PCB mezzanine - carte à connecteurs" meeting="false" start="2018-06-11" duration="5" complete="0" expand="true"/>
+            <task id="37" name="formation production &amp; assemblage des cartes" meeting="false" start="2018-06-18" duration="4" complete="0" expand="true"/>
+        </task>
+        <task id="38" name="mesure et caractérisation de la chaine de contrôle" meeting="false" start="2018-06-22" duration="11" complete="0" expand="true">
+            <task id="39" name="caractérisation de l'accélération fournie par l'accélérpmètre" meeting="false" start="2018-06-22" duration="2" complete="0" expand="true"/>
+            <task id="40" name="expérimentation des diffénrents mode de contrôle fournie par le contrôleur moteur" meeting="false" start="2018-06-26" duration="3" complete="0" expand="true"/>
+            <task id="41" name="conception d'une maquette pour caractériser le contrôle &quot;TORQUE&quot; du contôleur" meeting="false" start="2018-06-29" duration="4" complete="0" expand="true"/>
+            <task id="43" name="exploitation des données" meeting="false" start="2018-07-05" duration="2" complete="0" expand="true"/>
+        </task>
+        <task id="44" name="prototype maquette piano à 12 touches" meeting="false" start="2018-07-09" duration="5" complete="0" expand="true">
+            <task id="45" name="déploiement de generate pour dupliquer les module accéléromètre et filtre" meeting="false" start="2018-07-09" duration="2" complete="0" expand="true"/>
+            <task id="46" name="adaptation du vhdl pour intégration module DAC à la réception des modules dupliqués" meeting="false" start="2018-07-11" duration="2" complete="0" expand="true"/>
+            <task id="47" name="test" meeting="false" start="2018-07-13" duration="1" complete="0" expand="true"/>
+        </task>
+    </tasks>
+    <resources/>
+    <allocations/>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+    <roles roleset-name="SoftwareDevelopment"/>
+</project>
