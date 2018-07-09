@@ -51,7 +51,7 @@ les éléments et leur rôle
 				FILTRE
 			DAC
 			Controlleur moteur
-			moteurs
+			Moteurs
 
 
 *************************************************************************************************
