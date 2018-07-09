@@ -14,7 +14,7 @@ caractérisation du projet
 
 	OK - introduction au travaux réalisé
 	
-	planning daté du travail 
+	OK - Planning daté du travail 
 		OK - prévisionnel
 		OK - réel
 		OK - rédaction
@@ -31,6 +31,9 @@ Conclusion
 
 
 
+
+
+TRAVAUX REALISES
 
 *************************************************************************************************
 
