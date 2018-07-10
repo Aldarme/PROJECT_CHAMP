@@ -13,6 +13,7 @@
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 \usepackage{pdfpages}
+\usepackage{amsmath}
 
 \lstset{frame=tb,
   language=Java,
@@ -184,7 +185,7 @@ Suite à cette introduction, nous allons poursuivre avec la présentation du lab
 	
   	-"SLAC" ou "BABAR", est une expérience de physique des particules réalisé au Stanford Linear Accelerator Center. Elle est dédiée à létudes de la physique des mésons B et de la violation de la symétrie CP dans leur désintégration faibles.
   	
-  	\textsc{\begin{figure}[h]
+  \textsc{\begin{figure}[h]
      \begin{minipage}[c]{.46\linewidth}
          \centering
          \includegraphics[width=4cm]{T2K.jpg}
@@ -569,9 +570,14 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 	
 	\newpage
 	
-	\subsection{Première manipulation}
+	\section{Première manipulation}
 	
-		A travers cette première manipulation, nous avons cherché à déterminer la fonction de transfère de notre modèle, comme le décris le shéma ci-dessous.
+		\subsection{Introduction}
+	
+		A travers cette première manipulation, nous avons cherché à déterminer la fonction de transfère de notre modèle, en visualisant à l'aide d'un graphique, les données fournie en entrée du système (prevenant du DAC), ainsi que les données en sortie de notre modèle (une foie traité par le contrôleur moteur).
+		En procédent ainsi, nous allons pouvoir observer et comparer l'évolution de nos courbes en fonction du temps et ainsi déterminer si ces dernières évolues selon le même shéma, ou si le traitement des données par le contrôleur moteur induit un retard au sein du système.
+		
+	On retrouve ci-dessous, le shéma bloc de la première manipulation réalisé.
 		
 	\begin{figure}[!ht]
     \center
@@ -580,21 +586,102 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
     \caption{Schéma bloc - Première manipulation}
 	\end{figure}	
 		
-		Nous avons utilisé un générateur de fonction 
+		Come illustré ci-dessus, nous utilisons un générateur de fonction afin de transmettre une impulsion au contrôleur moteur, sous la forme d'une rampe croissante.
+		Grâce à l'oscilloscope numérique intégré au sein du logiciel de configuration des contrôleurs Faulhaber, nous avons pu mesurer la position du barreau aimanté en fonction du temps, via l'exploitation des données provenant des capteurs à effet hall, ainsi que le niveau de tension du signal analogique d'entré.
+		
+		De plus, le contrôleur moteur de Faulhaber proposant différent mode de contrôle pour le moteur, tel qu'un contrôle en Position, en Vitesse et en Accélération, nous avons cherché à exploiter les données mesurés, afin de caractériser ces différents mode de contrôle et valider ou non, leurs bon fonctionnement, en accord avec le comportement souhaité.
+		
+		Nous avons tout dabord commencé par tracer sous forme de graphiques, les courbes des trois différents mode de contrôle proposé par le contrôleur sous différents niveaux de tensions, variant sur un intervale allant de 1 volt, jusqu'à 5 volts.
+		De plus, nous avons également mesuré pour chaque niveau de tensions, l'évolution de la grandeur analogique en entrée du contrôleur moteur. Tracer les courbes d'évolutions des grandeurs analogique en entré nous permet de nous assurer que les signaux discrets échantilloné et utilisé par le contrôleur, correspondent bien au signaux fournie par le générateur de fonction.
+		
+		On retrouve ainsi, les graphiques suivants:
+		
+	\textsc{\begin{figure}[h]
+     \begin{minipage}[c]{.46\linewidth}
+         \centering
+         \includegraphics[width=8.3cm]{m1_pos.png}
+         \caption{Graphique de position en fonction du temps}
+     \end{minipage}
+     \hfill%
+     \begin{minipage}[c]{.46\linewidth}
+         \centering
+         \includegraphics[width=9cm]{m1_speed.png}
+         \caption{Graphique de vitesse en fonction du temps}
+     \end{minipage}
+     \hfill%
+     \begin{minipage}[c]{.46\linewidth}
+         \centering
+         \includegraphics[width=8.3cm]{m1_torque.png}
+         \caption{Graphique d'accélération en fonction du temps}
+     \end{minipage}
+     \hfill%
+     \begin{minipage}[c]{.46\linewidth}
+         \centering
+         \includegraphics[width=9cm]{m1_AnIn.png}
+         \caption{Graphique des entrées analogique en fonction du temps}
+     \end{minipage}
+ 	\end{figure}} 
+		
+	Dans un premiers temps, pour chacun des graphiques ci-dessus, on peut obersver une évolution des courbe, qui parait être en accord avec le comportement attendu. Ainsi, que l'on analyse le mode de position, de vitesse, ou d'accélération, on peut observer que l'ensemble des courbes décroissent de plus en plus rapidement, plus le niveau de tension appliqué deviens élevé. Il en va de même pour les courbes du graphiques de l'entrée analogique en fonction du temps, plus le niveau de tension augmente, plus la pente des rampes devient importante. Ainsi, jusque içi, nous restions plutôt confiant.
+	
+	Par la suite, nous avons commencer à nous intérresser et nous concentrer sur le mode de contrôle en accélération (mode torque) de notre contrôleur. En effet, étant donné qu'à l'aide de notre module, nous captons le signal d'accélération de la touche de notre piano, l'utilisation du contrôle en accélération (torque) de notre contrôleur nous parut comme étant un choix intéressant et logique pour le contrôle des moteurs; nous permettant de travailler sur les données brutes du signal d'accéléromètre, sans besoin de l'intégre pour en obtenir la vitesse, et donc d'intégrer avec ce derniers, des erreurs.
+	
+	Etant donné que les données sont obtenues par intégrations successives, donc par sommes successives. Or, d'une part, les mesures ne peuvent pas être prises réellement en continu; donc, les sommes introduiront nécessairement de petites erreurs. D'autre part, même avec une mesure parfaitement exacte de l'accélération, on se retrouve avec une estimation de la vitesse qui dérive petit à petit, en fonction des erreurs accumulées. La position est obtenue en intégrant la vitesse, y compris son erreur d'intégration. Ainsi, l'erreur de position sera quadratique par rapport aux approximations initiales. 
+	
+	C'est pour cette raison, que nous nous sommes appliqué à mettre en place le contrôle en accélération sur notre contrôleur. Mais avant d'implanter cette solution, nous avons tout de même cherché à vérifier si ce dis mode de contrôle en accélération (mode torque), appliquait au moteur un comportement image de l'accélération mesuré. Même si ce mode de contrôle parraissait être "idéal" pour le projet, un premiers élément attira notre attention. Ce mode de contrôle en accélération étant nommé contrôle "Torque", il traduirait l'appliquation d'un couple sur notre moteur, pour mettre se derniers en mouvement, hors un couple appliqué à un moteur en translation, parait quelque peut contradictoire.
+	Une fois la documentation du contrôleur vérifié, il s'avère que ce mode de contrôle "Torque" soit un asservissement numérique sous la forme d'un correcteur Proportionnel Intégral (PI) en courant; se derniers combinant l'action des correcteurs précédents pour améliorer les performances globales du système asservi. Mais, bien qu'étant un asservissement en courant, une solution de contrôle plutot aisé à mettre en oeuvre, serait de comparer la courbe du contrôle en accélération avec la courbe la courbe de la deuxième dérivé du contrôle en position. En procédant ainsi, nous devrions avoir deux courbes ayant la même allure, permettant ainsi de valider le comportement du contrôle en accélération.
+	
+		\subsection{Caractérisation du mode de contrôle en accélération ou mode "Torque"}
+
+	Souhaitant obtenir une courbe d'accélération en nous basant sur un mode de contrôle en position, il va donc nous falloir dériver deux fois notre fonction, afin d'obtenir une courbe d'accélération exploitable.
+	Notre système à dérivé étant une fonction discrète, nous allons calculer sa dérivé première comme suivant: 
+	
+	\[	
+		f'(x) = \frac{f(x+h) - f(x-h)}{2h}
+	\]
+	
+	puis, sa dérivé seconde:
+	
+	\[	
+		f''(x) = \frac{f(x+h) - 2f(x) + f(x-h)}{h^2}
+	\]
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	\subsection{Seconde manipulation}
+		\textsc{\begin{figure}[h]
+    	\begin{minipage}[c]{.46\linewidth}
+         \centering
+         \includegraphics[width=8.3cm]{fscd.png}
+         \caption{Graphique de la dérivé seconde de la position en fonction du temps}
+    	\end{minipage}
+     	\hfill%
+     	\begin{minipage}[c]{.46\linewidth}
+         \centering
+         \includegraphics[width=9cm]{torque.png}
+         \caption{Graphique de l'accélération en fonction du temps}
+    	\end{minipage}
+		\end{figure}}
+		
+		Grâce aux graphiques ci-dessous, nous pouvons nous apercevoir que nos deux graphiques ont une allure en rien comparable, jettant un doute sur le fonctionnement du mode "torque" de notre contrôleur moteur; posant la question du rôle de ce mode de contrôle, si ce derniers n'est pas destiner à être image d'un contrôle en accélération.
+		De plus, outre la non adéquation avec le mode de contrôle "Torque", nous nous sommes demandé si le traitement du signal analogique par le contrôleur moteur, pouvait ou non, induire un retard, un décalage temporel entre la consigne mesuré et l'établissement de la valeur de contrôle en sortie du contrôleur.
+		
+		\subsection{Du retard induit}
+		
+		Suite à la caractérisation du mode "Torque", comme nous l'avons dis précédément, l'induction d'un retard entre la consigne mesuré et l'établissement de la valeur de contrôle en sortie du contrôleur, si elle existe, peut être un obstacle à l'établissement de notre fonction de transfère.
+		
+		Pour cela, à l'aide des données relevé plus tôt à partir des capteurs à effet hall, nous avons tracé de nouveaux graphiques afin de pouvoir visualisé le signal de contrôle, ainsi que le signal de consigne appliqué en entrée du contrôleur en fonction du temps.
+		
+		Nous avons commencé par appliqué un signal carré avec notre générateur de fonction, d'une amplitude variant de un volt jusqu'à cinq Volts; en comparents les différents jeux de mesures réalisé sur la même base de temps, on arrive à un retard moyen d'une valeur de douze millis seconde.
+		
+		Ensuite, nous avons effectué le même test en appliquant une une rampe croissante avec notre générateur de fonction, et nous avons pu observer un retard d'en moyenne 10 millis seconde entre la consigne et le signal de sortie.
+		
+		\subsection{Conclusion}
+		En conclusion, après avoir cherché à caractériser le comportement du contrôle en accélération de notre contrôleur moteur, puis après avoir observé le retard induit dans notre système par ce même contrôleur moteur, nous pouvons conclure que la manipulation mise en place, ne nous permet pas de pouvoir établir la fonction de transfère de notre module.
+		
+		Pour cela, nous allons mettre en place une seconde manipulation, dans laquelle le retard n'aura pas d'incidence. De plus, cette manipulation aura aussi l'avantage de nous permttre de mieux caractériser la contrôle "Torque" du contrôleur.
+		
+		\newpage		
+		
+	\section{Seconde manipulation}
 	
 		
 		
