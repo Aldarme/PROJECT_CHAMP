@@ -675,7 +675,7 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 		Ensuite, nous avons effectué le même test en appliquant une une rampe croissante avec notre générateur de fonction, et nous avons pu observer un retard d'en moyenne 10 millis seconde entre la consigne et le signal de sortie.
 		
 		\subsection{Conclusion}
-		En conclusion, après avoir cherché à caractériser le comportement du contrôle en accélération de notre contrôleur moteur, puis après avoir observé le retard induit dans notre système par ce même contrôleur moteur, nous pouvons conclure que la manipulation mise en place, ne nous permet pas de pouvoir établir la fonction de transfère de notre module.
+		Après avoir cherché à caractériser le comportement du contrôle en accélération de notre contrôleur moteur, puis après avoir observé le retard induit dans notre système par ce même contrôleur moteur, nous pouvons conclure que la manipulation mise en place, ne nous permet pas de pouvoir établir la fonction de transfère de notre module.
 		
 		Pour cela, nous allons mettre en place une seconde manipulation, dans laquelle le retard n'aura pas d'incidence. De plus, cette manipulation aura aussi l'avantage de nous permttre de mieux caractériser la contrôle "Torque" du contrôleur.
 		
@@ -683,7 +683,11 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 		
 	\section{Seconde manipulation}
 	
+		\subsection{Introduction}
+	
+		Comme nous avons pu le voir précédément, lors de la première manipulation, le retard induit par le contrôleur moteur, nous à posé soucis dans la première manipulation. Du fait, de ce retard, il nous était impossible de mettre en place un modèle afin de pouvoir déduire notre fonction de transfère.
 		
+		Pour cela, nous avons mis en place cette deuxième expérience, qui à pour but de nous permettre de sortir un modèle, au sein du quel le retard n'aurait pas d'indicence; mais ne serait qu'un élément de l'équation à faire varier pour établir notre modèle. Pour cette manipulation, nous avons procédé, comme l'illustre le shéma bloc ci-dessous.		
 		
 	\begin{figure}[!ht]
     \center
@@ -691,7 +695,123 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
   	\includegraphics[width=18cm]{manip2.png}
     \caption{Schéma bloc - Seconde manipulation}
 	\end{figure}	
+	
+	Nous utilisons encore une fois notre générateur de fonction afin de générer un signal sinusoïdale à destination de notre contrôleur, ce signal analogique sinusoïdale sera varié selon deux paramètre. Tout dabord son amplitude, évoluant sur un interval de trois Volts jusqu'à cinq Volts, puis c'est la fréquence du signal que nous ferons varier; fréquence qui devra évolué entre vingt Hertz et 100 Hertz.	Faire varier ces paramètre va nous permettre de vérifier le paramètre ayant une incidence sur le comportement du contrôleur.
+	
+	De plus, nous avons placé un accéléromètre sur notre bras aimenté, afin de pouvoir tracer sa courbe de réponse sur l'axe "Z" sur notre oscilloscope. Tracer cette courbe de réponse en même temps que la courbe fournie par le générateur de fonction va nous permettre d'observer l'ensemble des différences entre ces deux courbes et d'en déduire le déphasage ainsi que le retard.
+	
+	Enfin, nous pourrons également mieux tenter de caractériser notre contrôle en accélération, étant donné que nous pourrons comparer des grandeurs physiques de même nature en entrée, comme en sortie du système. Ces données pourrons être analysé au travers d'un diagramme de BAUD.
+	
+		\subsection{Traitement des données}
 		
+		Afin de caractériser notre fonction de transfère, nous avons tout dabord commencé par représenter sous forme de graphique notre nouveau système, afin de pouvoir observer les différences entre les deux courbes obtenue.
+		On retrouve ci-dessous, trois graphiques à titres d'exemple des mesures effectués; mesures ayant également été prises pour les valeurs de fréquences suivante : 20Hz, 30Hz, 40Hz, 50Hz, 70Hz et 100Hz. 
+		
+	\textsc{\begin{figure}[h]
+     \begin{minipage}[c]{.46\linewidth}
+         \centering
+         \includegraphics[width=8.3cm]{osciAcc_3v.png}
+         \caption{Graphique oscillo - accéléromètre - 20Hz, 3 Volts}
+     \end{minipage}
+     \hfill%
+     \begin{minipage}[c]{.46\linewidth}
+         \centering
+         \includegraphics[width=9cm]{osciAcc_4v.png}
+         \caption{Graphique oscillo - accéléromètre - 20Hz, 4 Volts}
+     \end{minipage}
+     \hfill%
+     \begin{minipage}[c]{.46\linewidth}
+         \centering
+        \includegraphics[width=8.3cm]{osciAcc_5v.png}
+         \caption{Graphique oscillo - accéléromètre - 20Hz, 5 Volts}
+     \end{minipage}
+ 	\end{figure}}
+ 	
+ 	Grâce à nos graphique ci-dessus, on peut observer que nos deux courbes, image du signal sinusoïdale fourni par le générateur de fonction, ainsi que le signal issue de notre accéléromètre analogique, sont quasiment en opposition de phase (pour un déphasage avoisinant les 180 degrés). Mais pour le moment, il nous est impossible de déterminer si nos courbes sont déphasé ou si le signal analogique de l'accéléromètre est en retard par rapport au signal du générateur de fonction; retard pouvant être dù à notre contrôleur moteur.
+ 	
+ 	Afin de déterminer si nous sommes en présence d'un retard, d'un déphasage, ou des deux, nous avons procédé comme suivant.
+ 	Dans un premiers temps, nous avons reconstruit deux signaux sinusoïdaux, en nous basant sur leur équation, afin de pouvor faire varier leurs paramètres et ainsi en déduire le déphasage et/ou le retard.
+ 	Le premiers signal reconstitué se base sur le signal du générateur de fonction. Dans ce cas ci, il nous est possible de négliger le retard, étant le signal premiers.
+	
+	\[	
+		f(x) = Offset + Ampl * Sin( 2*Pi*F*(T) + Dephasage )
+	\]	
+	
+	Le deuxième est l'image du signal fournie par l'accéléromètre, fonction dans laquelle, nous intégrons cette fois, la notion de retard.
+	
+	\[	
+		f(x) = Offset + Ampl * Sin( 2*Pi*F*(T-retard) + Dephasage )
+	\]
+	
+	Ensuite, nous avons calculé %TODO demander à hervé
+	
+	
+	Enfin, nous avons effectué une minimisation sous contrainte sur la fonction sinus, précédément reconstruite, afin déterminer les coefficient de déphasage, de retard et d'amplitude, tout en fixant des paramètres tels que l'amplitude et la fréquence. Cette méthode nous à donc permis de déterminer de manière précise, le déphasage entre nos deux courbes, ainsi que les rapports d'amplitudes entre ces dernières, comme nous pouvons l'observé sur la figure ci-dessous:
+	
+	\begin{figure}[!ht]
+    \center
+    %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{transf1.png}\hss}\hfill\null
+  	\includegraphics[width=10cm]{dephAmp.png}
+    \caption{Minimisation de la fonction sinus}
+	\end{figure}	
+	
+	Disposant maintenant de l'ensemble des rapports d'amplitudes et de déphasages entre nos signaux analogiques, il nous est possible de tracer la courbe de Déphasage en fonction de la fréquence et d'Amplitude en fonction de la fréquence.
+	 	
+		\begin{figure}[!ht]
+    \center
+    %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{transf1.png}\hss}\hfill\null
+  	\includegraphics[width=15cm]{dFctionFreq.png}
+    \caption{Déphasage en fonction de la fréquence}
+	\end{figure}	
+	
+	\begin{figure}[!ht]
+    \center
+    %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{transf1.png}\hss}\hfill\null
+  	\includegraphics[width=15cm]{AFctionFreq.png}
+    \caption{Amplitude en fonction de la fréquence}
+	\end{figure}
+	
+	Grâce aux courbes ci-dessus, on peut observer que nous disposant enfin d'un modèle à partir du quel nous pouvons déterminer une fonction de transfère du notre système. Mais avant cela, il nous reste un derniers graphique à analyser; Disposant des rapports d'amplitudes entre nos signaux analogique, nous pouvons réaliser un diagramme de BODE. Ce diagramme devrait nous permettre de pouvoir caractériser de manière précise notre controlleur moteur.
+	
+	\begin{figure}[!ht]
+    \center
+    %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{transf1.png}\hss}\hfill\null
+  	\includegraphics[width=15cm]{baud.png}
+    \caption{Diagramme de BODE}
+	\end{figure}	
+	
+	Comme nous pouvons le voir ci-dessus, notre diagramme de BODE qui devrait être horizontale, s'avère avoir une pente de 6db/octave, ce qui traduit que nous sommes déjà dans la pente de la bande rejeté, alors que nous sommes très loin de la valeurs de la fréquence de coupure étant de 1KHz.
+	
+	\begin{figure}[!ht]
+    \center
+    %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{transf1.png}\hss}\hfill\null
+  	\includegraphics[width=15cm]{bode.png}
+    \caption{Diagramme générique de BODE}
+	\end{figure}
+	
+\newpage	
+	
+		\subsection{Conclusion}
+			Après avoir reconstruit des signaux sinusoïdaux, puis avoir effectuer une minimisation sous contrainte, afin de pouvoir déterminer les coefficients de déphasage ainsi que les rapports d'amplitudes entre le signal de notre oscilloscope et de notre accéléromètre, nous avons pu réaliser des graphiques nous permettant de déduire une fonction de transfère de notre système.
+			
+			Mais suite à la modélisation du diagramme de bode, nous pouvons conclure qu'étant déja dans la courbe de fréquence rejeté, le contrôle en accélération de notre contrôleur ne parait pas être viable, invalidant de ce fait, nos courbes devant nous permettre de déterminer notre fonction de transfère.
+			
+\newpage
+			
+		\section{Ouverture}
+	
+		Etant donné les échecs connus avec les deux précédentes manipulation, une troisième doit être mise en place afin de déterminer efficacement le contrôle en vitesse du contrôleur.
+		
+		Pour cela, nous allons procéder comme illustré sur le shéma bloc ci dessous. La manipulation reprend le même principe que la deuxième, à la différence que nous allons intégrer le signal de l'accéléromètre au sein du FPGA pour fournir au contrôleur une courbe en adéquation avec un contrôle en vitesse.
+		
+	\begin{figure}[!ht]
+    \center
+    %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{transf1.png}\hss}\hfill\null
+  	\includegraphics[width=18cm]{manip3.png}
+    \caption{Schéma bloc - ouverture manipulation futur}
+	\end{figure}
+	
+	De  plus, le deuxième accéléromètre ne sera pas fixé physiquement sur le deuxième moteur, ce qui va nous permettre de la a diverse endroit dans le système afin de pouvoir identifier des sources de déphasage ou de retard. Ainsi, nous pourrons disposer d'une caractérisation très précise de notre système et pouvoir disposer d'une fonction de transfère viable.
 	
 	
 	
