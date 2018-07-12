@@ -14,7 +14,7 @@ caractérisation du projet
 
 	OK - introduction au travaux réalisé
 	
-	planning daté du travail 
+	OK - Planning daté du travail 
 		OK - prévisionnel
 		OK - réel
 		OK - rédaction
@@ -32,6 +32,9 @@ Conclusion
 
 
 
+
+TRAVAUX REALISES
+
 *************************************************************************************************
 
 Dans cette partie, on cherche à introduire le travail réaliser, pour cela on va tout 
@@ -48,7 +51,7 @@ les éléments et leur rôle
 				FILTRE
 			DAC
 			Controlleur moteur
-			moteurs
+			Moteurs
 
 
 *************************************************************************************************

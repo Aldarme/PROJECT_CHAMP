@@ -1,0 +1,34 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Sch\IeC {\'e}ma de m\IeC {\'e}canique de Piano}}{13}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces M\IeC {\'e}canique de Piano}}{16}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces M\IeC {\'e}canique de type Renner avec un mod\IeC {\`e}le 3D de l\IeC {\textquoteright }actuateur lin\IeC {\'e}aire}}{17}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {7.1}{\ignorespaces Chaine de cont\IeC {\^o}le d'une touche de Piano}}{23}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {10.1}{\ignorespaces Structure classique d'asservissement num\IeC {\'e}rique}}{35}
+\contentsline {figure}{\numberline {10.2}{\ignorespaces Asservissement num\IeC {\'e}rique du projet CHAMP}}{36}
+\contentsline {figure}{\numberline {10.3}{\ignorespaces Mod\IeC {\`e}le quelquonque}}{36}
+\contentsline {figure}{\numberline {10.4}{\ignorespaces Sch\IeC {\'e}ma bloc - Premi\IeC {\`e}re manipulation}}{37}
+\contentsline {figure}{\numberline {10.5}{\ignorespaces Graphique de position en fonction du temps}}{38}
+\contentsline {figure}{\numberline {10.6}{\ignorespaces Graphique de vitesse en fonction du temps}}{38}
+\contentsline {figure}{\numberline {10.7}{\ignorespaces Graphique d'acc\IeC {\'e}l\IeC {\'e}ration en fonction du temps}}{38}
+\contentsline {figure}{\numberline {10.8}{\ignorespaces Graphique des entr\IeC {\'e}es analogique en fonction du temps}}{38}
+\contentsline {figure}{\numberline {10.9}{\ignorespaces Graphique de la d\IeC {\'e}riv\IeC {\'e} seconde de la position en fonction du temps}}{40}
+\contentsline {figure}{\numberline {10.10}{\ignorespaces Graphique de l'acc\IeC {\'e}l\IeC {\'e}ration en fonction du temps}}{40}
+\contentsline {figure}{\numberline {10.11}{\ignorespaces Sch\IeC {\'e}ma bloc - Seconde manipulation}}{41}
+\contentsline {figure}{\numberline {10.12}{\ignorespaces Graphique oscillo - acc\IeC {\'e}l\IeC {\'e}rom\IeC {\`e}tre - 20Hz, 3 Volts}}{42}
+\contentsline {figure}{\numberline {10.13}{\ignorespaces Graphique oscillo - acc\IeC {\'e}l\IeC {\'e}rom\IeC {\`e}tre - 20Hz, 4 Volts}}{42}
+\contentsline {figure}{\numberline {10.14}{\ignorespaces Graphique oscillo - acc\IeC {\'e}l\IeC {\'e}rom\IeC {\`e}tre - 20Hz, 5 Volts}}{42}
+\contentsline {figure}{\numberline {10.15}{\ignorespaces Minimisation de la fonction sinus}}{43}
+\contentsline {figure}{\numberline {10.16}{\ignorespaces D\IeC {\'e}phasage en fonction de la fr\IeC {\'e}quence}}{44}
+\contentsline {figure}{\numberline {10.17}{\ignorespaces Amplitude en fonction de la fr\IeC {\'e}quence}}{44}
+\contentsline {figure}{\numberline {10.18}{\ignorespaces Diagramme de BODE}}{44}
+\contentsline {figure}{\numberline {10.19}{\ignorespaces Diagramme g\IeC {\'e}n\IeC {\'e}rique de BODE}}{45}
+\contentsline {figure}{\numberline {10.20}{\ignorespaces Sch\IeC {\'e}ma bloc - ouverture manipulation futur}}{46}
