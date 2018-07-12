@@ -233,9 +233,9 @@ begin
 		PORT MAP
 		(
 			f_clock		=> CLOCK_50,
-			f_oeW			=> fifo_oe_w(I),
+			f_oeW		=> fifo_oe_w(I),
 			f_dataIn	=> fifo_write(I),
-			f_oeR			=> fifo_oe_r(I),			
+			f_oeR		=> fifo_oe_r(I),			
 			f_dataOut	=> fifo_read(I),
 			emptyFlag	=> fifo_emtFlg(I),
 			fullFlag	=> fifo_fulFlg(I),
