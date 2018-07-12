@@ -319,21 +319,23 @@ architecture filter_mapBitAvrg of filter is
  dp_dt: process(RESET_SIGNAL, FLT_OE_INPUT) is
 	
 	variable idx : integer := 0;
+	
+ begin
  
 	if RESET_SIGNAL = '0' then
 		
-		speed <= 15x"0";
+		speed <= 16x"0";
 		
-	elsif rising_edge flt_OE_INPUT then
+	elsif rising_edge(flt_OE_INPUT) then
 		
 		speed <= speed + signed(RCV_TOFILTER(19 downto 4));
-		idx = idx + 1;
+		idx := idx + 1;
 		
 		if idx < 7 then
-			spd_oe = '0';
+			spd_oe <= '0';
 		else
-			spd_oe	= '1';
-			idx 		= 0;
+			spd_oe <= '1';
+			idx 		:= 0;
 		end if;
 	end if;
 	
@@ -347,20 +349,22 @@ architecture filter_mapBitAvrg of filter is
 	
 	variable idx : integer := 0;
 	
+ begin
+	
 	if  RESET_SIGNAL = '0' then
 		
-		accel <= 15x"0";
+		posit <= 16x"0";
 		
-	elsif rising_edge spd_oe then
+	elsif rising_edge(spd_oe) then
 		
-		posit <= accel + speed;
-		idx = idx + 1;
+		posit <= posit + speed;
+		idx := idx + 1;
 		
 		if idx < 2 then
-			pos_oe = '0';
+			pos_oe <= '0';
 		else
-			pos_oe 	= '1';
-			idx			= 0;
+			pos_oe 	<= '1';
+			idx			:= 0;
 		end if;		
 	end if;
  

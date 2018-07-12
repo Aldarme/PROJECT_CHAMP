@@ -87,12 +87,12 @@ constant ADXL_STATUS_ADD  : std_logic_vector(6 downto 0):=7x"04";
 constant SPI_ADD_FIELD    : std_logic_vector(15 downto 8):=(others=>'0');
 constant SPI_DATA_FIELD   : std_logic_vector(7 downto 0):=(others=>'0');
 
-constant ACCEL_CONFIG : T_WORD_ARR:= (			
+constant ACCEL_CONFIG : T_WORD_ARR:= (
 			7x"2D" & ADXL_WRITE_REG & 8x"01",		--initiate protocol to configure registers (standby <- 1 : standby mode)
 			7x"2F" & ADXL_WRITE_REG & 8x"52",		--Power-on reset, code 0x52		
 			7x"2C" & ADXL_WRITE_REG & 8x"03",		--G range [+-8g : 3] ; [+- 4g : 2] ; [+-2g : 1] ; [disable : 0]
 			7x"28" & ADXL_WRITE_REG & 8x"00",		--HPF [0.238 : 6] ; [0.954 : 5] ; [3.862 : 4]
-			7x"2D" & ADXL_WRITE_REG & 8x"02"		--End protocol to configure registers (standby mode <- 0 : mesurement mode)
+			7x"2D" & ADXL_WRITE_REG & 8x"00"		--End protocol to configure registers (standby mode <- 0 : mesurement mode)
 			);
 			
 constant ACCEL_READ : T_WORD_ARR:= (

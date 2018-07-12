@@ -9,20 +9,27 @@ end entity;
 
 architecture arch of TopEntity_tb is
 
-	signal CLOCK_50    : std_logic := '0';
-	signal reset_n		 : std_logic;
-	signal GPIO        : STD_LOGIC_VECTOR(35 DOWNTO 0); 
-	signal adxl_ss_n   : STD_LOGIC;
-	signal adxl_sclk   : STD_LOGIC;
+	signal CLOCK_50   : STD_LOGIC := '0';
+	signal reset_n		: STD_LOGIC;
+	signal GPIO       : STD_LOGIC_VECTOR(35 DOWNTO 0); 
+	signal adxl_ss_n  : STD_LOGIC;
+	signal adxl_sclk  : STD_LOGIC;
+	signal adxl_sdio	:	STD_LOGIC;
+	signal SW_tb			: STD_LOGIC_VECTOR(17 DOWNTO 0);
+	signal HEX4_tb	 	: STD_LOGIC_VECTOR(6 DOWNTO 0);
+	signal HEX5_tb	  : STD_LOGIC_VECTOR(6 DOWNTO 0);
 	
  COMPONENT TopEntity
 	PORT
 	(
 		TOP_CLOCK_50:	IN STD_LOGIC;
-		TOP_LEDG		:   OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
-		TOP_LEDR		:   OUT STD_LOGIC_VECTOR(24 DOWNTO 0);
-		TOP_KEY 		:   IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
-		TOP_GPIO		:   INOUT STD_LOGIC_VECTOR(35 DOWNTO 0)
+		TOP_LEDG		:	OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
+		TOP_LEDR		:	OUT STD_LOGIC_VECTOR(17 DOWNTO 0);
+		TOP_KEY 		:	IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
+		TOP_GPIO		:	INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
+		SW					: IN STD_LOGIC_VECTOR(17 DOWNTO 0);
+		HEX4				: OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
+		HEX5				: OUT STD_LOGIC_VECTOR(6 DOWNTO 0)
 	);
  END COMPONENT;
 
@@ -60,9 +67,12 @@ architecture arch of TopEntity_tb is
  tent: TopEntity
 	PORT MAP
 	(
-		TOP_CLOCK_50 => CLOCK_50,
-      TOP_KEY 		 => ( 3=> reset_n, others=>'0' ),
-      TOP_GPIO		 => GPIO
+		TOP_CLOCK_50	=> CLOCK_50,
+      TOP_KEY 		=> ( 3=> reset_n, others=>'0' ),
+      TOP_GPIO		=> GPIO,
+			SW	 				=> SW_tb,
+			HEX4 				=> HEX4_tb,
+			HEX5 				=> HEX5_tb
 	); 
  
 ----------------------------------------------------------------
@@ -70,24 +80,26 @@ architecture arch of TopEntity_tb is
 -- Emulate accelerometer - ADXL355
 --
 ----------------------------------------------------------------
- adxl_sclk <= GPIO( 1 );
- adxl_ss_n <= GPIO( 3 );
+ adxl_sclk <= GPIO(31);
+ adxl_ss_n <= GPIO(33);
+ adxl_sdio <= GPIO(29);
+ 
  
  accel:adxl355_beh
 	PORT MAP
 	(
-		SCLK => adxl_sclk,
-	   CSB  => adxl_ss_n,
-	   SDI_O  => GPIO(2)
+		SCLK 		=> adxl_sclk,
+	   CSB  	=> adxl_ss_n,
+	   SDI_O  => adxl_sdio
 	);
 	
  ltc : LTC2668_16_beh
 	PORT MAP
 	(
-		CLOCK_50		=> CLOCK_50,
+		CLOCK_50	=> CLOCK_50,
 		LTC_SS		=> GPIO(7),
-		LTC_SCLK		=> GPIO(5),
-		LTC_SDI => GPIO( 6 )
+		LTC_SCLK	=> GPIO(5),
+		LTC_SDI 	=> GPIO(6)
 	);
 	
 end arch;
