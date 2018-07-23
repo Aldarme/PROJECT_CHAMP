@@ -1,3 +1,4 @@
+
 \documentclass[french,a4paper,12pt]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -376,7 +377,7 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 	
 	\section{Synthèse et objectif du projet}
 	
-	Comme dit précédemment, le projet "CHAMP" est né de la rencontre de personne et de la mise en commun de savoir provenant d'univers variés, à savoir, 
+	Comme présenté précédemment, le projet "CHAMP" est né de la rencontre de personne et de la mise en commun de savoir provenant d'univers variés, à savoir, 
 	
 	le milieu scientifique, au travers du LPNHE (laboratoire de physique nucléaire et des hautes énergies), représenté par Antoine LETESSIER SELVON, physicien des hautes énergies et directeur de recherche, Hervé LEBBOLO, ingénieurs de recherche, et enfin,  Philippe REPAIN, mécanicien chef d'atelier.
 	
@@ -464,16 +465,235 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 %	Présentation et Détail des travaux Réalisés durant le stage
 %
 %--------------------------------------------------------------------------------------
+	
+	\part{Réalisation de la chaine de contrôle}	
+	
+	Maintenant que le cadre du projet à été présenté, ainsi que les objectifs visé au travers de cette preuve de concept, nous allons maintenant, nous concentrer sur la réalisation pratique, ainsi que sur les aspects techniques du projet.
+	
+	Ainsi, au sein de cette partie, nous allons aborder la conception de la première maquette de notre projet, cette dernière ayant pour rôle de mettre en situation l'action d'une touche; représentant l'action primaire d'un piano, une action sur une touche, permettant la frappe d'une corde par un marteau. Par la suite, lorsque cet aspect sera maitrisé, nous pourrons passé au développement d'une deuxième maquette se basant sur un ensemble plus complet d'une douzaine de touches, afin de disposer d'un jeu sur une octave et demi.
+	
+		\chapter{La chaine de contrôle}
+		
+		Cherchant à mettre en place une nouvelle mécanique interne afin de permettre la frappe d'une corde par un marteau, suite à une pression sur une touche de piano, nous avons cherché à développé une nouvelle chaine de contrôle électronique.
+		Mais comme expliqué précédement, nous cherchons à proposer une nouvelle expérience de jeu aux pianistes, sans altérer l'expérience utilisateur lié à la pratique de l'instrument. C'est pourquoi notre nouvelle chaine de contrôle ne vient pas remplacer la mécanique interne, dite "classque" du piano; cette dernière vennant se "gréfer" autour de l'ancienne, tout en nécessitant une adaptation de l'existante.
+		
+		Notre chaine de contrôle électronique se compose comme suivant:
+		\begin{itemize}
+			\item Un accéléromètre, mesurant l'accélération du marteau, suite à un pression sur une touche du piano.
+			\item Une carte programmable FPGA, nous permettant d'effectuer un traitement du signal sur nos données renvoyé par notre accéléromètre.
+			\item Un convertisseur numérique analogique (CAN), pemettant de convertire le signal numérique fournit par le FPGA, en un signal analogique (dans notre cas, un niveau de tension)
+			\item Un contrôleur moteur, assurant le contrôle en triphasé de notre moteur brushless.
+			\item Un moteur brushless, assurant le rôle de marteau, afin de frapper une corde.
+		\end{itemize}
+		
+		\begin{figure}[!ht]
+    \center
+    %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{CH.png}\hss}\hfill\null
+  	\includegraphics[width=17cm]{CH.png}
+    \caption{Chaine de contôle d'une touche de Piano}
+	\end{figure}
+	
+			\section{l'accéléromètre}
+						
+			Comme nous l'avons vu lors de la précédente partie, la réalisation d'un système d'assistance et d'asservissement d'une mécanique de piano à queue induit l'appel à des technologies de "pointe"; technologie que nous retrouvons et côtoyons au quotidiens au travers de nos smart-phone, notamment celle nous permet de mesurer une accélération (technologie qui sera une composante principale de notre projet.
+ 
+La mesure de l'accélération et la composante clef de notre projet étant données que ce seul élément rend possible la mesure de l'accélération (sur trois axes x,y,z) de la touche joué par le pianiste, ainsi que la mise en place de la boucle d'asservissement contrôlant les moteurs devant actionner les marteaux en cotons frappant les cordes.
 
+			%\subsubsection{Matériel utilisé}
+			
+			Pour ce projet, une première maquettes utilisant des composant électronique analogique fut réaliser, se basant sur le modèle de la figure (dernière figure). Ce prototype avait pour but montré la manière de procéder et de vérifier le postulat de départ quand à la faisabilité du projet.
+ 
+% PHOTO de la maquette initiale de Hervé
+ 
+Suite à mon arrivé au sein du projet "CHAMP", j'ai commencé le développement de la nouvelle maquette (tjs basé sur le même schéma de fonctionnement) qui est maintenant basé sur des composants électronique numérique.
+ 
+Le capteur numérique utilisé et choisi par l'équipe qui initié le projet est l'accéléromètre ADXL355 du fabriquant "ANALOG DEVICE". Ce composant nous permet de mesurer une accélération sur 3 axes (x,y,z) avec une précision de +/- 8 fois la force gravitationnelle.
+ 
+Le module ADXL355 permet l'échange de données avec notre FPGA (unité de traitement et de calcule) via des transmissions série synchrones. Il peut ainsi communiquer via deux protocole de communication, le SPI ou le protocole I2C.
+			
+			\section{le FPGA}
+			
+			Concernant l'utilisation d'un carte programmable muni d'un FPGA pour le projet, cet élément fut un choix technique pris par les responsables du projet, étant donné l'utilisation marjeur de ce type de technologie sein du laboratoire.
+			
+			Ainsi, la carte programmable utilisé est une DE2-115, un kit de développement et de prototypage, embarquant une large gamme de technologie utilisable, dont voisi une liste exaustive. On retrouve à disposition un FPGA (35.000 LE) comme coeur, de plusieurs type de mémoire (SRAM, SDRAM et Flash), de convertisseurs audio, vidéo et TV , ainsi que d'interfaces IrDA, Ethernet et USB. De plus, la carte est munie d'afficheurs LED et LCD et d'un grand nombre de boutons poussoirs ainsi que d'intérupteurs.
+			
+			L'utilisation de ce genre de kit permet une grande souplesse lors du développement étant donné la grande disponibilité de technologies par défaut. Ainsi, l'intégration de nouvelle fonctionnalité au fur et a mesure du projet en devient plus aisé. C'est une fois le prototypage fini, que nous conceverrons une carte sur mesure, avec selement les technologies requises afin de minimiser les couts de fabrications et d'encombrement.
+			
+			\section{Le convertisseur analogique numérique}
+			
+			L'utilisation du convertisseur Numérique Analogique (CNA) fut également un choix imposé par le laboratoire.
+			Ce convertisseur nous permet de transformer le signal numérique provenant de notre FPGA, en un signal analogique, à destination de notre contrôleur moteur.
+			
+			Ainsi le choix du laboratoire c'est porté sur le CNA "LTC 2668" fabriqué par Analog Device.
+			Ce derniers disposent d'une entré de signal numérique sur mot de 16 bits non signé, de plus plusieur niveau de tension de sortie possible, [0V; 5V], [0V; 10V], +-2.5V, et enfin le mode qui nous intéresse, +-10 volts, étant donné que notre contrôleur moteur est contrôlé avec un niveau de tension variant entre +-10 volts.			
 	
-	\part{Travaux et réalisation}	
-	
-	\chapter{Réalisation de la chaine de contôle}
-	
-	
-	
-	
-	\chapter{Asservissement et caractérisation}
+			\section{Le contrôleur moteur et le moteur brushless}
+			
+			A propos du choix du contrôleur moteur et du moteur brushless, le choix du laboratoire c'est porté sur des moteurs en translation "LM1247\_11\_FMM" fabriqué par l'entreprise Faulhaber. Ce derniers est le seul fabriquant au monde à produire ce genre de moteur, avec un contrôleur offrant disverse mode de contrôle.
+			
+			
+		\chapter{Accéléromètre, du produit au besoin}
+			
+			\section{Accéléromètre \& choix du protocole de communication}
+				Comme nous l'avons vu plus tôt, notre accéléromètre peut être utilisé avec les deux protocoles de communication suivant: le bus SPI ainsi que le bus I2C. Afin de déterminer quel bus de communication nous devons utiliser, nous avons commencé par effectué un comparatif des deux technologies, pour déterminer lequel serait le plus en adéquation avec nos besoin.
+				
+			\subsection{Bus SPI}
+			
+			Une Liaison SPI (Serial Peripheral Interface) est un bus de données synchrone baptisé par Motorola, opèrant en Full-Duplex et qui peut transférer des données sur de courtes distances à des vitesses élevées. Les circuits communiquent selon un schéma Maitre/Esclave, où le maitre s'occupe totalement de la communication. Plusieurs esclave peuvent coexister sur un même bus, dans ce cas, la sélection du destinataire se fait par une ligne dédiée entre le maitre et l'esclave appelée "Chip Select" (CS) ou Slave Select (SS).
+ 
+			\subsubsection{Principe de fonctionnement}
+			
+			Durant le transfère de données, le dispositif peut travailler soit en maitre, soit en esclave. L'interface SPI permet de connecter un ou plusieurs esclaves à un seul maitre via le même bus.
+ 
+	\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI1.png}\hss}\hfill\null\newline
+ 
+	Le bus SPI utilise 4 signaux logiques :
+ 
+	\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI2.png}\hss}\hfill\null\newline
+ 
+	\begin{itemize}
+	\item SCLK (Serial Clock) : Le signal d'horloge, il est utilisé pour synchroniser les données échangées entre le maître et 	les esclaves. Cette ligne est nécessairement une sortie sur le maître et une entrée sur le ou les esclaves.
+ 
+	\item MOSI (Master Output, Slave Input) : est utilisé pour transférer les données du maître vers l'esclave.
+ 
+	\item MISO (Master Input, Slave Output) : est utilisé pour transférer les données l'esclave vers le maître.
+ 
+	\item SS (Slave Select) : le maître utilise ce signal pour choisir avec qui il veut dialoguer.Ce signal est actif à l'état bas.Les esclaves ne peuvent pas communiquer entre eux.Seul le maître peut autoriser un esclave à dialoguer, cela dit l'esclave ne peut commencer le dialogue que s'il n'a pas l'autorisation.
+\end{itemize}
+ 
+	On parlera aussi de liaison à 3 fils : Permet de véhiculer l’information dans les 2 sens (bidirectionnelle), un fil différent étant dévolu à chaque sens de transfert d’information. Comme ceci permet la communication simultanée dans les 2 sens de transmission, on parlera de liaison full-duplex :
+pendant que le maître transmet des données sur la ligne MOSI, vers l’esclave sélectionné, il en reçoit de celui-ci par la ligne MISO.
+
+  		\subsubsection{Principe de transmission}
+  		
+			Une transmission SPI typique est une communication simultanée entre un maître et un esclave :
+Tout d'abord, Le maître initie la communication en sélectionnant l'esclave avec qui il veut communiquer par l'utilisation du signal SS qui est actif bas.
+Ensuite, Le maître et l'esclave préparent les données à envoyer dans leur registres à décalage.
+Enfin, Le maître génère des impulsions d'horloge pour synchroniser les données échangées.
+ 
+À chaque coup d'horloge le maître et l'esclave s'échangent un bit. Après huit coups d'horloges le maître a transmis un octet à l'esclave et vice versa. La vitesse de l'horloge est réglée selon des caractéristiques propres aux périphériques.
+ 
+\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI3.png}\hss}\hfill\null\newline
+ 
+pendant que le maître transmet les données sur la ligne MOSI, vers l’esclave sélectionné, il en reçoit de celui-ci par la ligne MISO.
+Voici le tout sous forme de dessins. En rouge les bits reçus, en bleu les bits envoyés :
+ 
+\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI4.png}\hss}\hfill\null\newline
+ 
+  		\subsubsection{Mode maitre}
+  		
+  		Lorsqu'il est configuré en tant que maître, l'interface SPI n'a aucun contrôle automatique de la ligne de SS.Pour la configuration en mode maitre,nous devons déclarer : MOSI, SS et SCLK en sortie; MISO en entrée ; mettre le bit MSTR à 1 dans le registre SPCR. La mise de SS à l’état bas permet
+d'établir la communication avec l’esclave.
+le principe de transmission suit cette ordre :
+ 
+    Ecriture d’un octet dans le registre de données (SPDR).
+    Génération du signal d'horloge.
+    Envoie des données contenue dans le registre de données vers l’esclave via la ligne MOSI.
+    Arret du signal d'horloge.
+    Mise du bit SPIF = 1 (flag de fin de communication)
+    Si SPIE = 1 (autorisation de l’interruption) : interruption demandée, 2 options :
+        chargement de l’octet suivant dans le registre
+        mise de SS à l’état haut pour signaler la fin du paquet de données
+ 
+	Le dernier octet entrant sera conservés dans le registre tampon pour une utilisation ultérieure.
+ 
+  		\subsubsection{Mode esclave}
+  		
+  		Pour la configuration en mode esclave,nous devons déclarer : MOSI, SS et SCLK en entrée; MISO en sortie ;Mettre le bit MSTR à 0 dans le registre SPCR. L’esclave reste en mode sommeil jusqu’à ce que le maître l'appelle(en mettant la ligne SS à l’état bas). La mise de SS à l’état bas permet d'établir la communication avec l’esclave. Le principe de transmission suit cette ordre :
+ 
+    Sélection de l'esclave avec qui communiquer
+    Génération du signal d'horloge par le maître
+    Envoie des données contenue dans le registre des données vers l’esclave via la ligne MISO.
+    Mise du bit SPIF = 1 (flag de fin de communication)
+    Si SPIE = 1 (autorisation de l’interruption) :
+        interruption demandée
+        chargement de l’octet suivant dans le registre
+
+			\subsubsection{Avantages}
+ 
+			\begin{itemize}
+			\item Communication full-duplex.
+			\item Vitesse assez importante par rapport à l’I2C (10-100MBits/s).
+			\item Partage d’un bus commun pour l’horloge, MISO et MOSI entre les périphériques.
+			\item Simplicité de l’interface matérielle.
+			\item Aucun arbitre nécessaire car aucune collision possible.
+			\item Les esclaves utilisent l’horloge du maître et n’ont donc pas besoin d’oscillateur de précision.
+			\end{itemize}
+ 
+  		\subsubsection{inconvénients}
+ 
+			\begin{itemize}
+			\item Utilise plus de pattes d’un boitier que l’I2C qui en utilise seulement 2 (et la masse).
+			\item Aucun adressage possible : Il faut une ligne de sélection par esclave en mode non chaîné.
+			\item Le protocole n’a pas d’acquittement. Le maître peut parler dans le vide sans le savoir.
+			\item Il ne peut y avoir qu’un seul maître sur le bus.
+			\item Ne s’utilise que sur de courtes distances contrairement aux liaisons RS-232, RS-485 ou bus CAN.
+			\end{itemize}
+ 
+ 
+ 			\subsection{Bus I2C}
+ 			
+ 			Le bus I2C permet de faire communiquer entre eux des composants électroniques très divers grâce à seulement trois fils : un signal de données (SDA), un signal d'horloge (SCL), et un signal de référence électrique (masse).
+Il s'agit d'une liaison en mode série synchrone (un bit est transmis à chaque coup d’horloge). Le nombre de composants qu'il est ainsi possible de relier est essentiellement limité par la charge capacitive des lignes SDA et SCL : 400 pF.
+un circuit maître et un ou plusieurs circuits esclaves peuvent être connectés au bus. Les échanges se font toujours à l’initiative du maître.La transmission est half duplex : mode écriture ou mode lecture, pas possible de manière simultanée.
+ 
+  		\subsubsection{Connexion électrique}
+  		
+  		Comme indiqué précédemment, pour se connecter à un bus I2C il faut une masse, et deux fils de communication. Le premier fil, SDA (Signal DAta), est utilisé pour transmettre les données. L'autre fil, SCL (Signal CLock) est utilisé pour transmettre un signal d'horloge synchrone (signal qui indique le rythme d'évolution de la ligne SDA). Les tensions associées aux niveaux logiques vont dépendre de la technologie des circuits en présence (CMOS, TTL). Il faudra que tous les circuits connectés au bus I2C utilisent les mêmes potentiels pour définir les niveaux haut et bas. En définitive, cela implique que tous les composants connectés à un même bus soient alimentés de façon identique.
+ 
+			\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI5.png}\hss}\hfill\null\newline
+ 
+En ce qui concerne la lecture des signaux SDA et SCL, cela ne pose pas de problème. Les signaux peuvent être lus en permanence sans risque d'interférer sur le niveau de la ligne.
+Au repos, tous les circuits connectes doivent imposer un niveau haut sur leurs sorties respectives. Si les lignes SDA et SCL sont au niveau haut dans ces conditions, cela signifie qu'aucun circuit ne tente de prendre le contrôle du bus. Si une des lignes SDA ou SCL passe à un niveau bas dans les mêmes conditions, c'est qu'un des circuits désire prendre le contrôle du bus. Mais il peut aussi y avoir deux circuits qui tentent de prendre le contrôle du bus en même temps (ou à quelques nanosecondes d'écart près). Il faut donc mettre en place un protocole pour gérer les conflits possibles.
+
+   		\subsubsection{Protocole I2C}
+	Le protocole I2C présent différentes caractéristiques:
+ 
+			\begin{itemize}
+			\item maitre-esclaves, car seul un nœud maitre peut communiquer avec les esclaves du réseau (1 ou tous)
+			\item multi-maitres, car plusieurs maitres peuvent être présents sur le réseau
+			\item synchrone, car on utilise un mécanisme de requête/réponse
+			\item half-duplex, car on peut communiquer dans les deux sens, mais pas simultanément
+			\end{itemize}
+ 
+On utilise un adressage sur 7 bits pour identifier les nœuds, ce qui permet (en théorie) jusqu’à 128 nœuds sur le réseau. Certaines adresses sont réservées pour le broadcast (communiquer vers tous les nœuds en même temps). En pratique, les constructeurs on tendance à fixer l’adresse de certains nœuds, ce qui peut causer des collisions.
+ 
+ 
+  		\subsubsection{Avantages}
+			\begin{itemize}
+			\item Utilise seulement 2 lignes (+ le fil de masse) et simplicité de connexion (uniquement deux résistances de pull-up à rajouter) 
+			\item Le protocole limite automatiquement la vitesse de transmission à la vitesse de l’élément le plus lent. 
+			\item Le bit de reconnaissance qui permet de savoir si l’esclave est bien connecté et également si les données ont été correctement transmises ou non. 
+			\item Interconnections de multiples périphériques
+			\end{itemize}
+ 
+  		\subsubsection{Inconvénients}
+			\begin{itemize}
+			\item Impossibilité d’utiliser un mode full-duplex 
+			\item Vitesse relativement lente pour la plupart des périphériques esclaves (100 à 400kbits/s) 
+			\item Consommation relativement élevée du à la configuration en collecteur/drain ouvert 
+			\item Distance de communication limitée car les lignes du bus ne sont pas protégées des perturbations et envoient des fronts montants et descendants. Cette distance est donc limitée par la vitesse de communication, les résistances de pull-up, la capacité du bus (en général, autour des 400pF).
+\end{itemize}
+ 
+ \subsection{Contrainte et choix de réalisation}
+Concernant les contraintes techniques aux-quelles nous avions à faire fasse, nous retrouvons, une vitesse d'échange de données relativement importantes (supérieur à 1 Mega), une simplicité vis-à-vis de l'interface matérielle afin de minimiser le nombre de fils utilisés, un bus stable sans interférence, et enfin une distance de communication assez longue.
+
+Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de communication (contrairement au bus SPI en nécessitant plus), le bus SPI répond au principaux critère de vitesse de communication et une distance de transmission élevé. De plus, ce choix est renforcé du fait que nous avons réussi à réaliser un "hack" sur le protocole SPI de notre accéléromètre afin de minimiser le nombre de fil, comme nous le verrons dans la prochaine partie.
+
+
+\chapter{"Hack" du protocol SPI} %TODO
+	Nous l'avons vu précédement, le nombre de fils branché entre notre accéléromètre et notre carte programmable est une contrainte que nous souhaitons minimiser le plus possible; ainsi, le choix du SPI, en plus des qualités de ce bus de communication, vu renforcé car nous nous sommes aperçus qu'un détournement de la technologie était possble, afin de diminuer le nombre de fils.
+		
+			
+
+%--------------------------------------------------------------------------------------
+%
+%	Asservissement et caractérisation
+%		Fonction de transfère
+%		Manipulation en laboratoire
+%
+%--------------------------------------------------------------------------------------
+	\part{Asservissement et caractérisation}
 	
 	Lors de la précédente partie, nous avons abordé l'ensemble des aspects qui nous ont permis de mettre au point notre chaine de contrôle; en partant des données fournies par notre accéléromètre, leurs réceptions et leurs traitements au sein de notre carte programmable (FPGA), jusqu'à leur envoi et leur réception par le Convertisseur Numérique Analogique, permettant le contrôle du contrôleur moteur, en lui transmettant des consignes de fonctionnement.
 	
@@ -520,7 +740,7 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 	De plus, l'asservissement numérique de notre projet implique la caractérisation de la fonction de transfère de notre système dans son ensemble.
 	Ainsi, afin de déterminer notre fonction de transfère, seront présenté les différents protocoles et les différentes manipulations effectués sur notre banc de test.
 
-	\section{Asservissement du projet Champ}
+	\chapter{Asservissement du projet Champ}
 	
 		Au sein de notre projet, notre asservissement va reprendre les différentes étapes présentés ci-dessus. Ainsi, concernant l'échantillonnage d'un signal continu, cette étape est réalisée au sein de notre accéléromètre étant donné que ce dernier nous fournit un signal échantillonné à une fréquence de 1 KHz (Période d'une milliseconde). Notre accéléromètre disposant d'un convertisseur analogique numérique intégré sur chaque axe, c'est au sein de ce dernier que s'effectue l'opération d'échantillonnage du signal continue.
 		
@@ -538,7 +758,7 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 	\end{figure}	
 		
 		
-	\section{Fonction de transfère}
+	\chapter{Fonction de transfère}
 	
 		La fonction de transfère de notre système correspond à l'algorithme, appliqué sur nos données (discrètes) au sein du filtre. Une fois les données sorties de cet algorithme, les données sont aptes à piloter notre système tiers comme nous le souhaitons.
 		
@@ -557,9 +777,9 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 	
 	\newpage
 	
-	\section{Première manipulation}
+	\chapter{Première manipulation}
 	
-		\subsection{Introduction}
+		\section{Introduction}
 	
 		À travers cette première manipulation, nous avons cherché à déterminer la fonction de transfère de notre modèle, en visualisant à l'aide d'un graphique, les données fournies en entrée du système (provenant du DAC), ainsi que les données en sortie de notre modèle (une fois traitées par le contrôleur moteur).
 		En procédant ainsi, nous allons pouvoir observer et comparer l'évolution de nos courbes en fonction du temps et ainsi déterminer si ces dernières évoluent selon le même schéma, ou si le traitement des données par le contrôleur moteur induit un retard au sein du système.
@@ -618,7 +838,7 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 	C'est pour cette raison, que nous nous sommes appliqué à mettre en place le contrôle en accélération sur notre contrôleur. Mais avant d'implanter cette solution, nous avons tout de même cherché à vérifier si se dit mode de contrôle en accélération (mode torque), appliquait au moteur un comportement image de l'accélération mesuré. Même si ce mode de contrôle paraissait être "idéal" pour le projet, un premier élément attira notre attention. Ce mode de contrôle en accélération étant nommé contrôle "Torque", il traduirait l'application d'un couple sur notre moteur, pour mettre ce dernier en mouvement, hors un couple appliqué à un moteur en translation, paraît quelque peut contradictoire.
 	Une fois la documentation du contrôleur vérifié, il s'avère que ce mode de contrôle "Torque" soit un asservissement numérique sous la forme d'un correcteur Proportionnel Intégral (PI) en courant; ce dernier combinant l'action des correcteurs précédents pour améliorer les performances globales du système asservi. Mais, bien qu'étant un asservissement en courant, une solution de contrôle plutôt aisé à mettre en oeuvre, serait de comparer la courbe du contrôle en accélération avec la courbe de la deuxième dérivée du contrôle en position. En procédant ainsi, nous devrions avoir deux courbes ayant la même allure, permettant ainsi de valider le comportement du contrôle en accélération.
 	
-		\subsection{Caractérisation du mode de contrôle en accélération ou mode "Torque"}
+		\section{Caractérisation du mode de contrôle en accélération ou mode "Torque"}
 
 	Souhaitant obtenir une courbe d'accélération en nous basant sur un mode de contrôle en position, il va donc nous falloir dériver deux fois notre fonction, afin d'obtenir une courbe d'accélération exploitable.
 	Notre système à dérivé étant une fonction discrète, nous allons calculer sa dérivée première comme suivant: 
@@ -651,7 +871,7 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 		Grâce aux graphiques ci-dessous, nous pouvons nous apercevoir que nos deux graphiques ont une allure en rien comparable, jetant un doute sur le fonctionnement du mode "torque" de notre contrôleur moteur; posant la question du rôle de ce mode de contrôle, si ce dernier n'est pas destiné à être image d'un contrôle en accélération.
 		De plus, outre la non-adéquation avec le mode de contrôle "Torque", nous nous sommes demandé si le traitement du signal analogique par le contrôleur moteur, pouvait ou non, induire un retard, un décalage temporel entre la consigne mesurée et l'établissement de la valeur de contrôle en sortie du contrôleur.
 		
-		\subsection{Du retard induit}
+		\section{Du retard induit}
 		
 		Suite à la caractérisation du mode "Torque", comme nous l'avons dit précédemment, l'induction d'un retard entre la consigne mesurée et l'établissement de la valeur de contrôle en sortie du contrôleur, si elle existe, peut être un obstacle à l'établissement de notre fonction de transfère.
 		
@@ -661,16 +881,16 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 		
 		Ensuite, nous avons effectué le même test en appliquant une une rampe croissante avec notre générateur de fonction, et nous avons pu observer un retard d'en moyenne 10 millisecondes entre la consigne et le signal de sortie.
 		
-		\subsection{Conclusion}
+		\section{Conclusion}
 		Après avoir cherché à caractériser le comportement du contrôle en accélération de notre contrôleur moteur, puis après avoir observé le retard induit dans notre système par ce même contrôleur moteur, nous pouvons conclure que la manipulation mise en place, ne nous permet pas de pouvoir établir la fonction de transfère de notre module.
 		
 		Pour cela, nous allons mettre en place une seconde manipulation, dans laquelle le retard n'aura pas d'incidence. De plus, cette manipulation aura aussi l'avantage de nous permettre de mieux caractériser la contrôle "Torque" du contrôleur.
 		
 		\newpage		
 		
-	\section{Seconde manipulation}
+	\chapter{Seconde manipulation}
 	
-		\subsection{Introduction}
+		\section{Introduction}
 	
 		Comme nous avons pu le voir précédemment, lors de la première manipulation, le retard induit par le contrôleur moteur, nous à poser soucis dans la première manipulation. Du fait, de ce retard, il nous était impossible de mettre en place un modèle afin de pouvoir déduire notre fonction de transfère.
 		
@@ -689,7 +909,7 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 	
 	Enfin, nous pourrons également mieux tenter de caractériser notre contrôle en accélération, étant donné que nous pourrons comparer des grandeurs physiques de même nature en entrée, comme en sortie du système. Ces données pourront être analysées au travers d'un diagramme de BODE.
 	
-		\subsection{Traitement des données}
+		\section{Traitement des données}
 		
 		Afin de caractériser notre fonction de transfère, nous avons tout d'abord commencé par représenter sous forme de graphique notre nouveau système, afin de pouvoir observer les différences entre les deux courbes obtenues.
 		On retrouve ci-dessous, trois graphiques à titre d'exemple des mesures effectuées; mesures ayant également été prises pour les valeurs de fréquences suivantes : 20Hz, 30Hz, 40Hz, 50Hz, 70Hz et 100Hz. 
@@ -775,14 +995,14 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 	
 \newpage	
 	
-		\subsection{Conclusion}
+		\section{Conclusion}
 			Après avoir reconstruit des signaux sinusoïdaux, puis avoir effectué une minimisation sous contrainte, afin de pouvoir déterminer les coefficients de déphasage ainsi que les rapports d'amplitudes entre le signal de notre oscilloscope et de notre accéléromètre, nous avons pu réaliser des graphiques nous permettant de déduire une fonction de transfère de notre système.
 			
 			Mais suite à la modélisation du diagramme de bode, nous pouvons conclure qu'étant déja dans la courbe de fréquence rejetée, le contrôle en accélération de notre contrôleur ne paraît pas être viable, invalidant de ce fait, nos courbes devant nous permettre de déterminer notre fonction de transfère.
 			
 \newpage
 			
-		\section{Ouverture}
+		\chapter{Ouverture}
 	
 		Etant donnée les échecs connus avec les deux précédentes manipulations, une troisième doit être mise en place afin de déterminer efficacement le contrôle en vitesse du contrôleur.
 		
@@ -799,17 +1019,7 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 	
 	
 	
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
 %--------------------------------------------------------------------------------------
 %
 %	Elément de fin de document
@@ -832,3 +1042,150 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 
 
 \end{document}
+
+%%------------------------------------------------------------------
+%%
+%%  Présentation et Détail des travaux Réalisés durant le stage - TODO
+%%
+%%------------------------------------------------------------------
+%\subsubsection{Bus SPI}
+%			
+%			Une Liaison SPI (Serial Peripheral Interface) est un bus de données synchrone baptisé par Motorola, opèrant en Full-Duplex et qui peut transférer des données sur de courtes distances à des vitesses élevées. Les circuits communiquent selon un schéma Maitre/Esclave, où le maitre s'occupe totalement de la communication. Plusieurs esclave peuvent coexister sur un même bus, dans ce cas, la sélection du destinataire se fait par une ligne dédiée entre le maitre et l'esclave appelée "Chip Select" (CS) ou Slave Select (SS).
+% 
+%			\subsubsection{Principe de fonctionnement}
+%			
+%			Durant le transfère de données, le dispositif peut travailler soit en maitre, soit en esclave. L'interface SPI permet de connecter un ou plusieurs esclaves à un seul maitre via le même bus.
+% 
+%	\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI1.png}\hss}\hfill\null\newline
+% 
+%	Le bus SPI utilise 4 signaux logiques :
+% 
+%	\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI2.png}\hss}\hfill\null\newline
+% 
+%	\begin{itemize}
+%	\item SCLK (Serial Clock) : Le signal d'horloge, il est utilisé pour synchroniser les données échangées entre le maître et 	les esclaves. Cette ligne est nécessairement une sortie sur le maître et une entrée sur le ou les esclaves.
+% 
+%	\item MOSI (Master Output, Slave Input) : est utilisé pour transférer les données du maître vers l'esclave.
+% 
+%	\item MISO (Master Input, Slave Output) : est utilisé pour transférer les données l'esclave vers le maître.
+% 
+%	\item SS (Slave Select) : le maître utilise ce signal pour choisir avec qui il veut dialoguer.Ce signal est actif à l'état bas.Les esclaves ne peuvent pas communiquer entre eux.Seul le maître peut autoriser un esclave à dialoguer, cela dit l'esclave ne peut commencer le dialogue que s'il n'a pas l'autorisation.
+%\end{itemize}
+% 
+%	On parlera aussi de liaison à 3 fils : Permet de véhiculer l’information dans les 2 sens (bidirectionnelle), un fil différent étant dévolu à chaque sens de transfert d’information. Comme ceci permet la communication simultanée dans les 2 sens de transmission, on parlera de liaison full-duplex :
+%pendant que le maître transmet des données sur la ligne MOSI, vers l’esclave sélectionné, il en reçoit de celui-ci par la ligne MISO.
+%
+%
+%  		\subsubsection{Principe de transmission}
+%  		
+%			Une transmission SPI typique est une communication simultanée entre un maître et un esclave :
+%Tout d'abord, Le maître initie la communication en sélectionnant l'esclave avec qui il veut communiquer par l'utilisation du signal SS qui est actif bas.
+%Ensuite, Le maître et l'esclave préparent les données à envoyer dans leur registres à décalage.
+%Enfin, Le maître génère des impulsions d'horloge pour synchroniser les données échangées.
+% 
+%À chaque coup d'horloge le maître et l'esclave s'échangent un bit. Après huit coups d'horloges le maître a transmis un octet à l'esclave et vice versa. La vitesse de l'horloge est réglée selon des caractéristiques propres aux périphériques.
+% 
+%\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI3.png}\hss}\hfill\null\newline
+% 
+%pendant que le maître transmet les données sur la ligne MOSI, vers l’esclave sélectionné, il en reçoit de celui-ci par la ligne MISO.
+%Voici le tout sous forme de dessins. En rouge les bits reçus, en bleu les bits envoyés :
+% 
+%\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI4.png}\hss}\hfill\null\newline
+% 
+%  		\subsubsection{Mode maitre}
+%  		
+%  		Lorsqu'il est configuré en tant que maître, l'interface SPI n'a aucun contrôle automatique de la ligne de SS.Pour la configuration en mode maitre,nous devons déclarer : MOSI, SS et SCLK en sortie; MISO en entrée ; mettre le bit MSTR à 1 dans le registre SPCR. La mise de SS à l’état bas permet
+%d'établir la communication avec l’esclave.
+%le principe de transmission suit cette ordre :
+% 
+%    Ecriture d’un octet dans le registre de données (SPDR).
+%    Génération du signal d'horloge.
+%    Envoie des données contenue dans le registre de données vers l’esclave via la ligne MOSI.
+%    Arret du signal d'horloge.
+%    Mise du bit SPIF = 1 (flag de fin de communication)
+%    Si SPIE = 1 (autorisation de l’interruption) : interruption demandée, 2 options :
+%        chargement de l’octet suivant dans le registre
+%        mise de SS à l’état haut pour signaler la fin du paquet de données
+% 
+%	Le dernier octet entrant sera conservés dans le registre tampon pour une utilisation ultérieure.
+% 
+%  		\subsubsection{Mode esclave}
+%  		
+%  		Pour la configuration en mode esclave,nous devons déclarer : MOSI, SS et SCLK en entrée; MISO en sortie ;Mettre le bit MSTR à 0 dans le registre SPCR. L’esclave reste en mode sommeil jusqu’à ce que le maître l'appelle(en mettant la ligne SS à l’état bas). La mise de SS à l’état bas permet d'établir la communication avec l’esclave. Le principe de transmission suit cette ordre :
+% 
+%    Sélection de l'esclave avec qui communiquer
+%    Génération du signal d'horloge par le maître
+%    Envoie des données contenue dans le registre des données vers l’esclave via la ligne MISO.
+%    Mise du bit SPIF = 1 (flag de fin de communication)
+%    Si SPIE = 1 (autorisation de l’interruption) :
+%        interruption demandée
+%        chargement de l’octet suivant dans le registre
+%
+%			\subsubsection{Avantages}
+% 
+%			\begin{itemize}
+%			\item Communication full-duplex.
+%			\item Vitesse assez importante par rapport à l’I2C (10-100MBits/s).
+%			\item Partage d’un bus commun pour l’horloge, MISO et MOSI entre les périphériques.
+%			\item Simplicité de l’interface matérielle.
+%			\item Aucun arbitre nécessaire car aucune collision possible.
+%			\item Les esclaves utilisent l’horloge du maître et n’ont donc pas besoin d’oscillateur de précision.
+%			\end{itemize}
+% 
+%  		\subsubsection{inconvénients}
+% 
+%			\begin{itemize}
+%			\item Utilise plus de pattes d’un boitier que l’I2C qui en utilise seulement 2 (et la masse).
+%			\item Aucun adressage possible : Il faut une ligne de sélection par esclave en mode non chaîné.
+%			\item Le protocole n’a pas d’acquittement. Le maître peut parler dans le vide sans le savoir.
+%			\item Il ne peut y avoir qu’un seul maître sur le bus.
+%			\item Ne s’utilise que sur de courtes distances contrairement aux liaisons RS-232, RS-485 ou bus CAN.
+%			\end{itemize}
+% 
+% 
+% 			\subsection{Bus I2C}
+% 			
+% 			Le bus I2C permet de faire communiquer entre eux des composants électroniques très divers grâce à seulement trois fils : un signal de données (SDA), un signal d'horloge (SCL), et un signal de référence électrique (masse).
+%Il s'agit d'une liaison en mode série synchrone (un bit est transmis à chaque coup d’horloge). Le nombre de composants qu'il est ainsi possible de relier est essentiellement limité par la charge capacitive des lignes SDA et SCL : 400 pF.
+%un circuit maître et un ou plusieurs circuits esclaves peuvent être connectés au bus. Les échanges se font toujours à l’initiative du maître.La transmission est half duplex : mode écriture ou mode lecture, pas possible de manière simultanée.
+% 
+%  		\subsubsection{Connexion électrique}
+%  		
+%  		Comme indiqué précédemment, pour se connecter à un bus I2C il faut une masse, et deux fils de communication. Le premier fil, SDA (Signal DAta), est utilisé pour transmettre les données. L'autre fil, SCL (Signal CLock) est utilisé pour transmettre un signal d'horloge synchrone (signal qui indique le rythme d'évolution de la ligne SDA). Les tensions associées aux niveaux logiques vont dépendre de la technologie des circuits en présence (CMOS, TTL). Il faudra que tous les circuits connectés au bus I2C utilisent les mêmes potentiels pour définir les niveaux haut et bas. En définitive, cela implique que tous les composants connectés à un même bus soient alimentés de façon identique.
+% 
+%			\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI5.png}\hss}\hfill\null\newline
+% 
+%En ce qui concerne la lecture des signaux SDA et SCL, cela ne pose pas de problème. Les signaux peuvent être lus en permanence sans risque d'interférer sur le niveau de la ligne.
+%Au repos, tous les circuits connectes doivent imposer un niveau haut sur leurs sorties respectives. Si les lignes SDA et SCL sont au niveau haut dans ces conditions, cela signifie qu'aucun circuit ne tente de prendre le contrôle du bus. Si une des lignes SDA ou SCL passe à un niveau bas dans les mêmes conditions, c'est qu'un des circuits désire prendre le contrôle du bus. Mais il peut aussi y avoir deux circuits qui tentent de prendre le contrôle du bus en même temps (ou à quelques nanosecondes d'écart près). Il faut donc mettre en place un protocole pour gérer les conflits possibles.
+%
+%   		\subsubsection{Protocole I2C}
+%	Le protocole I2C présent différentes caractéristiques:
+% 
+%			\begin{itemize}
+%			\item maitre-esclaves, car seul un nœud maitre peut communiquer avec les esclaves du réseau (1 ou tous)
+%			\item multi-maitres, car plusieurs maitres peuvent être présents sur le réseau
+%			\item synchrone, car on utilise un mécanisme de requête/réponse
+%			\item half-duplex, car on peut communiquer dans les deux sens, mais pas simultanément
+%			\end{itemize}
+% 
+%On utilise un adressage sur 7 bits pour identifier les nœuds, ce qui permet (en théorie) jusqu’à 128 nœuds sur le réseau. Certaines adresses sont réservées pour le broadcast (communiquer vers tous les nœuds en même temps). En pratique, les constructeurs on tendance à fixer l’adresse de certains nœuds, ce qui peut causer des collisions.
+% 
+% 
+%  		\subsubsection{Avantages}
+%			\begin{itemize}
+%			\item Utilise seulement 2 lignes (+ le fil de masse) et simplicité de connexion (uniquement deux résistances de pull-up à rajouter) 
+%			\item Le protocole limite automatiquement la vitesse de transmission à la vitesse de l’élément le plus lent. 
+%			\item Le bit de reconnaissance qui permet de savoir si l’esclave est bien connecté et également si les données ont été correctement transmises ou non. 
+%			\item Interconnections de multiples périphériques
+%			\end{itemize}
+% 
+%  		\subsubsection{Inconvénients}
+%			\begin{itemize}
+%			\item Impossibilité d’utiliser un mode full-duplex 
+%			\item Vitesse relativement lente pour la plupart des périphériques esclaves (100 à 400kbits/s) 
+%			\item Consommation relativement élevée du à la configuration en collecteur/drain ouvert 
+%			\item Distance de communication limitée car les lignes du bus ne sont pas protégées des perturbations et envoient des fronts montants et descendants. Cette distance est donc limitée par la vitesse de communication, les résistances de pull-up, la capacité du bus (en général, autour des 400pF).
+%\end{itemize}
+% 
+% \section{Contrainte et choix de réalisation}
+%Concernant les contraintes techniques devant c
