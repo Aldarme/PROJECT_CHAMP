@@ -362,17 +362,6 @@ La méthode des systèmes Hamiltionien à ports (Port Hamiltonian System ou PHS)
 
 Notons également que l’approche PHS permet d’étudier les réponses non linéaires aux actions extérieures et de calculer les (pré-)contraintes à appliquer sur le signal d’entrée pour obtenir la réponse souhaitée (platitude). Cette approche nous permettra alors de calculer avec précision les paramètres de la boucle d’asservissement. Là encore l’expertise de Thomas Hélie nous permettra d’élaborer ces modèles de manière efficace et optimale.
 
-
-
-%--------------------------------------------------------------------------------------
-%
-% Caractérisation technique du projet
-% objectifs
-% déroulement prévu
-%
-%--------------------------------------------------------------------------------------
-\part{Projet "CHAMP", étude et caractérisation}
-
 	\chapter{Introduction au projet}
 	
 	\section{Synthèse et objectif du projet}
@@ -544,12 +533,23 @@ Le module ADXL355 permet l'échange de données avec notre FPGA (unité de trait
 			\subsubsection{Principe de fonctionnement}
 			
 			Durant le transfère de données, le dispositif peut travailler soit en maitre, soit en esclave. L'interface SPI permet de connecter un ou plusieurs esclaves à un seul maitre via le même bus.
+			
+	\begin{figure}[!ht]
+    \center
+    %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{CH.png}\hss}\hfill\null
+  	\includegraphics[width=7cm]{SPI1.png}
+    \caption{SPI shema block}
+	\end{figure}	
  
-	\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI1.png}\hss}\hfill\null\newline
  
 	Le bus SPI utilise 4 signaux logiques :
  
-	\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI2.png}\hss}\hfill\null\newline
+	\begin{figure}[!ht]
+    \center
+    %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{CH.png}\hss}\hfill\null
+  	\includegraphics[width=7cm]{SPI2.png}
+    \caption{SPI - signaux logiques}
+	\end{figure}	
  
 	\begin{itemize}
 	\item SCLK (Serial Clock) : Le signal d'horloge, il est utilisé pour synchroniser les données échangées entre le maître et 	les esclaves. Cette ligne est nécessairement une sortie sur le maître et une entrée sur le ou les esclaves.
@@ -561,8 +561,7 @@ Le module ADXL355 permet l'échange de données avec notre FPGA (unité de trait
 	\item SS (Slave Select) : le maître utilise ce signal pour choisir avec qui il veut dialoguer.Ce signal est actif à l'état bas.Les esclaves ne peuvent pas communiquer entre eux.Seul le maître peut autoriser un esclave à dialoguer, cela dit l'esclave ne peut commencer le dialogue que s'il n'a pas l'autorisation.
 \end{itemize}
  
-	On parlera aussi de liaison à 3 fils : Permet de véhiculer l’information dans les 2 sens (bidirectionnelle), un fil différent étant dévolu à chaque sens de transfert d’information. Comme ceci permet la communication simultanée dans les 2 sens de transmission, on parlera de liaison full-duplex :
-pendant que le maître transmet des données sur la ligne MOSI, vers l’esclave sélectionné, il en reçoit de celui-ci par la ligne MISO.
+	On parlera aussi de liaison à 3 fils : Permet de véhiculer l’information dans les 2 sens (bidirectionnelle), un fil différent étant dévolu à chaque sens de transfert d’information. Comme ceci permet la communication simultanée dans les 2 sens de transmission, on parlera de liaison full-duplex : pendant que le maître transmet des données sur la ligne MOSI, vers l’esclave sélectionné, il en reçoit de celui-ci par la ligne MISO.
 
   		\subsubsection{Principe de transmission}
   		
@@ -572,13 +571,23 @@ Ensuite, Le maître et l'esclave préparent les données à envoyer dans leur re
 Enfin, Le maître génère des impulsions d'horloge pour synchroniser les données échangées.
  
 À chaque coup d'horloge le maître et l'esclave s'échangent un bit. Après huit coups d'horloges le maître a transmis un octet à l'esclave et vice versa. La vitesse de l'horloge est réglée selon des caractéristiques propres aux périphériques.
- 
-\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI3.png}\hss}\hfill\null\newline
+
+	\begin{figure}[!ht]
+    \center
+    %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{CH.png}\hss}\hfill\null
+  	\includegraphics[width=7cm]{SPI3.png}
+    \caption{SPI - shift register 1}
+	\end{figure}
  
 pendant que le maître transmet les données sur la ligne MOSI, vers l’esclave sélectionné, il en reçoit de celui-ci par la ligne MISO.
 Voici le tout sous forme de dessins. En rouge les bits reçus, en bleu les bits envoyés :
- 
-\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI4.png}\hss}\hfill\null\newline
+
+	\begin{figure}[!ht]
+    \center
+    %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{CH.png}\hss}\hfill\null
+  	\includegraphics[width=7cm]{SPI4.png}
+    \caption{SPI - shift register 2}
+	\end{figure}
  
   		\subsubsection{Mode maitre}
   		
@@ -640,8 +649,13 @@ un circuit maître et un ou plusieurs circuits esclaves peuvent être connectés
   		\subsubsection{Connexion électrique}
   		
   		Comme indiqué précédemment, pour se connecter à un bus I2C il faut une masse, et deux fils de communication. Le premier fil, SDA (Signal DAta), est utilisé pour transmettre les données. L'autre fil, SCL (Signal CLock) est utilisé pour transmettre un signal d'horloge synchrone (signal qui indique le rythme d'évolution de la ligne SDA). Les tensions associées aux niveaux logiques vont dépendre de la technologie des circuits en présence (CMOS, TTL). Il faudra que tous les circuits connectés au bus I2C utilisent les mêmes potentiels pour définir les niveaux haut et bas. En définitive, cela implique que tous les composants connectés à un même bus soient alimentés de façon identique.
- 
-			\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI5.png}\hss}\hfill\null\newline
+  		
+  \begin{figure}[!ht]
+    \center
+    %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{CH.png}\hss}\hfill\null
+  	\includegraphics[width=12cm]{SPI5.png}
+    \caption{SPI - electronique implémentation}
+	\end{figure}
  
 En ce qui concerne la lecture des signaux SDA et SCL, cela ne pose pas de problème. Les signaux peuvent être lus en permanence sans risque d'interférer sur le niveau de la ligne.
 Au repos, tous les circuits connectes doivent imposer un niveau haut sur leurs sorties respectives. Si les lignes SDA et SCL sont au niveau haut dans ces conditions, cela signifie qu'aucun circuit ne tente de prendre le contrôle du bus. Si une des lignes SDA ou SCL passe à un niveau bas dans les mêmes conditions, c'est qu'un des circuits désire prendre le contrôle du bus. Mais il peut aussi y avoir deux circuits qui tentent de prendre le contrôle du bus en même temps (ou à quelques nanosecondes d'écart près). Il faut donc mettre en place un protocole pour gérer les conflits possibles.
@@ -681,10 +695,268 @@ Concernant les contraintes techniques aux-quelles nous avions à faire fasse, no
 Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de communication (contrairement au bus SPI en nécessitant plus), le bus SPI répond au principaux critère de vitesse de communication et une distance de transmission élevé. De plus, ce choix est renforcé du fait que nous avons réussi à réaliser un "hack" sur le protocole SPI de notre accéléromètre afin de minimiser le nombre de fil, comme nous le verrons dans la prochaine partie.
 
 
-\chapter{"Hack" du protocol SPI} %TODO
-	Nous l'avons vu précédement, le nombre de fils branché entre notre accéléromètre et notre carte programmable est une contrainte que nous souhaitons minimiser le plus possible; ainsi, le choix du SPI, en plus des qualités de ce bus de communication, vu renforcé car nous nous sommes aperçus qu'un détournement de la technologie était possble, afin de diminuer le nombre de fils.
+\chapter{"Hack" du protocol SPI}
+	Nous l'avons vu précédement, le nombre de fils branché entre notre accéléromètre et notre carte programmable (FPGA) est une contrainte que nous souhaitons minimiser le plus possible; ainsi, le choix du SPI, en plus des qualités de ce bus de communication, vu renforcé car nous nous sommes aperçus qu'un détournement de la technologie était possble, afin de diminuer le nombre de fils.
+	
+	Dernièrement, nous avons vu que le bus SPI fonctionnais comme suivant, étant basé sur quatres éléments distincts de communication:
+	
+	\begin{itemize}
+		\item SCLK (Serial Clock) 
+		\item MOSI (Master Output, Slave Input) 
+		\item MISO (Master Input, Slave Output) 
+		\item SS (Slave Select)
+	\end{itemize}
+	
+	Dans cette configuration, chacun de ces quatres canaux représente un fil de communiquation. Nous avons donc cherché à indetifier quels canaux pouvaient être supprimés ou mutualisés. Concernant la "Clock" et le "Select Slave", la suppressions d'un de ces canaux entrainerait la paralisation du protocol, et il en va de même pour une mutualisation; c'est donc vers les canaux de communications que nous nous sommes tourné.
+	
+	En effet, de deux fils de communication unidirectionnel, il serait intéressant de pouvoir les mutualiser afin d'offrir un canal de communication bidirectionnel. Cette observation est de plus renforcé, étant donné que notre contrôleur FPGA met à disposition des broches pouvant être utilisé simultanément en entré ainsi qu'en sorti; au sein du langage VHDL, ce type de broche est défini comme suivant: "INOUT".
+	
+	Sachant maintenant que l'implémentation d'une broche bidirectionnel est possible du coté de notre processeur, il nous faud déterminer si elle est également possible du coté de notre accéléromètre. Pour cela, avec un oscilloscope, nous allons chercher à déterminer si la ligne MISO ou la ligne MOSI "drive" la ligne au repos ou non; traduisant un état haut (valeur de tension différent de zéro et constant) de la ligne au repos.
+	
+	Afin de déterminer si ou ou non notre accéléromètre drive la ligne, nous avons mis en place une petite manipulation mettant en oeuvre un oscilloscope, une résistance, ainsi que notre accéléromètre. Nous avons connecté nos deux broches MISO et MOSI avec notre résistance, alimenté notre accéléromètre avec une source de tension en 3.3 volts et branché notre canal mutualisé à un oscilloscope. A partir de là, deux situations était possible, soit notre accéléromètre drive la ligne (un état haut constant différent de zéro), rendant ainsi toute possibilité de mutualisation impossible, soit ce derniers n'applique aucun état à la ligne au repos, nous permettant d'utiliser la ligne comme bon nous semble à tout moment.
+	
+	Enfin, suite à notre manipulation, nous avons pu mettre en évidence que notre accéléromètre ne "drive" pas la ligne, étant donné que lorsque les deux lignes sont au repos, ces dernières soient toutes les deux à l'état bas (zéro constant).
+	
+	Ayant pu adapté le protocol SPI de notre accéléromètre à nos besoin, afin d'en minimiser le nombre de fil, il nous est maintenant possible de nous concentré sur la mise en place de la chaine dans son ensemble.
+	
+	\chapter{De l'accéléromètre au FPGA}
+	
+		Afin de mettre en oeuvre un échange de données entre notre accéléromètre et notre carte programmable (FPGA), il nous a fallu mettre en place notre protocole de communication précédemment sélectionné, le bus SPI. Le protocole devant être impléménté au travers du langage VHDL, propre au circuit logique programmable.
 		
+		Mais disposant d'un temps limité par le stage ainsi que par la volonté de mettre en place une chaine de contrôle complète, de plus, ayant au début du stage des connaissances limitées en VHDL ainsi que de la phylosophie, de la façon de pensé et concevoir des programme, qui est en tout point différents de la progammation logiciel sur microcontrôleur, nous avons fait le choix de nous tournée vers un module "SPI MASTER" opensource.		
+		Ce module "SPI MASTER" va s'intégré pour travaillé au plus près du matériel, afin de mettre en place une interface entre le comportement physique du SPI de notre accéléromètre et notre interface plus "haut niveau" au travers de la quelle nous exploitont le protocole SPI.
+		
+		"Ce Ce module "SPI MASTER" est permet une programmation flexible de composent logic, afin de mettre en place une communication avec divers esclaves au travers d'une interface parallèle. Il permet la communication avec un nombre d'esclave à définir, pouvant être traité de manière indépendante, au travers du champ de données et de la fréquence de contrôle."
+		
+		\section{Contexte}
+			Le shéma de la communication SPI revient à interface full-duplex (transport simultané de l'information dans les deux sens) utilisant quatres fils. La clock (SCLK) drivé par le maître, mettant à disposition une clock synchrone. ensuite, le maître transmet la donnée via la sortie "Master out, Slave In" (MOSI) et reçoit celles du capteur par la ligne "M	aster In, Slave Out" (MISO).
 			
+			Un maître peut communiquer avec un module esclave de diverse manière, mais la méthode commune revient à configurer chaque module esclave avec une ligne "Select Slave" indépendente et en partageant les autres ligne (clock, miso, mosi) entre les différents modules esclaves. Grâce à cette méthode, un module va ignorer les lignes partagé, tant que les ligne "SS" ne sera pas activé (mise à l'état bas).
+			
+	\begin{figure}[!ht]
+    \center
+    %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{CH.png}\hss}\hfill\null
+  	\includegraphics[width=15cm]{spi_master_block.JPG}
+    \caption{SPI - implémentation commune}
+	\end{figure}
+	
+	Le protocole SPI a quatres mode de déploiement, basé sur deux paramètre, clock polarity (CPOL) et clock phase (CPHA). Le maître et l'esclave doivent utiliser le même mode de communication. 
+	Dans le cas ou CPOL serait à zéro, alors SCLK doit être à l'état haut, et le premiers front de la clock serait un front montant.
+	CPHA, lui, définie l'alignement des données, ainsi si CPHA est à zéro, alors le premier bit de donné écrit, lors du front déscendant de la ligne "SS" et lu lors du premier front de la clock. Si CPHA est à un, la donnée est écrite sur le premier front de clock et lu sur le deuxième front.
+	Toute la procédure décrite ci-dessus est décrite dans la figure suivante:
+	
+	\begin{figure}[!ht]
+    \center
+    %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{CH.png}\hss}\hfill\null
+  	\includegraphics[width=15cm]{spi_timing_diagram.JPG}
+    \caption{SPI - CPOL , CPHA}
+	\end{figure}
+	
+	\section{Port utilisé}
+		\begin{itemize}
+			\item clock - Input - système clock
+			\item reset\_n - Input - reset à l'état bas asynchrone
+			\item enable - Input - loquet permettant d'initier une transaction
+			\item CPOL - Input - SPI clock polarity
+			\item CPHA - Input SPI clock phase
+			\item clk\_div - Input - prescaler de la fréquence sytème
+			\item Addr - Input - adresse de l'esclave ciblé
+			\item Tx-data - Input - données à transmettre
+			\item miso - Input
+			\item mosi - Input
+			\item sclk - inuput
+			\item  ss\_n - input
+			\item busy - out - signal pour la lecture des données
+			\item rx-data - out - Donnée reçut de l'esclave.
+		\end{itemize}
+	
+	\section{transaction}
+		Un état sur le port "busy" indique quele composant est pret à accepté une commande. Le composant vérouille les paramètres (adresse et donnée) pour la transmission sur le premier front montant de la clock, lorque le port "enable" sera confirmé. Ensuite, sur la clock suivante, le composent configure le signal "busy" et commence la transaction. Une fois complète, ce dernier reçoit les données sur le port "rx\_data" et ce bit de donné reste sur le port jusqu'a l'arrivé du projet, généralisant ce fonctionnement tant que la transaction ne sera pas terminé.		
+		
+		La figure suivante illustre une transaction typique. Le module maître transmet la donnée "1001" au module esclave, configuré avec CPOL = 1 et CPHA = 1, le maître reçoit en retour la donnée "1010".
+		
+	\begin{figure}[!ht]
+    \center
+    %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{CH.png}\hss}\hfill\null
+  	\includegraphics[width=15cm]{transaction_timing_diagram_web.JPG}
+    \caption{diagramme d'état d'une transaction}
+	\end{figure}
+	
+	\section{Modification}
+		Une fois notre module pris en main, il nous a fallut le modifier afin de l'instantier avec l'utilisation des lignes miso et mosi mutuaisé, mettant en oeuvre trois fils au lieux de quatre. Pour cela nous avons utilisé le mode haute impédence nécessaire à l'utilisation des ports en entré sortie sur notre FPGA. Après avoir modifier le code afin de mutualiser les lignes miso et mosi, nous avons également du adapter l'algorithme précédemment établi afin de mettre en haute impédance la ligne en fonction des besoins, afin que cette dernière ne soit pas bloqué lors d'une écriture ou d'une lecture de données. 
+		
+		Ainsi, lors d'une transaction, lorque le nombre de bit total sera atteint, la ligne sera mise en haute impédance afin de libérer cette dernière pour une possible lecture.
+		
+	\begin{lstlisting}
+ 		void SensorInit()
+		{
+			--transmit spi clock toggle
+					IF(assert_data = '1' AND clk_toggles < last_bit_rx) THEN
+					  if (BITCOUNTER = 7 ) then
+					  	tmp := tx_buffer(d_width-1);
+					  end if;				
+  	          if (BITCOUNTER >= 8 and tmp = '1') then
+					  	MISOMOSI <= 'Z';				  
+					  else 
+					  	MISOMOSI <= tx_buffer(d_width-1);          --clock out data bit
+					  	tx_buffer <= tx_buffer(d_width-2 DOWNTO 0) & '0'; --shift data transmit buffer				  
+					  end if;				  
+					  BITCOUNTER := BITCOUNTER +1;
+					END IF;
+		}
+	\end{lstlisting}
+	
+	\section{Spi - application de plus "haut niveau"}
+		Par la suite, nous avons intantié une application de plus haut niveau ayant comme rôle d'encapsuler le notre module SPI ainsi que de nous permettre de configurer et d'adresser les registres souhaités de notre accléromètre.
+		
+		\subsection{Encapsulation du module SPI MASTER}
+			L'instantition de motre module SPI MASTER reste trivial dans cette api, étant donné que nous avons simplement à configurer les différents port et paramètre précédemment sité. Ainsi, le paramétrage s'effectue comme suivant:
+
+	\begin{lstlisting}
+ 		sm_accel: entity work.spi_master(SPI_ACCEL)
+  	GENERIC MAP(
+   	 		slaves  => 1,
+   	 		d_width => 16
+	 		)
+  	PORT MAP(
+    	clock    => CLOCK_50,				-- clock system
+    	reset_n  => reset_n,				-- signal de reset
+    	enable   => spi_enable,			-- signal enable
+    	cpol     => '1',						-- spi clock polarity
+    	cpha     => '1',           	--spi clock phase
+    	cont     => '0',         		--continuous mode command
+    	clk_div  => 5,							--system clock cycles, based on 1/2 period of clock (~10MHz -> 3 ; 100K -> 250)
+    	addr     => 0,             --address of slave
+    	tx_data  => spi_txdata,    --data to transmit
+    	sclk     => spi_sclk,      --spi clock
+    	ss_n     => spi_ss_n,      --slave select
+    	busy     => spi_busy,      --busy / data ready signal
+    	rx_data  => spi_rxdata,			--data received
+	 		MISOMOSI => GPIO_SPI_SDIO		--GPIO(2)
+		);
+		\end{lstlisting}
+		
+		\subsection{Accès aux registres de l'accéléromètre}
+			Afin d'utiliser notre accéléromètre, nous avons à configurer divers registres pour que les données reçus soit conforme à l'utilisation que nous souhaitons faire de notre accéléromètre. C'est pourquoi, nous avons besoins d'effectuer les configurations suivantes:
+			
+			\begin{itemize}
+				\item Avoir un intervale de valeur évoluant de 0 à 8 g.
+				\item accéder aux registres contenant les valeurs échantillonnés par notre matériel sur l'axes des "Z"
+				\item Configurer un bit d'état, permettant de savoir si la mémoire interne peut être accédé en lecture ou non.				
+			\end{itemize}
+			
+			Pour cela, nous avons implémenté deux tableaux de registres, le premiers contenant la configuration de l'accéléromètre et le deuxième contenant les registres à accéder en lecture.
+		\begin{lstlisting}
+ 		constant ACCEL_CONFIG : T_WORD_ARR:= (
+			7x"2D" & ADXL_WRITE_REG & 8x"01",		--initiate protocol configure registers (standby <- 1 : standby mode)
+			7x"2F" & ADXL_WRITE_REG & 8x"52",		--Power-on reset, code 0x52		
+			7x"2C" & ADXL_WRITE_REG & 8x"03",		--G range [+-8g : 3] ; [+- 4g : 2] ; [+-2g : 1] ; [disable : 0]
+			7x"28" & ADXL_WRITE_REG & 8x"00",		--HPF [0.238 : 6] ; [0.954 : 5] ; [3.862 : 4]
+			7x"2D" & ADXL_WRITE_REG & 8x"00"			--End protocol configure registers (standby mode <- 0 : mesurement mode)
+			);
+			
+		constant ACCEL_READ : T_WORD_ARR:= (
+			ADXL_DATAZ1_ADD & ADXL_READ_REG & 8x"00", 	-- DATAZ1 (MSB) - 2100
+			ADXL_DATAZ2_ADD & ADXL_READ_REG & 8x"00", 	-- DATAZ2		 		- 1F00
+			ADXL_DATAZ3_ADD & ADXL_READ_REG & 8x"00", 	-- DATAZ3 (LSB)	- 1D00
+			ADXL_STATUS_ADD & ADXL_READ_REG & 8x"04"		-- NVM_BUSY to check if memory can be access
+			);
+		\end{lstlisting}
+		
+		Ces deux tableaux ainsi que le module SPI MASTER sont mise en application au travers de la machine d'état que nous allons maintenant décrire. Machine d'état pouvant être interprété comme l'algorythme de ce module de plus haut niveau.			
+		
+		\subsection{Intégration globale - Machine d'état}
+				Au travers de la machine d'état ci-dessous, nous pouvons observer le comportement de notre module, pour que ce dernier puisse intéragir avec notre accéléromètre au travers de l'envoie et de la réception de données.
+		
+			\begin{figure}[!ht]
+    		\center
+   		 	%\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{CH.png}\hss}\hfill\null
+  			\includegraphics[width=12cm]{acc_StateMach.png}
+    		\caption{Machine d'état - module accéléromètre}
+			\end{figure}
+			
+			On retrouve ainsi un premiers état, "Reset\_st", qui nous permet de réinitialiser notre module, et ainsi notre communication. Ensuite viennent les états de configurations "Conf\_st" et "ConfBusy\_st" au travers des quels nous configurons les registres de l'accéléromètre que nous avons décris plus tôt. Puis viens un état d'attente " Idle\_st", état dans lequel l'accéléromètre se met en attente d'un évènement, qui dans notre cas va être me déclenchement d'une demande de lecture des données échantillonné par l'accéléromètre. Enfin, nous retrouvons les états de les lecture "Read\_st" et "ReadBusy\_st"; "Read\_st" permettant l'accès à un registre de valeur, puis basculant en "ReadBusy\_st" afin de déterminer si il reste ou non un registre à lire. Pour finalement retourner en état d'attente lorsque les trois registres, de 20 bits en tout formant la valeur échantillonné aurons été lu.		
+	
+	\chapter{Le filtrage}
+	
+	\section{Etat de l'art}
+	Au sein de la chaine, le module de filtrage est la clef de voute de cette dernière. C'est au sein de ce module que va être intégré la partie de traitement du signal, que nous aborderons par la suite). Le traitement du signal, prend place au travers d'une fonction de transfère, devant nous permettre de moduler notre signal en fonction de la courbe de réponse souhaité pour notre chaine.
+	
+	En attendant que cette fonction de transfère soit déterminé grâce à la manipulation sur le banc de test (que nous décrirons également plus tard), nous avons un module ayant un rôle simple et précis, copier les données qu'il reçoit en entré, traiter ces dernières codé en complément à deux afin qu'elles puissent être interprété par notre DAC n'acceptant que des données non signé sur 16 bits. Notre module se base donc sur une machine d'état relativement simple.
+	
+	Lors du premier état "IDLE\_st", nous attendons qu'une donnée soit adressé au module et lorsque c'est le cas, nous effectuons un cast sur notre donnée codé sur 20 bits, afin de travaillé sur un mot de 16 bits, composé des 16 MSB du mot précédent, à destination du DAC. Ensuite, nous appliquons un offset afin de décaler notre mot complémenté à deux (évoluant de -32768 à +32767) afin que ce dernier devienne un mot non signé, codé de 0 à 65535.
+	
+	\chapter{Du FPGA au CNA}
+	
+	\section{Mise au point}
+	
+	Pour ce dernier module de la chaine de contrôle, nous avons à mettre en place la communcation entre le FPGA et notre DAC via une liaison SPI. Etant donné la nature de la transmission, nous n'avons pas besoins de mettre au point une nouvelle machine d'état.Assurant une liaison SPI, nous pouvons réutiliser notre code, développé pour la transmission entre l'accéléromètre et le FPGA. La seul modification à apporter et l'ajout d'un état nous permettant d'adresser un registre particulier sur le DAC, correspondant à l'une des lignes de sortie en tension du DAC. Cet état se comporte donc comme suivant.
+	
+	Lorsque nous arrivons en transmission, nous concaténons quatres bit de poid fort correspondant à une configuration de registre permettant un swap instantanné entre l'entré et le registre le contrôle, à la suite des quels ont ajoute encore quatres bit correspondant à l'adresse de la ligne de sortie en tension. Enfin sont ajouté à la suite les 16 bits de données à transmettre.
+	
+		\begin{lstlisting}
+ 			when TRANSMITst =>
+					fifo_oe_w <= '0';
+					spi_txdata(15 downto 0)	 <= fifo_read;
+					spi_txdata(19 downto 16) <= SPI_CONFIG(1);
+					spi_txdata(23 downto 20) <= SPI_CONFIG(0);
+					
+					cState <= TRANSMITCONFst;
+		\end{lstlisting}
+		
+		Ainsi, en réadaptant notre api encapsulant le module "SPI MASTER", nous avons pu aisément remettre en place une liaison SPI vers un nouveau device.
+		
+		\section{Difficulté rencontré}
+		
+		Par la suite, alors que nous souhaitions mettre en place notre chaine de contrôle, afin de réaliser des tests sur notre maquette de piano, nous nous sommes aperçus d'un problème non pas sur la propagation des données, mais sur la stabilité du signal éléctrique de ces dernières. En effet, notre moteur réagicait au impulsion mesuré par notre accéléromètre, mais ce dernier restait très peu stable, et oscillait de manière aléatoire.
+		
+		Ainsi, afin de déterminer la cause du problème, nous avons cherché à visualiser nos signaux à l'aide d'un oscilloscope, et nous avons obtenue les graphques ci-dessous.Pouvant observer notre signal "bruité", nous avons cherché à déterminé la cause de ce problème.
+		
+		\begin{figure}[!ht]
+    \center
+   	%\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{CH.png}\hss}\hfill\null
+  	\includegraphics[width=10cm]{bruit1.PNG}
+		\caption{Stabilité - graphique 1}
+	\end{figure}
+	
+	Dans un premiers temps, étant donné que nous travaillions sur un prototypage rapide, nous avions beaucoup de cable connecté à l'aide de connecteur rapide, ce qui pouvais être source de problème. Nous avons donc éliminer cette possibilité en concevant une carte "mezzanine" (carte que nous détaillerons lors d'un prochain chapitre) afin de disposer de branchement toujours amovible, mais d'une plus grande qualité.
+	
+	N'ayant toujours pas résolué notre problème, nous nous sommes tourné cette fois du coté de la propagation du signal éléectrique au sein du FPGA, à l'aide d'un outils de diagnostique interne "signal tap". A l'aide de cette oscilloscope numérique, nous avons pu remonté notre signal jusqu'à l'aparission du bruit, nous conduisant à une FIFO au sein du module DAC.
+	
+	Cette FIFO fut développé alors que j'avais peu de connaissance vis-à-vis du langage VHDL et de ces spécificité, afin de m'exercer. Ce qui me conduisit dans un "piège" de débutant, non visible lors de la phase de débug sous ModelSim. En effet, l'outil de débug, nous permet de simuler nos script, mais il reste une simulation, si bien qu'une recopie déclenché par un front montant d'une horloge système apparait comme fonctionnelle, alors qu'en application, il nous faudrais attendre que le front d'horloge soit passé, puis test l'état de cet "oenable" pour ensuite effectuer notre copie.
+	
+	Ce méquanisme de conception se nomme la métastabilité.
+	
+	Afin de remédier rapidement à ce problème, nous avons choisi d'implémenter une FIFO, mise à disposition par le framework du constructeur de la carte, éliminant ainsi tout problème de métastabilité.		
+		
+	\chapter{Une octave "augmenté"}
+		Après avoir mise au point cette première manipulation, devant mettre en oeuvre l'action d'une touche de piano, entrainant la frappe d'une corde; Ensemble étant fonctionnelle et ayant démontré la preuve de concepte, nous allons maintenant chercher à généraliser cette chaine sur un mécanisme composé de douzes touches.
+		
+		Cette généralisation ayant été prévus dès le début du projet, le découpage de ce dernier en module, reste très avantageux. En effet, utilisant maintenant douzes touches, il nous faut récupérer les données provenant de douzes accéléromètre et donc appliquer douzes filtrages numériques indépendant. Pour cela, nous pouvons donc réutiliser nos deux premiers module (accéléromètre et Filtre) que nous allons dupliquer à l'aide d'une fonctionnalité fournie par le langage VHDL, les "GENERATE".
+		
+		Cette fonction, nous permet de pouvoir dupliquer un éléments de code, dans notre cas, douzes fois; et c'est là que tous l'intéret du VHDL apparait. Si nous avions implenté notre projet sur un micro-processeur, ces douzes nodule aurait fonctionné de manière sérialisé. Ici, grâce au VHDL, ces douzes nodules vont fonctionné de manière parfaitement parallèle, ainsi, si deux touches sont joué en même temps, les informations relative à celles-ci se propageront simultanement.
+		
+		La seul modification majeur qui va devoir être apporté, va être sur le dernier module, devant pouvoir stocker simultanément les informations de douzes nodules, pour ensuite sérialiser ces dernières, une par une, sur la ligne à destination de la communication SPI.
+		
+	\section{Modification du module DAC}
+		Devant maintenant récupérer les informations en prevenance de douzes accéléromètres et possiblement de manière simultanéé, il nous faud adapter notre dernier module. Là ou notre première implémentation se reposait sur la recopie d'une entré sur une sortie lors d'un acquitement signifiant qu'une donnée était disponible, il nous faut maintenant travailler avec notre douzaine de module ainsi que les acquitements certifiant la disponibilité de nouvelle données.
+		
+		Afin de nous contraindre à nos nouvelles contraintes, nous avons mise en place une architecture basé sur un ampilement de FIFO à horloge mixte. La logique de notre nouvelle architecture est illustré sur la figure suivante.
+		
+	\begin{figure}[!ht]
+    \center
+   	%\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{CH.png}\hss}\hfill\null
+  	\includegraphics[width=12cm]{octave.png}
+		\caption{Une octave "augmenté" - Architecture}
+	\end{figure}
+		
+		Comme nous pouvons le voir sur la figure ci-dessus, cette nouvelle architecture se base sur un ensemble de douze FIFO pouvant être accéder de manière indépendante par chacun des modules auquel cette dernière est rattaché. Ensuite, nous exploitons encore une fois la spécificité du langage VHDL au travers d'une boucle "for" qui nous permet de pouvoir parser l'ensemble des FIFO sur un seul coup d'horloge du système (horloge ayant une fréquence différente de celle permettant le stockage des données dans les FIFO.
+		Grâce à ce méquanisme, nous pouvons, pour chaque coup d'horloge parser l'ensemble de nos FIFO, afin de déterminer si de nouvelles données sont disponible, pour ensuite les sérialiser sur une dernière FIFO relié à une api encapsulant le bus SPI qui va permettre l'envoie des données au DAC.
+		
+		Cette architecture n'a pas pu être testé en condition, sur la maquette, elle n'a pour l'instant été testé qu'en simulation sous l'outils de modélisation "ModelSim". Bien que permettant une simulation au plus proche des conditions réels, il nous faudra valider se modèle en phase de test, pour ainsi déterminer si les contraintes de temps et de propagation des données sont respecté; le cas échéant, il nous faudra mettre au point une architecture plus subtil.
+	
+
+
 
 %--------------------------------------------------------------------------------------
 %
@@ -1019,173 +1291,134 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
 	
 	
 	
+	%--------------------------------------------------------------------------------------
+%
+%	Les cartes réalisées
+%		Minimiser la board de l'accéléromètre
+%		Ampli AOP et fin de course optique
+%		Mezanine du FPGA
+%
+%--------------------------------------------------------------------------------------
+\part{Les circuits imprimés réalisés}
+	
+	\section{Accéléromètre - evalBoard}
+		Alors que nous réalision la conception de notre chaine de contrôle, nous avons travaillé avec la carte d'évaluation du constructeur, étant fourni monté avec un accéléromètre, permettant une prise en main rapide du device. Plus tard, après avoir fini la conception de cette chaine de mesure, il nous à fallu monté notre PCB sur un marteau de la maquette de piano, ce qui à soulevé un "problème" dont nous étions déjà au fait; la carte d'évaluation étant trop grande. Devant s'insérer au sein d'une mécanique de précision, nous avons donc des contraintes de tailles précise à respecté afin d'équiper notre mécanique.
+		
+		Nous avons donc conçu un nouveau PCB sous l'outil de conception et de routage "KICAD", répondant à nos contrainte de tailles; en voici une illustration.
+		
+ \textsc{\begin{figure}[h]
+     \begin{minipage}[c]{.46\linewidth}
+         \centering
+         \includegraphics[width=7cm]{PCB.PNG}
+     \end{minipage}
+     \hfill%
+     \begin{minipage}[c]{.46\linewidth}
+         \centering
+         \includegraphics[width=7cm]{3D_print.PNG}
+     \end{minipage}
+ \end{figure}}
+	
+	
+	\section{Ampli AOP et intérupteur fin de course}
+	
+	La conception de cette carte fut motivé par deux éléments. Dans un premiers temps, lors de futur manipulation, nous allons avoir besoin de détecté lorsqu'une touche est au repos ou non, ce qui est rendu possible, grâce à l'utilisation d'intérupteur fin de course "optique" (une photodiode permettant de piloter un transistor. De plus, lors de manipulation sur notre banc de test, nous pensions avoir besoin de pouvoir amplifier un signal analogique provenant d'un générateur de fonction ou d'un capteur quelquonque.
+	
+	C'est pourquoi nous avons mise au point ce PCB, composé d'un AOP et d'un circuit intégré permettant le contrôle de nos intérupteurs.
+	
+	\textsc{\begin{figure}[h]
+     \begin{minipage}[c]{.46\linewidth}
+         \centering
+         \includegraphics[width=7cm]{OPB&AOP_1.PNG}
+     \end{minipage}
+     \hfill%
+     \begin{minipage}[c]{.46\linewidth}
+         \centering
+         \includegraphics[width=7cm]{OPB&AOP_4.PNG}
+     \end{minipage}
+ \end{figure}}
+ 
+	
+	\section{Mezzanine pour connection de meilleur qualité}
+	
+	La réalisation de cette carte fut de nombreuse fois remise à plus tard, étant donné le prototypage rapide mise en place, la maquette à souvent été amené à évolué au fur et à mesure de la conception de la chaine. Mais une fois notre modèle aboutit, ainsi que les problèmes de métastabilité rencontré, nous nous sommes concentré à la réalisation de la carte de connection.
+	
+	\textsc{\begin{figure}[h]
+     \begin{minipage}[c]{.46\linewidth}
+         \centering
+         \includegraphics[width=7cm]{3D_TOP.PNG}
+     \end{minipage}
+     \hfill%
+     \begin{minipage}[c]{.46\linewidth}
+         \centering
+         \includegraphics[width=7cm]{3D_BOTTOM.PNG}
+     \end{minipage}
+ \end{figure}}
+	
 		
 %--------------------------------------------------------------------------------------
 %
 %	Elément de fin de document
+%		Conclusion
 %		Bibliographie
 %		Table des figures
 %
 %--------------------------------------------------------------------------------------
 
+\part{Conclusion}
+
+
 \part{Bibliographie}
 
 	\begin{itemize}
 		\item Descriptif global du projet: BHLS-CNRS-UPMC-LPNHE-IRCAM.pdf
+		\item Module opensource SPI VHDL - https://eewiki.net/pages/viewpage.action?pageId=4096096
+		\item Introduction au VHDL:
+						- https://sti.discip.ac-caen.fr/IMG/pdf/vhdl.pdf
+						- http://www.montefiore.ulg.ac.be/\~senny/download/ELEN040\_TranspVHDL.pdf
+						- http://lslwww.epfl.ch/pages/teaching/cours\_lsl/sl\_info/19.VHDL.pdf
+						- http://hdl.telecom-paristech.fr/vhdl\_intro.html
+						- https://tcuvelier.developpez.com/tutoriels/vhdl/introduction-langage/
+						- http://perso.citi.insa-lyon.fr/trisset/cours/MAC-TC/cours-VHDL.pdf
+		\item FIFO en VHDL - https://vlsicoding.blogspot.com/2013/10/design-synchronous-fifo-in-vhdl.html
+		\item Buffer circulaire en VHDL - http://www.ece.ualberta.ca/\~elliott/ee552/studentAppNotes/1999f/circular\_buffer/circular\_buffer.html
+		\item VHDL norme 2008 - https://www.doulos.com/knowhow/vhdl\_designers\_guide/vhdl\_2008/vhdl\_200x\_ease/
+		\item ModelSim manual Reference - https://users.ece.cmu.edu/\~kbiswas/se\_cmds.pdf
 	\end{itemize}
 
 
 \part{Table des figures}
 
 	\listoffigures
+	
+\part{Annexe}
 
-
+	\section{Conception PCB - accéléromètre evalBoard}
+		\includepdf[scale=1, pages=-]{FICHE_FABRICATION_OPBANDAOP.pdf}
+		\includepdf[scale=0.6, pages=1]{FICHE_LIAISON_SCHEMA_PCB_NEWS.pdf}	
+		\includepdf[scale=1, pages=1]{FICHIER_DIMENSION_EVALBOARD.pdf}
+		\includepdf[scale=1, pages=-]{PLAN_CABLAGE_TOP_ELEMENTS_EVALBOARD.pdf}
+		\includepdf[scale=1, pages=-]{PLAN_PERCAGE_EVALBOARD.pdf}
+		\includepdf[scale=1, pages=-]{EVAL_Printing_Impression_Schematique.pdf}	
+		\hfill\hbox to 0pt{\hss\includegraphics[width=15cm]{Liste_compos.png}\hss}\hfill\null\newline
+			
+	\section{Conception PCB - Ampli AOP et intérupteur fin de course}
+%		\includepdf[scale=1, pages=-]{AOP_FICHE_FABRICATION_OPBANDAOP}
+%		\includepdf[scale=1, pages=-]{AOP_FICHE_LIAISON_OPBANDAOP}	
+%		\includepdf[scale=1, pages=-]{AOP_FICHIER_DIMENSION_OPBANDAOP}
+%		\includepdf[scale=1, pages=-]{AOP_PLAN_CABLAGE_BOTTOM_ELEMENTS_OPBANDAOP}
+%		\includepdf[scale=1, pages=-]{AOP_PLAN_CABLAGE_TOP_ELEMENTS_OPBANDAOP}
+%		\includepdf[scale=1, pages=-]{AOP_PRINTING_IMPRESS_SCHEMATIC}	
+%		\includepdf[scale=1, pages=-]{AOP_PLAN_PERCAGE_OPBANDAOP}		
+%		\hfill\hbox to 0pt{\hss\includegraphics[width=10cm]{AOP_Liste_Compos.png}\hss}\hfill\null\newline
+%		\hfill\hbox to 0pt{\hss\includegraphics[width=10cm]{AOP_ListeComposants.png}\hss}\hfill\null\newline
+		
+%	\section{Conception PCB - Mezzanine}
+%		\includepdf[scale=1, pages=-]{M_FICHE_FABRICATION_MEZZA}
+%		\includepdf[scale=1, pages=-]{M_FICHE_LIAISON_MEZZA}	
+%		\includepdf[scale=1, pages=-]{PLAN_CABLAGE_BOTTOM_ELEMENTS_MEZZA}
+%		\includepdf[scale=1, pages=-]{PLAN_CABLAGE_TOP_ELEMENTS_MEZZA}
+%		\includepdf[scale=1, pages=-]{PLAN_PERCAGE_MEZZA}
+%		\includepdf[scale=1, pages=-]{M_PRINTING_IMPRESS_SCHEMATIC}	
 
 \end{document}
 
-%%------------------------------------------------------------------
-%%
-%%  Présentation et Détail des travaux Réalisés durant le stage - TODO
-%%
-%%------------------------------------------------------------------
-%\subsubsection{Bus SPI}
-%			
-%			Une Liaison SPI (Serial Peripheral Interface) est un bus de données synchrone baptisé par Motorola, opèrant en Full-Duplex et qui peut transférer des données sur de courtes distances à des vitesses élevées. Les circuits communiquent selon un schéma Maitre/Esclave, où le maitre s'occupe totalement de la communication. Plusieurs esclave peuvent coexister sur un même bus, dans ce cas, la sélection du destinataire se fait par une ligne dédiée entre le maitre et l'esclave appelée "Chip Select" (CS) ou Slave Select (SS).
-% 
-%			\subsubsection{Principe de fonctionnement}
-%			
-%			Durant le transfère de données, le dispositif peut travailler soit en maitre, soit en esclave. L'interface SPI permet de connecter un ou plusieurs esclaves à un seul maitre via le même bus.
-% 
-%	\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI1.png}\hss}\hfill\null\newline
-% 
-%	Le bus SPI utilise 4 signaux logiques :
-% 
-%	\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI2.png}\hss}\hfill\null\newline
-% 
-%	\begin{itemize}
-%	\item SCLK (Serial Clock) : Le signal d'horloge, il est utilisé pour synchroniser les données échangées entre le maître et 	les esclaves. Cette ligne est nécessairement une sortie sur le maître et une entrée sur le ou les esclaves.
-% 
-%	\item MOSI (Master Output, Slave Input) : est utilisé pour transférer les données du maître vers l'esclave.
-% 
-%	\item MISO (Master Input, Slave Output) : est utilisé pour transférer les données l'esclave vers le maître.
-% 
-%	\item SS (Slave Select) : le maître utilise ce signal pour choisir avec qui il veut dialoguer.Ce signal est actif à l'état bas.Les esclaves ne peuvent pas communiquer entre eux.Seul le maître peut autoriser un esclave à dialoguer, cela dit l'esclave ne peut commencer le dialogue que s'il n'a pas l'autorisation.
-%\end{itemize}
-% 
-%	On parlera aussi de liaison à 3 fils : Permet de véhiculer l’information dans les 2 sens (bidirectionnelle), un fil différent étant dévolu à chaque sens de transfert d’information. Comme ceci permet la communication simultanée dans les 2 sens de transmission, on parlera de liaison full-duplex :
-%pendant que le maître transmet des données sur la ligne MOSI, vers l’esclave sélectionné, il en reçoit de celui-ci par la ligne MISO.
-%
-%
-%  		\subsubsection{Principe de transmission}
-%  		
-%			Une transmission SPI typique est une communication simultanée entre un maître et un esclave :
-%Tout d'abord, Le maître initie la communication en sélectionnant l'esclave avec qui il veut communiquer par l'utilisation du signal SS qui est actif bas.
-%Ensuite, Le maître et l'esclave préparent les données à envoyer dans leur registres à décalage.
-%Enfin, Le maître génère des impulsions d'horloge pour synchroniser les données échangées.
-% 
-%À chaque coup d'horloge le maître et l'esclave s'échangent un bit. Après huit coups d'horloges le maître a transmis un octet à l'esclave et vice versa. La vitesse de l'horloge est réglée selon des caractéristiques propres aux périphériques.
-% 
-%\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI3.png}\hss}\hfill\null\newline
-% 
-%pendant que le maître transmet les données sur la ligne MOSI, vers l’esclave sélectionné, il en reçoit de celui-ci par la ligne MISO.
-%Voici le tout sous forme de dessins. En rouge les bits reçus, en bleu les bits envoyés :
-% 
-%\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI4.png}\hss}\hfill\null\newline
-% 
-%  		\subsubsection{Mode maitre}
-%  		
-%  		Lorsqu'il est configuré en tant que maître, l'interface SPI n'a aucun contrôle automatique de la ligne de SS.Pour la configuration en mode maitre,nous devons déclarer : MOSI, SS et SCLK en sortie; MISO en entrée ; mettre le bit MSTR à 1 dans le registre SPCR. La mise de SS à l’état bas permet
-%d'établir la communication avec l’esclave.
-%le principe de transmission suit cette ordre :
-% 
-%    Ecriture d’un octet dans le registre de données (SPDR).
-%    Génération du signal d'horloge.
-%    Envoie des données contenue dans le registre de données vers l’esclave via la ligne MOSI.
-%    Arret du signal d'horloge.
-%    Mise du bit SPIF = 1 (flag de fin de communication)
-%    Si SPIE = 1 (autorisation de l’interruption) : interruption demandée, 2 options :
-%        chargement de l’octet suivant dans le registre
-%        mise de SS à l’état haut pour signaler la fin du paquet de données
-% 
-%	Le dernier octet entrant sera conservés dans le registre tampon pour une utilisation ultérieure.
-% 
-%  		\subsubsection{Mode esclave}
-%  		
-%  		Pour la configuration en mode esclave,nous devons déclarer : MOSI, SS et SCLK en entrée; MISO en sortie ;Mettre le bit MSTR à 0 dans le registre SPCR. L’esclave reste en mode sommeil jusqu’à ce que le maître l'appelle(en mettant la ligne SS à l’état bas). La mise de SS à l’état bas permet d'établir la communication avec l’esclave. Le principe de transmission suit cette ordre :
-% 
-%    Sélection de l'esclave avec qui communiquer
-%    Génération du signal d'horloge par le maître
-%    Envoie des données contenue dans le registre des données vers l’esclave via la ligne MISO.
-%    Mise du bit SPIF = 1 (flag de fin de communication)
-%    Si SPIE = 1 (autorisation de l’interruption) :
-%        interruption demandée
-%        chargement de l’octet suivant dans le registre
-%
-%			\subsubsection{Avantages}
-% 
-%			\begin{itemize}
-%			\item Communication full-duplex.
-%			\item Vitesse assez importante par rapport à l’I2C (10-100MBits/s).
-%			\item Partage d’un bus commun pour l’horloge, MISO et MOSI entre les périphériques.
-%			\item Simplicité de l’interface matérielle.
-%			\item Aucun arbitre nécessaire car aucune collision possible.
-%			\item Les esclaves utilisent l’horloge du maître et n’ont donc pas besoin d’oscillateur de précision.
-%			\end{itemize}
-% 
-%  		\subsubsection{inconvénients}
-% 
-%			\begin{itemize}
-%			\item Utilise plus de pattes d’un boitier que l’I2C qui en utilise seulement 2 (et la masse).
-%			\item Aucun adressage possible : Il faut une ligne de sélection par esclave en mode non chaîné.
-%			\item Le protocole n’a pas d’acquittement. Le maître peut parler dans le vide sans le savoir.
-%			\item Il ne peut y avoir qu’un seul maître sur le bus.
-%			\item Ne s’utilise que sur de courtes distances contrairement aux liaisons RS-232, RS-485 ou bus CAN.
-%			\end{itemize}
-% 
-% 
-% 			\subsection{Bus I2C}
-% 			
-% 			Le bus I2C permet de faire communiquer entre eux des composants électroniques très divers grâce à seulement trois fils : un signal de données (SDA), un signal d'horloge (SCL), et un signal de référence électrique (masse).
-%Il s'agit d'une liaison en mode série synchrone (un bit est transmis à chaque coup d’horloge). Le nombre de composants qu'il est ainsi possible de relier est essentiellement limité par la charge capacitive des lignes SDA et SCL : 400 pF.
-%un circuit maître et un ou plusieurs circuits esclaves peuvent être connectés au bus. Les échanges se font toujours à l’initiative du maître.La transmission est half duplex : mode écriture ou mode lecture, pas possible de manière simultanée.
-% 
-%  		\subsubsection{Connexion électrique}
-%  		
-%  		Comme indiqué précédemment, pour se connecter à un bus I2C il faut une masse, et deux fils de communication. Le premier fil, SDA (Signal DAta), est utilisé pour transmettre les données. L'autre fil, SCL (Signal CLock) est utilisé pour transmettre un signal d'horloge synchrone (signal qui indique le rythme d'évolution de la ligne SDA). Les tensions associées aux niveaux logiques vont dépendre de la technologie des circuits en présence (CMOS, TTL). Il faudra que tous les circuits connectés au bus I2C utilisent les mêmes potentiels pour définir les niveaux haut et bas. En définitive, cela implique que tous les composants connectés à un même bus soient alimentés de façon identique.
-% 
-%			\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{SPI5.png}\hss}\hfill\null\newline
-% 
-%En ce qui concerne la lecture des signaux SDA et SCL, cela ne pose pas de problème. Les signaux peuvent être lus en permanence sans risque d'interférer sur le niveau de la ligne.
-%Au repos, tous les circuits connectes doivent imposer un niveau haut sur leurs sorties respectives. Si les lignes SDA et SCL sont au niveau haut dans ces conditions, cela signifie qu'aucun circuit ne tente de prendre le contrôle du bus. Si une des lignes SDA ou SCL passe à un niveau bas dans les mêmes conditions, c'est qu'un des circuits désire prendre le contrôle du bus. Mais il peut aussi y avoir deux circuits qui tentent de prendre le contrôle du bus en même temps (ou à quelques nanosecondes d'écart près). Il faut donc mettre en place un protocole pour gérer les conflits possibles.
-%
-%   		\subsubsection{Protocole I2C}
-%	Le protocole I2C présent différentes caractéristiques:
-% 
-%			\begin{itemize}
-%			\item maitre-esclaves, car seul un nœud maitre peut communiquer avec les esclaves du réseau (1 ou tous)
-%			\item multi-maitres, car plusieurs maitres peuvent être présents sur le réseau
-%			\item synchrone, car on utilise un mécanisme de requête/réponse
-%			\item half-duplex, car on peut communiquer dans les deux sens, mais pas simultanément
-%			\end{itemize}
-% 
-%On utilise un adressage sur 7 bits pour identifier les nœuds, ce qui permet (en théorie) jusqu’à 128 nœuds sur le réseau. Certaines adresses sont réservées pour le broadcast (communiquer vers tous les nœuds en même temps). En pratique, les constructeurs on tendance à fixer l’adresse de certains nœuds, ce qui peut causer des collisions.
-% 
-% 
-%  		\subsubsection{Avantages}
-%			\begin{itemize}
-%			\item Utilise seulement 2 lignes (+ le fil de masse) et simplicité de connexion (uniquement deux résistances de pull-up à rajouter) 
-%			\item Le protocole limite automatiquement la vitesse de transmission à la vitesse de l’élément le plus lent. 
-%			\item Le bit de reconnaissance qui permet de savoir si l’esclave est bien connecté et également si les données ont été correctement transmises ou non. 
-%			\item Interconnections de multiples périphériques
-%			\end{itemize}
-% 
-%  		\subsubsection{Inconvénients}
-%			\begin{itemize}
-%			\item Impossibilité d’utiliser un mode full-duplex 
-%			\item Vitesse relativement lente pour la plupart des périphériques esclaves (100 à 400kbits/s) 
-%			\item Consommation relativement élevée du à la configuration en collecteur/drain ouvert 
-%			\item Distance de communication limitée car les lignes du bus ne sont pas protégées des perturbations et envoient des fronts montants et descendants. Cette distance est donc limitée par la vitesse de communication, les résistances de pull-up, la capacité du bus (en général, autour des 400pF).
-%\end{itemize}
-% 
-% \section{Contrainte et choix de réalisation}
-%Concernant les contraintes techniques devant c
