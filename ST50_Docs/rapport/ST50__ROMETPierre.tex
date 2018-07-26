@@ -87,19 +87,25 @@
 \part{Préambule}
 
   \chapter{Remerciement}
-%  Tout d'abord je tiens à remercier l'ensemble de mes collègues pour l'accueille des plus chaleureux, au sein du laboratoire de physique nucléaire et des hautes énergies, ainsi que pour leur présence tout au long de mon stage, en m'aidant et me conseillant.
-%  
-%  Je voudrais remercier Monsieur Olivier LEDORTZ pour son aide concernant le langage VHDL.
-%  
-%  Je tiens à remercier mon maitre de stage Monsieur Hervé LEBBOLO, pour son implication dans l'encadrement de mon stage, son soutien, ainsi que pour l'ensemble des connaissances transmises dans le domaine de l'électronique analogique.
-%  
-%  Enfin, je tiens également à remercier mon enseignant suiveur, Monsieur Franck GECHTER, grâce à qui j'ai pu réaliser un stage de fin d'étude me permettant d'allier mon corps de métier, à une passion, la musique.
+  Tout d'abord, je tiens à remercier l'ensemble de mes collègues pour l'accueil des plus chaleureux, au sein du laboratoire de physique nucléaire et des hautes énergies, ainsi que pour leur présence tout au long de mon stage, en m'aidant et me conseillant.
+  
+  Je voudrais remercier Monsieur Olivier LEDORTZ, ainsi que David MARTIN pour leurs aides concernant l'apprentissage du langage VHDL.
+  
+  Je souhaite remercier Monsieur Eric PIERRE pour sa présence amical au quotidien, ainsi que pour le temps passé à me former à la conception et au routage de circuit électronique.
+  
+  Je remercie Monsieur Julien CORIDIAN pour son soutien, ainsi que les conseils et le temps passé à me former aux bonnes pratiques au sein de l'atelier de fabrication.
+  
+  Je tiens également à remercier Monsieur Antoine LETESSIER pour ce projet ainsi que la confiance accordé qui m'a permis de mener ce projet dans les meilleurs conditions.
+  
+  Je remercier tout particulièrement à mon maître de stage Monsieur Hervé LEBBOLO, pour son implication dans l'encadrement de mon stage, son soutien, ainsi que pour l'ensemble des connaissances transmises tant sur le plan professionnel que pour le partage autour de la musique.
+  
+  Enfin, je tiens également à remercier mon enseignant suiveur, Monsieur Franck GECHTER, grâce à qui j'ai pu réaliser un stage de fin d'études me permettant d'allier mon métier à une passion, la musique.
   
  \chapter{Introduction}
 
-Dans le cadre des mes études d'ingénieur au sein de l'Université de Technologie de Belfort-Montbéliard, j'ai effectué un stage de fin d'études en laboratoire d'une durée de 24 semaines au sein du laboratoire de Physique Nucléaire et des Hautes Énergies à Paris.
+Dans le cadre de mes études d'ingénieur au sein de l'Université de Technologie de Belfort-Montbéliard, j'ai effectué un stage de fin d'études en laboratoire d'une durée de 24 semaines au sein du laboratoire de Physique Nucléaire et des Hautes Énergies à Paris.
 
-Le laboratoire de Physique Nucléaire et des Hautes Énergies est une unité de recherche de l'institut national de  physique nucléaire et de physique des particules, institut du CNRS et des universités Sorbonne Université et Paris Diderot.
+Le laboratoire de Physique Nucléaire et des Hautes Énergies, est une unité de recherche de l'institut national de  physique nucléaire et de physique des particules, institut du CNRS et des universités Sorbonne Université et Paris Diderot.
 
 Mon stage s'est déroulé au sein du service électronique, sous la tutelle de Monsieur Hervé LEBBOLO.
 
@@ -109,7 +115,7 @@ Ce projet interdisciplinaire associe de nombreuses compétences, en lutherie art
 
 L'objectif est la réalisation d'un système de motorisation asservie de la mécanique d'un piano à queue afin d'offir de nouvelles couleurs aux préparateurs de pianos, ainsi que de nouvelles voies d'expression musicales aux interprètes tout en gardant intact le toucher traditionnel des mécaniques à répétition.
 
-Le laboratoire étant spécialisé dans le domaine de l'électronique de précision et de l'électronique numérique, travaillant sur des projets tel que LSST (Large Synoptic Survey Telescope - Grand télescope d'étude synoptique), ce stage fut pour moi l'occasion d'évoluer dans un domaine des systèmes embarqués que je ne maitrisais peu, (de par ma formation) l'électronique analogique et numérique, ce qui m'a permis de découvrir et d'acquérir de nouvelles compétences ainsi que les méthodes de développement qui y sont liées.
+Le laboratoire étant spécialisé dans le domaine de l'électronique de précision et de l'électronique numérique, travaillant sur des projets tel que LSST (Large Synoptic Survey Telescope - Grand télescope d'étude synoptique), ce stage fut pour moi l'occasion d'évoluer dans un domaine des systèmes embarqués que je ne maîtrisais peu, (de par ma formation) l'électronique analogique et numérique, ce qui m'a permis de découvrir et d'acquérir de nouvelles compétences ainsi que les méthodes de développement qui y sont liées.
 
 Suite à cette introduction, nous allons poursuivre avec la présentation du laboratoire (LPNHE), puis nous conclurons cette première partie par la présentation du projet "CHAMP".
 
@@ -125,7 +131,7 @@ Suite à cette introduction, nous allons poursuivre avec la présentation du lab
   Ces programmes couvrent les enjeux actuels de la physique des particules, des astroparticules, et de la cosmologie.
   On retrouve un groupe constitué de:
   \begin{itemize}
-  \item  24 enseignant chercheurs
+  \item  24 enseignants chercheurs
   \item  27 chercheurs
   \item  44 personnels d'appuis à la recherche
   \item  20 Doctorants
@@ -137,7 +143,7 @@ Suite à cette introduction, nous allons poursuivre avec la présentation du lab
   
   On retrouve ainsi des travaux portant sûr:  
   \begin{itemize}
-  \item L'origine des masses et des familles de particules, recherche du boson de Higgs, unification des interactions fondamentales, recherche de la supersymétrie, dimensions supplémentaires de l’espace-temps : thèmes abordés par les expériences CDF et D0 auprès du Tevatron à Fermilab, et par des expériences auprès du Large Hadron Collider au CERN (ATLAS au LPNHE), et enjeux d’un futur collisionneur e+e- pour lequel le LPNHE est engagé dans le développement de détecteurs en silicium.
+  \item L'origine des masses et des familles de particules, recherche du boson de Higgs, unification des interactions fondamentales, recherche de la super-symétrie, dimensions supplémentaires de l’espace-temps : thèmes abordés par les expériences CDF et D0 auprès du Tevatron à Fermilab, et par des expériences auprès du Large Hadron Collider au CERN (ATLAS au LPNHE), et enjeux d’un futur collisionneur e+e- pour lequel le LPNHE est engagé dans le développement de détecteurs en silicium.
   
   \item L’asymétrie matière-antimatière et la physique des saveurs lourdes : ce sont les sujets principaux des expériences BaBar au « SLAC National Laboratory », LHCb au CERN et la future SuperB factory en Italie.
   
@@ -156,14 +162,14 @@ Suite à cette introduction, nous allons poursuivre avec la présentation du lab
   
   \section{Projet et thématique}
   
-		Entre 2015 et 2017, le laboratoire de Physique Nucléaire et des Hautes Energie (LPNHE) à travaillé, et continue de développer une vinghtaine de projet. Ces projets s'intègre dans différents domaines d'activité au sein du laboratoire que voici.
+		Entre 2015 et 2017, le laboratoire de Physique Nucléaire et des Hautes Energie (LPNHE) à travaillé et continue de développer une vingtaine de projet. Ces projets s'intègre dans différents domaines d'activité au sein du laboratoire que voici.
   	
   \begin{itemize}
 		\item Masses et intéractions fondalentales
 		
-			- L'expérience Atlas, au LHC (Cern), est l'un des deux détecteurs polyvalents du grand collisionneur de hadrons (LHC). Il étudie des domaines de de physique très variés, de la recherche du boson de higgs, aux dimensions supplémentaires de l'espace-temps, en passant par les particules qui pourraient former la matière noire. Il regroupe un large ensemble de projet portant sur la désintégration du boson de Higgs, la physique du quark top, les sections efficaces de jets, de la calibration des électrons et des photons, du R\&D pour la fabrication d'un nouveau trajectographe ainsi que pour un "High Granularity Timing Detector".
+			- L'expérience Atlas, au LHC (Cern), est l'un des deux détecteurs polyvalents du grand collisionneur de hadrons (LHC). Il étudie des domaines de physique très variés, de la recherche du boson de higgs, aux dimensions supplémentaires de l'espace-temps, en passant par les particules qui pourraient former la matière noire. Il regroupe un large ensemble de projet portant sur la désintégration du boson de Higgs, la physique du quark top, les sections efficaces de jets, de la calibration des électrons et des photons, du R\&D pour la fabrication d'un nouveau trajectographe ainsi que pour un "High Granularity Timing Detector".
 			
-			- Le projet CALICE, portant sur de la recherche et développement d'un nouveau calorimètre auprès de l'International Linear Collider (ILC). Le projet CALICE (Calorimeter for Linear Collider with Electrons) est un projet développé depuis quelques années pour concevoir des calorimètres de hautes granularité, ils pourront donc mesurer avec une grande précision le flux des particules et permettre de discerner les particules très proches lors du développement des gerbes, afin d'avoir un maximum d'informations sur toutes les désintégrations de particules.			
+			- Le projet CALICE, portant sur la recherche et le développement d'un nouveau calorimètre auprès de l'International Linear Collider (ILC). Le projet CALICE (Calorimeter for Linear Collider with Electrons) est un projet développé depuis quelques années pour concevoir des calorimètres de hautes granularité, ils pourront donc mesurer avec une grande précision le flux des particules et permettre de discerner les particules très proches lors du développement des gerbes, afin d'avoir un maximum d'informations sur toutes les désintégrations de particules.			
 			
 			- Le projet DZero, portant sur la physique du boson de Higgs et du top au Tevatron. Après la mise en évidence de la production de quarks top célibataire et la mesure de Delta Ms, la recherche du boson de Higgs est devenu l'enjeu majeur des expériences Dzero et CDF auprès du collisionneur TeVatron à Fermilab. 
 			
@@ -172,42 +178,41 @@ Suite à cette introduction, nous allons poursuivre avec la présentation du lab
 			- L'expérience LHCb (Large Hadron Collider Beauty) portant sur la physique des saveurs lourdes au LHC.
 				LHCb explore les légères différences qui existent entre matière et antimatière grâce à l’étude d’un type de particule appelé « quark beauté » ou « quark b ». Au lieu d’utiliser un détecteur fermé au niveau du point de collision, tel que ceux d’ATLAS et de CMS, l’expérience LHCb a recours à plusieurs sous-détecteurs conçus pour observer principalement les particules émises « à petits angles », vers l’avant, dans le sens du faisceau.
 			
-			- L'expérience "BABAR", est une expérience de physique des particules réalisées au Stanford Linear Accelerator Center. Elle est dédiée à létudes de la physique des mésons B et de la violation de la symétrie CP dans leur désintégration faibles.
+			- L'expérience "BABAR", est une expérience de physique des particules réalisées au Stanford Linear Accelerator Center. Elle est dédiée à l'études de la physique des mésons B et de la violation de la symétrie CP dans leur désintégration faible.
 			
-			- Le projet T2K, "T2K" pour Tokai to Kamioka est nouvel oscillateur à neutrons. Cette expérience de physique des particules situées au Japon, dans laquelle collabore de nombreux pays. Il s'agit d'une expérience d'oscillation de neutrinos, mesurant un faisceau de neutrinos muoniques à courte (280 m) et longue distance (295 km). Le but principal de T2K est de mesurer l'oscillation des neutrinos muoniques en neutrinos électroniques afin de mesurer le derniers paramètre de la matrice "Pontecorvo-Maki-Nakagawa-Sakata" permettant d'expliquer l'oscillation deneutrinos prédite par Bruno Pontecorvo en 1957.	
+			- Le projet T2K, "T2K" pour Tokai to Kamioka est nouvel oscillateur à neutrons. Cette expérience de physique des particules situées au Japon, dans laquelle collabore de nombreux pays. Il s'agit d'une expérience d'oscillation de neutrinos, mesurant un faisceau de neutrinos muoniques à courte (280 m) et longue distance (295 km). Le but principal de T2K est de mesurer l'oscillation des neutrinos muoniques en neutrinos électroniques afin de mesurer le dernier paramètre de la matrice "Pontecorvo-Maki-Nakagawa-Sakata" permettant d'expliquer l'oscillation de neutrinos prédite par Bruno Pontecorvo en 1957.	
 			
-			- Le projet COMET, mettant en place des expérience de phénoménologie et la modélisation pour la physique des particules. L’expérience recherche la conversion cohérente sans neutrino d’un muon en électron dans un atome d’aluminium muonique, signal éventuel de physique au-delà du Modèle Standard.
+			- Le projet COMET, mettant en place des expériences de phénoménologie et la modélisation pour la physique des particules. L’expérience recherche la conversion cohérente sans neutrino d’un muon en électron dans un atome d’aluminium muonique, signal éventuel de physique au-delà du Modèle Standard.
 			
-			- Le projet SHiP (Search for Hidden Particles) est un projet d’expérience à cible fixe ayant comme projectiles les protons de 400GeV du faisceau du SPS (Super Proton Synchrotron) au CERN. Le détecteur est conçu avec une géométrie favorisant la recherche de particules dites invisibles. Ces dernières sont prédites par bon nombre de modèles théoriques et leur confirmation pourrait élucider certains des grands mystères de la physique actuelle tels que l’origine de la masse des neutrinos, de la matière noire ou encore de l’asymétrie baryonique de l’Univers. Ces modèles postulent l’existence de particules interagissant très faiblement avec celles du Modèle Standard comme par exemple les neutrinos stériles, les particules supersymétriques, les axions, ou encore les photons sombres.
+			- Le projet SHiP (Search for Hidden Particles) est un projet d’expérience à cible fixe ayant comme projectiles les protons de 400GeV du faisceau du SPS (Super Proton Synchrotron) au CERN. Le détecteur est conçu avec une géométrie favorisant la recherche de particules dites invisibles. Ces dernières sont prédites par bon nombre de modèles théoriques et leur confirmation pourrait élucider certains de grands mystères de la physique actuelle telle que l’origine de la masse des neutrinos, de la matière noire ou encore de l’asymétrie baryonique de l’Univers. Ces modèles postulent l’existence de particules interagissant très faiblement avec celles du Modèle Standard comme par exemple les neutrinos stériles, les particules supersymétriques, les axions, ou encore les photons sombres.
 			
 		\item Rayonnement Cosmique et Matière Noire
 			
 			- Le projet AUGER.
-			En 1938, P. Auger a mis en évidence l'existence de " grandes gerbes cosmiques atmosphériques contenant des corpuscules ultra pénétrantes, la technique utilisée etait celle des "compteurs en coïncidence ". Aujourd'hui l'observatoire Pierre Auger continue de founir à la communauté scientifique des données précises sur les gerbes atmosphérique les plus énergétiques jusqu'à E-10\^20 eV.
+			En 1938, P. Auger a mis en évidence l'existence de " grandes gerbes cosmiques atmosphériques contenant des corpuscules ultra pénétrantes, la technique utilisée était celle des "compteurs en coïncidence ". Aujourd'hui l'observatoire Pierre Auger continue de fournir à la communauté scientifique des données précises sur les gerbes atmosphérique les plus énergétiques jusqu'à E-10\^20 eV.
 			
 			- Le projet H.E.S.S est une expérience d'astronomie gamma dans le désert de Namibie. H.E.S.S est constituée de quatre télescopes atmosphériques à effet Cherenkov possédant chacun un miroir d’environ 12 mètres de diamètre, correspondant à un peu plus de 100 m2 de surface réfléchissante, placés aux quatre coins d’un carré de 120 mètres de côté. Ces télescopes opèrent entre environ 100 GeV et quelques dizaines de TeV. Au centre, un cinquième télescope équipé d’un miroir six fois plus grand en surface est sensible aux rayonnements de plus basse énergie, aux alentours de 20 GeV. 
 			
-			- L'expérience CTA (Cherenkov Telescope Array) constitue la prochaine génération de réseaux de télescopes à effet Cherenkov atmosphérique qui devrait prendre ses premières données à l’horizon 2022. Il a fait l’objet de la constitution d’une collaboration internationale de plus de 1300 scientifiques répartis dans 210i nstitutions de 32 pays. Ses objectifs sont de couvrir un domaine en énergie des rayonnements cosmiques détectés de dix GeV à plusieurs centaines de TeV avec une sensibilité accrue de plus d’un ordre de grandeur par rapports aux expériences existantes actuellement (essentiellement HESS, MAGIC et VERITAS).
+			- L'expérience CTA (Cherenkov Telescope Array) constitue la prochaine génération de réseaux de télescopes à effet Cherenkov atmosphérique qui devrait prendre ses premières données à l’horizon 2022. Il a fait l’objet de la constitution d’une collaboration internationale de plus de 1300 scientifiques répartis dans 210 institutions de 32 pays. Ses objectifs sont de couvrir un domaine en énergie des rayonnements cosmiques détectés de dix GeV à plusieurs centaines de TeV avec une sensibilité accrue de plus d’un ordre de grandeur par rapports aux expériences existantes actuellement (essentiellement HESS, MAGIC et VERITAS).
 			
 			- L’expérience DAMIC (DArk Matter In CCDs) se propose de détecter le recul induit par la matière noire sur les noyaux de silicium composant les détecteurs à couplage capacitif (les CCD) qui servent habituellement de détecteur de photons en astronomie ou de particules en physique des hautes énergies. Le seuil de détection très bas des CCD (3.5 eV pour former une paire électron-trou) et la masse relativement faible du noyau de silicium permettent de sonder le domaine de masse des WIMP (Weakly Interacting Massive Particles) et d’autres candidats matière noire entre 1 et 20 GeV. Ce domaine en énergie est peu accessible aux grands détecteurs à liquide noble du fait de leur seuil de détection plus élevé.
 						
 			- Le projet DarkSide pour la recherche de matière noire repose sur l’utilisation d’une Chambre à Projection Temporelle (TPC) à l’Argon liquide en double phase. Un détecteur de 50 kg (DS-50) est actuellement en prise de données au LNGS. Il sera suivi par un détecteur de 20 t, DarkSide-20k.
 			
 			- Le projet XENON.
-			Le détecteur XENON1T, développé par la collaboration XENON pour la recherche directe de matière noire, est l’expérience la plus sensible à l’heure actuelle dans la gamme de masse au-delà d’environ 10 GeV. Il est constitué par une TPC (Time Projection Chamber) remplie de 3.5 tonnes de xénon liquide, située dans le laboratoire souter-
-rain du Gran Sasso, en Italie. Il vise à détecter la faible charge et la petite quantité de lumière qui devraient être émises à la suite de l’interaction d’une particule de matière noire avec un noyau de xénon. La construction de XENON1T a commencé en 2013 et s’est achevée en octobre 2015, suivie par une phase de mise en service et de calibration.
+			Le détecteur XENON1T, développé par la collaboration XENON pour la recherche directe de matière noire, est l’expérience la plus sensible à l’heure actuelle dans la gamme de masse au-delà d’environ 10 GeV. Il est constitué par une TPC (Time Projection Chamber) remplie de 3.5 tonnes de xénon liquide, située dans le laboratoire souterrain du Gran Sasso, en Italie. Il vise à détecter la faible charge et la petite quantité de lumière qui devraient être émises à la suite de l’interaction d’une particule de matière noire avec un noyau de xénon. La construction de XENON1T a commencé en 2013 et s’est achevée en octobre 2015, suivie par une phase de mise en service et de calibration.
 			
 		\item Cosmologie et énergie noire
 		
-			- Le projet Supernovae, consiste en l'observation de supernova dans un gamme de redshift.
+			- Le projet Supernovae, consiste en l'observation de supernova dans une gamme de redshift.
 			
-			- Le projet au sol "LSST", vise à l'observation répétée de l'ensemble du ciel visible, en s'affranchissant d'une partie des effets instrumentaux et atmosphériques. Il est basé sur un télescope au sol de 8.4 mètres de diamètre équipé d'une caméra de 3.2 milliard de pixels. L'ensemble, implanté au Chili, couvrira un champ de 9.6 degrés carrés sur le ciel balayé à la cadence d'un champ toutes les 40 secondes. Chaque champ sera ainsi visité 1000 fois durant les 10 ans de prise de données du programme.
+			- Le projet au sol "LSST", vise à l'observation répétée de l'ensemble du ciel visible, en s'affranchissant d'une partie des effets instrumentaux et atmosphériques. Il est basé sur un télescope au sol de 8.4 mètres de diamètre équipés d'une caméra de 3.2 milliard de pixels. L'ensemble, implanté au Chili, couvrira un champ de 9.6 degrés carrés sur le ciel balayé à la cadence d'un champ toutes les 40 secondes. Chaque champ sera ainsi visité 1000 fois durant les 10 ans de prise de données du programme.
 			
 			- eBOSS/DESI
 			L’objectif principal du groupe est la mesure de l’échelle du pic acoustique des oscillations de baryons (BAO, pour Baryon Acoustic Oscillations), qui constitue un indicateur de distance angulaire et une mesure du taux d’expansion au redshift des sources analysées. On obtient ainsi une précision inégalée à haut redshift. Ce pic se mesure comme un excès de corrélation des traceurs de densités à une distance de séparation précise (en coordonnées co-mobiles).
 			
-			- Etude de la dynamique des systèmes auto-gravitants
-			La motivation principale pour la recherche théorique du groupe est le problème de la formation des grandes structures de l’univers. Le défi large est de rendre compte systématiquement des observations pertinentes (distribution des galaxies, lentillage faible, CMB etc.) dans le cadre de la cosmologie standard (« Lambda CDM ») ou de ses variantes, et notamment dans le régime « non-linéaire ». L’accent de la recherche du groupe porte sur des questions fondamentales théoriques dans ce contexte, et il s’attache notamment à comprendre la dynamique non-linéaire de la matière purement gravitante et non-relativiste, approximation valable pour une grande partie de l’évolution de l’univers dans le modèle standard.		
+			- Étude de la dynamique des systèmes auto-gravitants
+			La motivation principale pour la recherche théorique du groupe est le problème de la formation des grandes structures de l’univers. Le défi large est de rendre compte systématiquement des observations pertinentes (distribution des galaxies, lentillage faible, CMB etc.) dans le cadre de la cosmologie standard (« Lambda CDM ») ou de ses variantes, et notamment dans le régime « non-linéaire ». L’accent de la recherche du groupe porte sur des questions fondamentales théoriques dans ce context, et il s’attache notamment à comprendre la dynamique non-linéaire de la matière purement gravitante et non-relativiste, approximation valable pour une grande partie de l’évolution de l’univers dans le modèle standard.		
 		  	
   \end{itemize}
   
@@ -220,17 +225,17 @@ rain du Gran Sasso, en Italie. Il vise à détecter la faible charge et la petit
 \part{Qu'est ce que le projet "CHAMP" ?}
   \chapter{Présentation}
   
-  Ce projet est né de la rencontre de Laurent BESSIÈRES, préparateur de piano intervenant pour les concerts et récitals de la Philarmonoe de Paris, et de Antoine LETESSIER SELVON, physicien des hautes énergies, directeur de recherche au CNRS et pianiste amateur. 
+  Ce projet est né de la rencontre de Laurent BESSIÈRES, préparateur de piano intervenant pour les concerts et récitals de la Philarmonoe de Paris et de Antoine LETESSIER SELVON, physicien des hautes énergies, directeur de recherche au CNRS et pianiste amateur. 
   
-  De leur discution est né un projet au travers du quel ils cherche à élargir les possibilités de l'instrument en modifiant de mainère original sa mécanique. C'est en s'appuyant sur des techniques modernes qu'il souhaite proposer de nouveaux moyen d'expression aux artistes, tout en respectant le lien étroit qu'ils entretiennent avec leur instrument nottament au travers du toucher.
+  De leur discution est née un projet au travers du quel ils cherchent à élargir les possibilités de l'instrument en modifiant de manière original sa mécanique. C'est en s'appuyant sur des techniques modernes qu'il souhaite proposer de nouveaux moyens d'expressions aux artistes, tout en respectant le lien étroit qu'ils entretiennent avec leur instrument notamment au travers du touché.
   
   \section{État de l'art}
   
-  C’est en 1700 que Bartolomeo Cristofori invente la mécanique à échappement et construit le premier instrument à cordes frappées : le piano-forte. Ce sont les balbutiements de l’histoire du piano à queue. Le piano-forte révolutionne la technique pianistique car il permet à l’interprète de passer par le jeu des doigts, d’une nuance piano à une nuance forte, ouvrant de nouvelles voies à l’expression musicale et à la créativité des compositeurs. Cent vingt-trois ans plus tard, en 1821, Sébastien Érard ajouta un système de répétition à la mécanique de Cristofori et invente la mécanique moderne dite (improprement) à double échappement.
+  C’est en 1700 que Bartolomeo Cristofori invente la mécanique à échappement et construit le premier instrument à cordes frappées : le piano-forte. Ce sont les balbutiements de l’histoire du piano à queue. Le piano-forte révolutionne la technique pianistique, car il permet à l’interprète de passer par le jeu des doigts, d’une nuance piano à une nuance forte, ouvrant de nouvelles voies à l’expression musicale et à la créativité des compositeurs. Cent vingt-trois ans plus tard, en 1821, Sébastien Érard ajouta un système de répétition à la mécanique de Cristofori et invente la mécanique moderne dite (improprement) à double échappement.
 
 A la même époque, deux progrès techniques et industriels vont donner naissance au piano moderne. D’une part l’utilisation d’acier fondu pour les cordes et d’autre part l’introduction de cadres métalliques en fonte. Par ailleurs, de nombreux brevets seront déposés concernant la table d’harmonie, le croisement des cordes, le chevalet, l’assemblage de la mécanique, etc. 
 
-De telle sorte, que peu avant 1890, l’essentiel de ce qui fait un piano moderne est accompli. A partir de cette date et à la suite d’une concentration industrielle de plus en plus forte, la nécessité de produire le plus d’instruments possible au moindre coût pour garantir plus de parts de marchés, les innovations vont essentiellement cesser et conduire en moins d’un siècle à la disparition de presque tous les facteurs artisanaux et à l’uniformisation quasi totale des instruments avec pour référence le piano de concert Steinway dont le modèle produit en 1877 réunissait déjà les inventions les plus importantes du XIXe siècle.
+De telle sorte, que peu avant 1890, l’essentiel de ce qui fait un piano moderne est accompli. À partir de cette date et à la suite d’une concentration industrielle de plus en plus forte, la nécessité de produire le plus d’instruments possibles au moindre coût pour garantir plus de parts de marchés, les innovations vont essentiellement cesser et conduire en moins d’un siècle à la disparition de presque tous les facteurs artisanaux et à l’uniformisation quasi totale des instruments avec pour référence le piano de concert Steinway dont le modèle produit en 1877 réunissait déjà les inventions les plus importantes du XIXe siècle.
 
 \newpage
 On peut légitimement se demander quelles sont les lacunes du Steinway d’aujourd’hui, joué par 95\% des pianistes de la planète, qui justifieraient de bouleverser l’état actuel.
@@ -366,9 +371,9 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 	
 	\section{Synthèse et objectif du projet}
 	
-	Comme présenté précédemment, le projet "CHAMP" est né de la rencontre de personne et de la mise en commun de savoir provenant d'univers variés, à savoir, 
+	Tel que présenté précédemment, le projet "CHAMP" est né de la rencontre de personne et de la mise en commun de savoir provenant d'univers variés, à savoir, 
 	
-	le milieu scientifique, au travers du LPNHE (laboratoire de physique nucléaire et des hautes énergies), représenté par Antoine LETESSIER SELVON, physicien des hautes énergies et directeur de recherche, Hervé LEBBOLO, ingénieurs de recherche, et enfin,  Philippe REPAIN, mécanicien chef d'atelier.
+	le milieu scientifique, au travers du LPNHE (laboratoire de physique nucléaire et des hautes énergies), représenté par Antoine LETESSIER SELVON, physicien des hautes énergies et directeur de recherche, Hervé LEBBOLO, ingénieurs de recherche et enfin Philippe REPAIN, mécanicien chef d'atelier.
 	
 	le milieu musical artisanal, représenté par Laurent Bessières détenteur du prestigieux titre d'Académicien Steinway.
 	De plus, depuis l'inauguration de la philharmonie de Paris en janvier 2015, Laurent en est l'accordeur référant de la philharmonie. Enfin, il travaille également avec d'autres prestigieuses salles, comme Steinway and Sons France, régie Pianos, la Salle Pleyel, la Salle Cortot ou le Studio de la Grande Armée qui font régulièrement appel à ses services.	
@@ -376,7 +381,7 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 	Au travers de cette rencontre, plus que de vouloir proposer un piano de concert connecté, nouvelle génération, le projet prend racine au travers d'une idée simple mais précise, élargir les possibilités de l'instrument en n'en modifiant la mécanique interne, tout en conservant inchangé, l'expérience utilisateur.
 	Pour cela, décision fut prise de s'appuyer sur les techniques et les technologies modernes afin de faire évoluer l'instrument, le piano.
 	
-	Ainsi, sans altérer l'expérience utilisateur, ce rapport étroit entre le musicien et son l'instrument, représentant de nombreuses années de pratique, les artistes auront à disposition des nouveaux moyens d'expression, offrant de nouvelles possibilités de jeux.
+	Ainsi, sans altérer l'expérience utilisateur, ce rapport étroit entre le musicien et son instrument, représentant de nombreuses années de pratique, les artistes auront à disposition de nouveaux moyens d'expression, offrant de nouvelles possibilités de jeux.
 	
 	\newpage
 	
@@ -386,25 +391,25 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 		
 		Grâce aux articles de spécialistes, précédemment cité, le marteau, plus que la touche ou le chevalet, apparaît comme éléments ayant l'incidence majeure sur l'harmonisation de l'instrument, au travers de son poids.
 		
-		L'intégration de nouvelles technologies au sein du projet, aura donc pour but de permettre une variation du poid du marteau, afin de fournir une large palette d'harmonique au musicien, qui n'aura plus qu'à laisser court à son imagination et à sa technique afin de tiret le meilleur de l'instrument lors de compositions musicales.
+		L'intégration de nouvelles technologies au sein du projet, aura donc pour but de permettre une variation du poids du marteau, afin de fournir une large palette d'harmonique au musicien, qui n'aura plus qu'à laisser court à son imagination et à sa technique afin de tiret le meilleur de l'instrument lors de compositions musicales.
 	
 	\section{Rôle au sein du projet}	
 	
-	Recruté en tant que stagiaire, assistant ingénieurs, sur ce projet. Mon rôle fut prendre connaissance du projet, étudier l'état de l'art quant aux recherches déjà effectuées et d'avoir un regard critique sur ces dernières. Être force de propositions sur l'intégration de solutions techniques, sur des problématiques directes, ainsi que sur des fonctionnalités futures; les développer et enfin mener leurs intégrations au sein du projet.
+	Recruté en tant que stagiaire, assistant ingénieurs, sur ce projet. Mon rôle fut de prendre connaissance du projet, étudier l'état de l'art quant aux recherches déjà effectuées et d'avoir un regard critique sur ces dernières. Être force de propositions sur l'intégration de solutions techniques, sur des problématiques directes, ainsi que sur des fonctionnalités futures; les développer et enfin mener leurs intégrations au sein du projet.
 	
 	Avant mon arrivée, l'équipe en place avait déjà commencé à travailler sur une preuve de concept, s'appuyant sur une base d'électronique analogique, cœur de métier du laboratoire. Mais suite à mon arrivée, nous avons ensemble, redéfini le cadre du projet, afin de garder les idées et concepts testés et approuvés lors de cette première approche, tout en faisant évoluer le projet en basculant sur une base orientée électronique numérique, système embarqué.
 	
 	De plus, j'ai eu pour rôle de faire part de l'avancement de mon travail, ainsi que mes observations autour du projet, à mon maitre de stage et directeur de recherche, lors de réunions durant lesquels nous définissions ensemble l'avancement des différentes étapes et discutions de nouvelle(s) fonctionnalité(s) pouvant être intégré au projet.
 	
-	Enfin, j'ai pu être force de proposition quant aux futur fonctionnalités du projet, ce dernier étant une preuve de faisabilité, il dispose d'un cahier des charges au contour assez vague, induisant une plus grande liberté d'esprit, quant aux innovations pouvant être apportées.	
+	Enfin, j'ai pu être force de proposition quant aux futurs fonctionnalités du projet, ce dernier étant une preuve de faisabilité, il dispose d'un cahier des charges au contour assez vague, induisant une plus grande liberté d'esprit, quant aux innovations pouvant être apportées.	
 	
 	
 	\chapter{Les travaux menés}
 	
-	Comme expliqué précédemment, suite à mon arrivée au LPNHE, j'ai commencé par prendre connaissance de l'architecture globale du projet (figure ci-dessous) et des concepts et idées qui avaient déjà étés pensé et proposé, ainsi que des diverses solutions techniques à l'étude concernant des choix de composants.
+	Tel qu'expliqué précédemment, suite à mon arrivée au LPNHE, j'ai commencé par prendre connaissance de l'architecture globale du projet (figure ci-dessous) et des concepts et idées qui avaient déjà étés pensé et proposé, ainsi que des diverses solutions techniques à l'étude concernant des choix de composants.
 	
 	J'ai ainsi commencé par travailler sur le développement de la chaine de contrôle la plus simple pouvant être mise en place, afin d'éprouver les choix et solutions techniques retenues.
-	Cette chaine, représentant l'action d'une touche du piano, ce comporte comme suivant: Un accéléromètre mesurant l'accélération du marteau, (dû à une force appliquée sur une touche du piano) communiquant avec une carte programmable munie d'un FPGA, appliquant un filtre numérique sur les données reçu, pour ensuite les faire parvenir à un convertisseur numérique analogique (CAN), assurant la transmission des données à notre contrôleur moteur.\newline
+	Cette chaine, représentant l'action d'une touche du piano, ce comporte comme suivant: Un accéléromètre mesurant l'accélération du marteau, (dû à une force appliquée sur une touche du piano) communiquant avec une carte programmable munie d'un FPGA, appliquant un filtre numérique sur les données reçus, pour ensuite les faire parvenir à un convertisseur numérique analogique (CAN), assurant la transmission des données à notre contrôleur moteur.\newline
 	
 	\begin{figure}[!ht]
     \center
@@ -420,10 +425,8 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 	La suite logique à cette étape, fut d'étudier le bus de communication sélectionné, afin de l'instancier au sein du projet, en se basant sur le langage VHDL. Ce bus de communication étant présent en deux endroits de la chaine, entre l'accéléromètre et la carte programmable FPGA et entre cette dernière et notre convertisseur numérique analogique, notre intégration devait répondre aux spécificités des deux cas d'utilisation, afin de ne pas faire doublons dans la mise en place de solution, ainsi que dans les potentielles sources d'erreurs.
 	
 	Puis, après avoir éprouvé l'échange de données, entre les différentes entités, un filtrage numérique fut intégré à notre carte programmable. Ce filtrage ayant pour but de mettre en place un asservissement numérique sur le contrôle des moteurs.
-	
-%	Par la suite, nous avons choisi de mettre en place une solution de monitoring, afin de pouvoir visualiser nos données échangés ,en temps réel sur un ordinateur.
 
-	Par la suite, différents prototypes de cartes électroniques (PCB) on dut être réalisé et réévaluer au long su projet, afin de répondre aux impératifs d'intégration matérielle au sein du piano.
+	Par la suite, différents prototypes de cartes électroniques (PCB) on dut être réalisé et réévaluer au long du projet, afin de répondre aux impératifs d'intégration matérielle au sein du piano.
 	
 	Enfin, une étude de "rétro-engineering", fut menée en salle de test sur des éléments électroniques tiers, fournie par notre partenaire technique, l'entreprise "Faulhaber", afin d'en vérifier le bon fonctionnement, mais également d'en valider le comportement vis-à-vis de l'utilisation souhaitée.
 	
@@ -434,11 +437,11 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 	
 	\chapter{Planning}
 
-	Ci-dessous sont présentés sous forme de diagrammes de Gant, le calendrier prévisionnel ainsi que le calendrier réel du travail réalisé tout au long su stage.
+	Ci-dessous sont présentés sous forme de diagrammes de Gant, le calendrier prévisionnel ainsi que le calendrier réel du travail réalisé tout au long du stage.
 	On y retrouve un descriptif complet et détaillé des différentes tâches réalisées.
 	
 	On peut observer sur le calendrier réel, que les phases de test, de débug, n'avaient pas été prises en compte lors de l'établissement du calendrier prévisionnel.
-	À l'avenir, ces tâches ne seront plus négligé, étant donné le caractère important de celles-ci, du fait de leur capacité à bloquer l'avancement d'un projet, et induire des retards plus ou moins importants.
+	À l'avenir, ces tâches ne seront plus sous-estimé, étant donné le caractère important de celles-ci, du fait de leur capacité à bloquer l'avancement d'un projet et induire des retards plus ou moins importants.
 	
 	\includepdf[scale=1, pages=-]{calendrier_Previsionnel_defA}
 	\includepdf[scale=1, pages=-]{calendrier_Previsionnel_defB}
@@ -457,20 +460,20 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 	
 	\part{Réalisation de la chaine de contrôle}	
 	
-	Maintenant que le cadre du projet à été présenté, ainsi que les objectifs visé au travers de cette preuve de concept, nous allons maintenant, nous concentrer sur la réalisation pratique, ainsi que sur les aspects techniques du projet.
+	Maintenant que le cadre du projet à été présenté, ainsi que les objectifs visés au travers de cette preuve de concept, nous allons maintenant, nous concentrer sur la réalisation pratique, ainsi que sur les aspects techniques du projet.
 	
-	Ainsi, au sein de cette partie, nous allons aborder la conception de la première maquette de notre projet, cette dernière ayant pour rôle de mettre en situation l'action d'une touche; représentant l'action primaire d'un piano, une action sur une touche, permettant la frappe d'une corde par un marteau. Par la suite, lorsque cet aspect sera maitrisé, nous pourrons passé au développement d'une deuxième maquette se basant sur un ensemble plus complet d'une douzaine de touches, afin de disposer d'un jeu sur une octave et demi.
+	Ainsi, au sein de cette partie, nous allons aborder la conception de la première maquette de notre projet, cette dernière ayant pour rôle de mettre en situation l'action d'une touche; représentant l'action primaire d'un piano, une action sur une touche, permettant la frappe d'une corde par un marteau. Par la suite, lorsque cet aspect sera maîtrisé, nous pourrons passer au développement d'une deuxième maquette se basant sur un ensemble plus complet d'une douzaine de touches, afin de disposer d'un jeu sur une octave et demi.
 	
 		\chapter{La chaine de contrôle}
 		
-		Cherchant à mettre en place une nouvelle mécanique interne afin de permettre la frappe d'une corde par un marteau, suite à une pression sur une touche de piano, nous avons cherché à développé une nouvelle chaine de contrôle électronique.
-		Mais comme expliqué précédement, nous cherchons à proposer une nouvelle expérience de jeu aux pianistes, sans altérer l'expérience utilisateur lié à la pratique de l'instrument. C'est pourquoi notre nouvelle chaine de contrôle ne vient pas remplacer la mécanique interne, dite "classque" du piano; cette dernière vennant se "gréfer" autour de l'ancienne, tout en nécessitant une adaptation de l'existante.
+		Cherchant à mettre en place une nouvelle mécanique interne afin de permettre la frappe d'une corde par un marteau, suite à une pression sur une touche de piano, nous avons cherché à développer une nouvelle chaine de contrôle électronique.
+		Mais comme expliqué précédemment, nous cherchons à proposer une nouvelle expérience de jeu aux pianistes, sans altérer l'expérience utilisateur lié à la pratique de l'instrument. C'est pourquoi notre nouvelle chaine de contrôle ne vient pas remplacer la mécanique interne, dite "classique" du piano; cette dernière venant se "greffer" autour de l'ancienne, tout en nécessitant une adaptation de l'existante.
 		
 		Notre chaine de contrôle électronique se compose comme suivant:
 		\begin{itemize}
-			\item Un accéléromètre, mesurant l'accélération du marteau, suite à un pression sur une touche du piano.
+			\item Un accéléromètre, mesurant l'accélération du marteau, suite à une pression sur une touche du piano.
 			\item Une carte programmable FPGA, nous permettant d'effectuer un traitement du signal sur nos données renvoyé par notre accéléromètre.
-			\item Un convertisseur numérique analogique (CAN), pemettant de convertire le signal numérique fournit par le FPGA, en un signal analogique (dans notre cas, un niveau de tension)
+			\item Un convertisseur numérique analogique (CAN), pemettant de convertir le signal numérique fournit par le FPGA, en un signal analogique (dans notre cas, un niveau de tension)
 			\item Un contrôleur moteur, assurant le contrôle en triphasé de notre moteur brushless.
 			\item Un moteur brushless, assurant le rôle de marteau, afin de frapper une corde.
 		\end{itemize}
@@ -486,27 +489,27 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 						
 			Comme nous l'avons vu lors de la précédente partie, la réalisation d'un système d'assistance et d'asservissement d'une mécanique de piano à queue induit l'appel à des technologies de "pointe"; technologie que nous retrouvons et côtoyons au quotidiens au travers de nos smart-phone, notamment celle nous permet de mesurer une accélération (technologie qui sera une composante principale de notre projet.
  
-La mesure de l'accélération et la composante clef de notre projet étant données que ce seul élément rend possible la mesure de l'accélération (sur trois axes x,y,z) de la touche joué par le pianiste, ainsi que la mise en place de la boucle d'asservissement contrôlant les moteurs devant actionner les marteaux en cotons frappant les cordes.
+La mesure de l'accélération et la composante clef de notre projet étant donné que ce seul élément rend possible la mesure de l'accélération (sur trois axes x,y,z) de la touche joué par le pianiste, ainsi que la mise en place de la boucle d'asservissement contrôlant les moteurs devant actionner les marteaux en cotons frappant les cordes.
 
 			%\subsubsection{Matériel utilisé}
 			
-			Pour ce projet, une première maquettes utilisant des composant électronique analogique fut réaliser, se basant sur le modèle de la figure (dernière figure). Ce prototype avait pour but montré la manière de procéder et de vérifier le postulat de départ quand à la faisabilité du projet.
+			Pour ce projet, une première maquette utilisant des composant électronique analogique fut réalisé, se basant sur le modèle de la figure (dernière figure). Ce prototype avait pour but montré la manière de procéder et de vérifier le postulat de départ quant à la faisabilité du projet.
  
 % PHOTO de la maquette initiale de Hervé
  
-Suite à mon arrivé au sein du projet "CHAMP", j'ai commencé le développement de la nouvelle maquette (tjs basé sur le même schéma de fonctionnement) qui est maintenant basé sur des composants électronique numérique.
+Suite à mon arrivée au sein du projet "CHAMP", j'ai commencé le développement de la nouvelle maquette (toujours basé sur le même schéma de fonctionnement) qui est maintenant basé sur des composants électroniques numériques.
  
-Le capteur numérique utilisé et choisi par l'équipe qui initié le projet est l'accéléromètre ADXL355 du fabriquant "ANALOG DEVICE". Ce composant nous permet de mesurer une accélération sur 3 axes (x,y,z) avec une précision de +/- 8 fois la force gravitationnelle.
+Le capteur numérique utilisé et choisi par l'équipe qui a initié le projet est l'accéléromètre ADXL355 du fabriquant "ANALOG DEVICE". Ce composant nous permet de mesurer une accélération sur 3 axes (x,y,z) avec une précision de +/- 8 fois la force gravitationnelle.
  
-Le module ADXL355 permet l'échange de données avec notre FPGA (unité de traitement et de calcule) via des transmissions série synchrones. Il peut ainsi communiquer via deux protocole de communication, le SPI ou le protocole I2C.
+Le module ADXL355 permet l'échange de données avec notre FPGA (unité de traitement et de calcule) via des transmissions série synchrones. Il peut ainsi communiquer via deux protocoles de communication, le SPI ou le protocole I2C.
 			
 			\section{le FPGA}
 			
-			Concernant l'utilisation d'un carte programmable muni d'un FPGA pour le projet, cet élément fut un choix technique pris par les responsables du projet, étant donné l'utilisation marjeur de ce type de technologie sein du laboratoire.
+			Concernant l'utilisation d'une carte programmable muni d'un FPGA pour le projet, cet élément fut un choix technique pri par les responsables du projet, étant donné l'utilisation majeure de ce type de technologie sein du laboratoire.
 			
-			Ainsi, la carte programmable utilisé est une DE2-115, un kit de développement et de prototypage, embarquant une large gamme de technologie utilisable, dont voisi une liste exaustive. On retrouve à disposition un FPGA (35.000 LE) comme coeur, de plusieurs type de mémoire (SRAM, SDRAM et Flash), de convertisseurs audio, vidéo et TV , ainsi que d'interfaces IrDA, Ethernet et USB. De plus, la carte est munie d'afficheurs LED et LCD et d'un grand nombre de boutons poussoirs ainsi que d'intérupteurs.
+			Ainsi, la carte programmable utilisé est une DE2-115, un kit de développement et de prototypage, embarquant une large gamme de technologie utilisable, dont voici une liste exhaustive. On retrouve à disposition un FPGA (35.000 LE) comme coeur, de plusieurs types de mémoire (SRAM, SDRAM et Flash), de convertisseurs audio, vidéo et TV, ainsi que d'interfaces IrDA, Ethernet et USB. De plus, la carte est munie d'afficheurs LED et LCD et d'un grand nombre de boutons poussoirs ainsi que d'interrupteurs.
 			
-			L'utilisation de ce genre de kit permet une grande souplesse lors du développement étant donné la grande disponibilité de technologies par défaut. Ainsi, l'intégration de nouvelle fonctionnalité au fur et a mesure du projet en devient plus aisé. C'est une fois le prototypage fini, que nous conceverrons une carte sur mesure, avec selement les technologies requises afin de minimiser les couts de fabrications et d'encombrement.
+			L'utilisation de ce genre de kit permet une grande souplesse lors du développement étant donné la grande disponibilité de technologies par défaut. Ainsi, l'intégration de nouvelles fonctionnalités au fur et à mesure du projet en devient plus aisé. C'est une fois le prototypage fini, que nous concevrons une carte sur mesure, avec seulement les technologies requises afin de minimiser les coûts de fabrications et d'encombrement.
 			
 			\section{Le convertisseur analogique numérique}
 			
@@ -514,68 +517,68 @@ Le module ADXL355 permet l'échange de données avec notre FPGA (unité de trait
 			Ce convertisseur nous permet de transformer le signal numérique provenant de notre FPGA, en un signal analogique, à destination de notre contrôleur moteur.
 			
 			Ainsi le choix du laboratoire c'est porté sur le CNA "LTC 2668" fabriqué par Analog Device.
-			Ce derniers disposent d'une entré de signal numérique sur mot de 16 bits non signé, de plus plusieur niveau de tension de sortie possible, [0V; 5V], [0V; 10V], +-2.5V, et enfin le mode qui nous intéresse, +-10 volts, étant donné que notre contrôleur moteur est contrôlé avec un niveau de tension variant entre +-10 volts.			
+			Ce dernier disposent d'une entrée de signal numérique sur un mot de 16 bits non signé, de plus plusieurs niveaux de tensions de sortie possible, [0V; 5V], [0V; 10V], +-2.5V, et enfin le mode qui nous intéresse, +-10 volts, étant donné que notre contrôleur moteur est contrôlé avec un niveau de tension variant entre +-10 volts.
 	
 			\section{Le contrôleur moteur et le moteur brushless}
 			
-			A propos du choix du contrôleur moteur et du moteur brushless, le choix du laboratoire c'est porté sur des moteurs en translation "LM1247\_11\_FMM" fabriqué par l'entreprise Faulhaber. Ce derniers est le seul fabriquant au monde à produire ce genre de moteur, avec un contrôleur offrant disverse mode de contrôle.
+			À propos du choix du contrôleur moteur et du moteur brushless, le choix du laboratoire c'est porté sur des moteurs en translation "LM1247\_11\_FMM" fabriqué par l'entreprise Faulhaber. Ce dernier est le seul fabriquant au monde à produire ce genre de moteur, avec un contrôleur offrant diverse mode de contrôle.
 			
 			
 		\chapter{Accéléromètre, du produit au besoin}
 			
 			\section{Accéléromètre \& choix du protocole de communication}
-				Comme nous l'avons vu plus tôt, notre accéléromètre peut être utilisé avec les deux protocoles de communication suivant: le bus SPI ainsi que le bus I2C. Afin de déterminer quel bus de communication nous devons utiliser, nous avons commencé par effectué un comparatif des deux technologies, pour déterminer lequel serait le plus en adéquation avec nos besoin.
+				Comme nous l'avons vu plus tôt, notre accéléromètre peut être utilisé avec les deux protocoles de communication suivant: le bus SPI ainsi que le bus I2C. Afin de déterminer quel bus de communication nous devons utiliser, nous avons commencé par effectuer un comparatif des deux technologies, pour déterminer lequel serait le plus en adéquation avec nos besoins.
 				
 			\subsection{Bus SPI}
 			
-			Une Liaison SPI (Serial Peripheral Interface) est un bus de données synchrone baptisé par Motorola, opèrant en Full-Duplex et qui peut transférer des données sur de courtes distances à des vitesses élevées. Les circuits communiquent selon un schéma Maitre/Esclave, où le maitre s'occupe totalement de la communication. Plusieurs esclave peuvent coexister sur un même bus, dans ce cas, la sélection du destinataire se fait par une ligne dédiée entre le maitre et l'esclave appelée "Chip Select" (CS) ou Slave Select (SS).
+			Une Liaison SPI (Serial Peripheral Interface) est un bus de données synchrone baptisé par Motorola, opérant en Full-Duplex et qui peut transférer des données sur de courtes distances à des vitesses élevées. Les circuits communiquant selon un schéma Maitre/Esclave, où le maître s'occupe totalement de la communication. Plusieurs esclaves peuvent coexister sur un même bus, dans ce cas, la sélection du destinataire se fait par une ligne dédiée entre le maitre et l'esclave appelée "Chip Select" (CS) ou Slave Select (SS).
  
 			\subsubsection{Principe de fonctionnement}
 			
-			Durant le transfère de données, le dispositif peut travailler soit en maitre, soit en esclave. L'interface SPI permet de connecter un ou plusieurs esclaves à un seul maitre via le même bus.
+			Durant le transfère de données, le dispositif peut travailler soit en maître, soit en esclave. L'interface SPI permet de connecter un ou plusieurs esclaves à un seul maître via le même bus.
 			
 	\begin{figure}[!ht]
     \center
     %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{CH.png}\hss}\hfill\null
-  	\includegraphics[width=7cm]{SPI1.png}
+  	\includegraphics[width=9cm]{SPI1.png}
     \caption{SPI shema block}
 	\end{figure}	
  
  
-	Le bus SPI utilise 4 signaux logiques :
+	Le bus SPI utilise quatres signaux logiques :
  
 	\begin{figure}[!ht]
     \center
     %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{CH.png}\hss}\hfill\null
-  	\includegraphics[width=7cm]{SPI2.png}
+  	\includegraphics[width=14cm]{SPI2.png}
     \caption{SPI - signaux logiques}
 	\end{figure}	
  
 	\begin{itemize}
-	\item SCLK (Serial Clock) : Le signal d'horloge, il est utilisé pour synchroniser les données échangées entre le maître et 	les esclaves. Cette ligne est nécessairement une sortie sur le maître et une entrée sur le ou les esclaves.
+	\item SCLK (Serial Clock): Le signal d'horloge, il est utilisé pour synchroniser les données échangées entre le maître et 	les esclaves. Cette ligne est nécessairement une sortie sur le maître et une entrée sur le ou les esclaves.
  
-	\item MOSI (Master Output, Slave Input) : est utilisé pour transférer les données du maître vers l'esclave.
+	\item MOSI (Master Output, Slave Input): est utilisé pour transférer les données du maître vers l'esclave.
  
-	\item MISO (Master Input, Slave Output) : est utilisé pour transférer les données l'esclave vers le maître.
+	\item MISO (Master Input, Slave Output): est utilisé pour transférer les données de l'esclave vers le maître.
  
-	\item SS (Slave Select) : le maître utilise ce signal pour choisir avec qui il veut dialoguer.Ce signal est actif à l'état bas.Les esclaves ne peuvent pas communiquer entre eux.Seul le maître peut autoriser un esclave à dialoguer, cela dit l'esclave ne peut commencer le dialogue que s'il n'a pas l'autorisation.
+	\item SS (Slave Select): le maître utilise ce signal pour choisir avec qui il veut dialoguer. Ce signal est actif à l'état bas. Les esclaves ne peuvent pas communiquer entre eux. Seul le maître peut autoriser un esclave à dialoguer, cela dit l'esclave ne peut commencer le dialogue que s'il n'a pas l'autorisation.
 \end{itemize}
  
-	On parlera aussi de liaison à 3 fils : Permet de véhiculer l’information dans les 2 sens (bidirectionnelle), un fil différent étant dévolu à chaque sens de transfert d’information. Comme ceci permet la communication simultanée dans les 2 sens de transmission, on parlera de liaison full-duplex : pendant que le maître transmet des données sur la ligne MOSI, vers l’esclave sélectionné, il en reçoit de celui-ci par la ligne MISO.
+	On parlera aussi de liaison à trois fils : Permet de véhiculer l’information dans les deux sens (bidirectionnelle), un fil différent étant dévolu à chaque sens de transfert d’information. Comme ceci permet la communication simultanée dans les deux sens de transmission, on parlera de liaison full-duplex : pendant que le maître transmet des données sur la ligne MOSI, vers l’esclave sélectionné, il en reçoit de celui-ci par la ligne MISO.
 
   		\subsubsection{Principe de transmission}
   		
 			Une transmission SPI typique est une communication simultanée entre un maître et un esclave :
-Tout d'abord, Le maître initie la communication en sélectionnant l'esclave avec qui il veut communiquer par l'utilisation du signal SS qui est actif bas.
-Ensuite, Le maître et l'esclave préparent les données à envoyer dans leur registres à décalage.
-Enfin, Le maître génère des impulsions d'horloge pour synchroniser les données échangées.
+Tout d'abord, le maître initie la communication en sélectionnant l'esclave avec qui il veut communiquer par l'utilisation du signal SS qui est actif bas.
+Ensuite, le maître et l'esclave préparent les données à envoyer dans leurs registres à décalage.
+Enfin, le maître génère des impulsions d'horloge pour synchroniser les données échangées.
  
-À chaque coup d'horloge le maître et l'esclave s'échangent un bit. Après huit coups d'horloges le maître a transmis un octet à l'esclave et vice versa. La vitesse de l'horloge est réglée selon des caractéristiques propres aux périphériques.
+À chaque coup d'horloge le maître et l'esclave s'échangent un bit. Après huit coups d'horloges le maître a transmis un octet à l'esclave et vice versa. La vitesse de l'horloge est réglé selon des caractéristiques propres aux périphériques.
 
 	\begin{figure}[!ht]
     \center
     %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{CH.png}\hss}\hfill\null
-  	\includegraphics[width=7cm]{SPI3.png}
+  	\includegraphics[width=10cm]{SPI3.png}
     \caption{SPI - shift register 1}
 	\end{figure}
  
@@ -591,28 +594,28 @@ Voici le tout sous forme de dessins. En rouge les bits reçus, en bleu les bits 
  
   		\subsubsection{Mode maitre}
   		
-  		Lorsqu'il est configuré en tant que maître, l'interface SPI n'a aucun contrôle automatique de la ligne de SS.Pour la configuration en mode maitre,nous devons déclarer : MOSI, SS et SCLK en sortie; MISO en entrée ; mettre le bit MSTR à 1 dans le registre SPCR. La mise de SS à l’état bas permet
+  		Lorsqu'il est configuré en tant que maître, l'interface SPI n'a aucun contrôle automatique de la ligne de SS. Pour la configuration en mode maître, nous devons déclarer : MOSI, SS et SCLK en sortie; MISO en entrée ; mettre le bit MSTR à '1' dans le registre SPCR. La mise de SS à l’état bas permet
 d'établir la communication avec l’esclave.
-le principe de transmission suit cette ordre :
+le principe de transmission suit cet ordre :
  
     Ecriture d’un octet dans le registre de données (SPDR).
     Génération du signal d'horloge.
-    Envoie des données contenue dans le registre de données vers l’esclave via la ligne MOSI.
-    Arret du signal d'horloge.
+    Envoie des données contenues dans le registre de données vers l’esclave via la ligne MOSI.
+    Arrêt du signal d'horloge.
     Mise du bit SPIF = 1 (flag de fin de communication)
     Si SPIE = 1 (autorisation de l’interruption) : interruption demandée, 2 options :
         chargement de l’octet suivant dans le registre
         mise de SS à l’état haut pour signaler la fin du paquet de données
  
-	Le dernier octet entrant sera conservés dans le registre tampon pour une utilisation ultérieure.
+	Le dernier octet entrant sera conservé dans le registre tampon pour une utilisation ultérieure.
  
   		\subsubsection{Mode esclave}
   		
-  		Pour la configuration en mode esclave,nous devons déclarer : MOSI, SS et SCLK en entrée; MISO en sortie ;Mettre le bit MSTR à 0 dans le registre SPCR. L’esclave reste en mode sommeil jusqu’à ce que le maître l'appelle(en mettant la ligne SS à l’état bas). La mise de SS à l’état bas permet d'établir la communication avec l’esclave. Le principe de transmission suit cette ordre :
+  		Pour la configuration en mode esclave, nous devons déclarer : MOSI, SS et SCLK en entrée; MISO en sortie ; Mettre le bit MSTR à '0' dans le registre SPCR. L’esclave reste en mode sommeil jusqu’à ce que le maître l'appel (en mettant la ligne SS à l’état bas). La mise de SS à l’état bas permet d'établir la communication avec l’esclave. Le principe de transmission suit cet ordre :
  
     Sélection de l'esclave avec qui communiquer
     Génération du signal d'horloge par le maître
-    Envoie des données contenue dans le registre des données vers l’esclave via la ligne MISO.
+    Envoie des données contenues dans le registre des données vers l’esclave via la ligne MISO.
     Mise du bit SPIF = 1 (flag de fin de communication)
     Si SPIE = 1 (autorisation de l’interruption) :
         interruption demandée
@@ -636,19 +639,19 @@ le principe de transmission suit cette ordre :
 			\item Aucun adressage possible : Il faut une ligne de sélection par esclave en mode non chaîné.
 			\item Le protocole n’a pas d’acquittement. Le maître peut parler dans le vide sans le savoir.
 			\item Il ne peut y avoir qu’un seul maître sur le bus.
-			\item Ne s’utilise que sur de courtes distances contrairement aux liaisons RS-232, RS-485 ou bus CAN.
+			\item Ne s’utilise que sûr de courtes distances contrairement aux liaisons RS-232, RS-485 ou bus CAN.
 			\end{itemize}
  
  
  			\subsection{Bus I2C}
  			
- 			Le bus I2C permet de faire communiquer entre eux des composants électroniques très divers grâce à seulement trois fils : un signal de données (SDA), un signal d'horloge (SCL), et un signal de référence électrique (masse).
+ 			Le bus I2C permet de faire communiquer entre eux des composants électroniques très divers grâces à seulement trois fils : un signal de données (SDA), un signal d'horloge (SCL), et un signal de référence électrique (masse).
 Il s'agit d'une liaison en mode série synchrone (un bit est transmis à chaque coup d’horloge). Le nombre de composants qu'il est ainsi possible de relier est essentiellement limité par la charge capacitive des lignes SDA et SCL : 400 pF.
 un circuit maître et un ou plusieurs circuits esclaves peuvent être connectés au bus. Les échanges se font toujours à l’initiative du maître.La transmission est half duplex : mode écriture ou mode lecture, pas possible de manière simultanée.
  
   		\subsubsection{Connexion électrique}
   		
-  		Comme indiqué précédemment, pour se connecter à un bus I2C il faut une masse, et deux fils de communication. Le premier fil, SDA (Signal DAta), est utilisé pour transmettre les données. L'autre fil, SCL (Signal CLock) est utilisé pour transmettre un signal d'horloge synchrone (signal qui indique le rythme d'évolution de la ligne SDA). Les tensions associées aux niveaux logiques vont dépendre de la technologie des circuits en présence (CMOS, TTL). Il faudra que tous les circuits connectés au bus I2C utilisent les mêmes potentiels pour définir les niveaux haut et bas. En définitive, cela implique que tous les composants connectés à un même bus soient alimentés de façon identique.
+  		Tel qu'indiqué précédemment, pour se connecter à un bus I2C il faut une masse et deux fils de communication. Le premier fil, SDA (Signal Data), est utilisé pour transmettre les données. L'autre fil, SCL (Signal CLock) est utilisé pour transmettre un signal d'horloge synchrone (signal qui indique le rythme d'évolution de la ligne SDA). Les tensions associées aux niveaux logiques vont dépendre de la technologie des circuits en présence (CMOS, TTL). Il faudra que tous les circuits connectés au bus I2C utilisent les mêmes potentiels pour définir les niveaux hauts et bas. En définitive, cela implique que tous les composants connectés à un même bus soient alimentés de façon identique.
   		
   \begin{figure}[!ht]
     \center
@@ -661,21 +664,21 @@ En ce qui concerne la lecture des signaux SDA et SCL, cela ne pose pas de probl�
 Au repos, tous les circuits connectes doivent imposer un niveau haut sur leurs sorties respectives. Si les lignes SDA et SCL sont au niveau haut dans ces conditions, cela signifie qu'aucun circuit ne tente de prendre le contrôle du bus. Si une des lignes SDA ou SCL passe à un niveau bas dans les mêmes conditions, c'est qu'un des circuits désire prendre le contrôle du bus. Mais il peut aussi y avoir deux circuits qui tentent de prendre le contrôle du bus en même temps (ou à quelques nanosecondes d'écart près). Il faut donc mettre en place un protocole pour gérer les conflits possibles.
 
    		\subsubsection{Protocole I2C}
-	Le protocole I2C présent différentes caractéristiques:
+	Le protocole I2C présente différentes caractéristiques:
  
 			\begin{itemize}
-			\item maitre-esclaves, car seul un nœud maitre peut communiquer avec les esclaves du réseau (1 ou tous)
-			\item multi-maitres, car plusieurs maitres peuvent être présents sur le réseau
-			\item synchrone, car on utilise un mécanisme de requête/réponse
-			\item half-duplex, car on peut communiquer dans les deux sens, mais pas simultanément
+			\item Maître-esclaves, car seul un nœud maitre peut communiquer avec les esclaves du réseau (1 ou tous)
+			\item Multi-maître, car plusieurs maitres peuvent être présents sur le réseau
+			\item Synchrone, car on utilise un mécanisme de requête/réponse
+			\item Half-duplex, car on peut communiquer dans les deux sens, mais pas simultanément
 			\end{itemize}
  
-On utilise un adressage sur 7 bits pour identifier les nœuds, ce qui permet (en théorie) jusqu’à 128 nœuds sur le réseau. Certaines adresses sont réservées pour le broadcast (communiquer vers tous les nœuds en même temps). En pratique, les constructeurs on tendance à fixer l’adresse de certains nœuds, ce qui peut causer des collisions.
+On utilise un adressage sur sept bits pour identifier les nœuds, ce qui permet (en théorie) jusqu’à 128 nœuds sur le réseau. Certaines adresses sont réservées pour le broadcast (communiquer vers tous les nœuds en même temps). En pratique, les constructeurs ont tendances à fixer l’adresse de certains nœuds, ce qui peut causer des collisions.
  
  
   		\subsubsection{Avantages}
 			\begin{itemize}
-			\item Utilise seulement 2 lignes (+ le fil de masse) et simplicité de connexion (uniquement deux résistances de pull-up à rajouter) 
+			\item Utilise seulement deux lignes (+ le fil de masse) et simplicité de connexion (uniquement deux résistances de pull-up à rajouter) 
 			\item Le protocole limite automatiquement la vitesse de transmission à la vitesse de l’élément le plus lent. 
 			\item Le bit de reconnaissance qui permet de savoir si l’esclave est bien connecté et également si les données ont été correctement transmises ou non. 
 			\item Interconnections de multiples périphériques
@@ -685,20 +688,20 @@ On utilise un adressage sur 7 bits pour identifier les nœuds, ce qui permet (en
 			\begin{itemize}
 			\item Impossibilité d’utiliser un mode full-duplex 
 			\item Vitesse relativement lente pour la plupart des périphériques esclaves (100 à 400kbits/s) 
-			\item Consommation relativement élevée du à la configuration en collecteur/drain ouvert 
+			\item Consommation relativement élevée dû à la configuration en collecteur/drain ouvert 
 			\item Distance de communication limitée car les lignes du bus ne sont pas protégées des perturbations et envoient des fronts montants et descendants. Cette distance est donc limitée par la vitesse de communication, les résistances de pull-up, la capacité du bus (en général, autour des 400pF).
 \end{itemize}
  
  \subsection{Contrainte et choix de réalisation}
-Concernant les contraintes techniques aux-quelles nous avions à faire fasse, nous retrouvons, une vitesse d'échange de données relativement importantes (supérieur à 1 Mega), une simplicité vis-à-vis de l'interface matérielle afin de minimiser le nombre de fils utilisés, un bus stable sans interférence, et enfin une distance de communication assez longue.
+Concernant les contraintes techniques aux-quelles nous avions à faire face, nous retrouvons, une vitesse d'échange de données relativement importantes (supérieur à 1 Mega), une simplicité vis-à-vis de l'interface matérielle afin de minimiser le nombre de fils utilisés, un bus stable sans interférence et enfin une distance de communication assez longue.
 
-Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de communication (contrairement au bus SPI en nécessitant plus), le bus SPI répond au principaux critère de vitesse de communication et une distance de transmission élevé. De plus, ce choix est renforcé du fait que nous avons réussi à réaliser un "hack" sur le protocole SPI de notre accéléromètre afin de minimiser le nombre de fil, comme nous le verrons dans la prochaine partie.
+Au final, bien que de base, le bus I2C n'implique l'utilisation que de deux fils de communication (contrairement au bus SPI en nécessitant plus), le bus SPI répond aux principaux critère de vitesse de communication et une distance de transmission élevée. De plus, ce choix est renforcé du fait que nous avons réussi à réaliser un "hack" sur le protocole SPI de notre accéléromètre afin de minimiser le nombre de fil, comme nous le verrons dans la prochaine partie.
 
 
 \chapter{"Hack" du protocol SPI}
-	Nous l'avons vu précédement, le nombre de fils branché entre notre accéléromètre et notre carte programmable (FPGA) est une contrainte que nous souhaitons minimiser le plus possible; ainsi, le choix du SPI, en plus des qualités de ce bus de communication, vu renforcé car nous nous sommes aperçus qu'un détournement de la technologie était possble, afin de diminuer le nombre de fils.
+	Nous l'avons vu précédemment, le nombre de fils branché entre notre accéléromètre et notre carte programmable (FPGA) est une contrainte que nous souhaitons minimiser le plus possible; ainsi, le choix du SPI, en plus des qualitées de ce bus de communication, vu renforcé car nous nous sommes aperçus qu'un détournement de la technologie était possible, afin de diminuer le nombre de fils.
 	
-	Dernièrement, nous avons vu que le bus SPI fonctionnais comme suivant, étant basé sur quatres éléments distincts de communication:
+	Dernièrement, nous avons vu que le bus SPI fonctionnais comme suivant, étant basé sur quatre éléments distincts de communication:
 	
 	\begin{itemize}
 		\item SCLK (Serial Clock) 
@@ -707,48 +710,48 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
 		\item SS (Slave Select)
 	\end{itemize}
 	
-	Dans cette configuration, chacun de ces quatres canaux représente un fil de communiquation. Nous avons donc cherché à indetifier quels canaux pouvaient être supprimés ou mutualisés. Concernant la "Clock" et le "Select Slave", la suppressions d'un de ces canaux entrainerait la paralisation du protocol, et il en va de même pour une mutualisation; c'est donc vers les canaux de communications que nous nous sommes tourné.
+	Dans cette configuration, chacun de ces quatre canaux représente un fil de communication. Nous avons donc cherché à identifier quels canaux pouvaient être supprimés ou mutualiser. Concernant la "Clock" et le "Select Slave", la suppression d'un de ces canaux entraînerait la paralysassion du protocol, et il en va de même pour une mutualisation; c'est donc vers les canaux de communications que nous nous sommes tourné.
 	
-	En effet, de deux fils de communication unidirectionnel, il serait intéressant de pouvoir les mutualiser afin d'offrir un canal de communication bidirectionnel. Cette observation est de plus renforcé, étant donné que notre contrôleur FPGA met à disposition des broches pouvant être utilisé simultanément en entré ainsi qu'en sorti; au sein du langage VHDL, ce type de broche est défini comme suivant: "INOUT".
+	En effet, de deux fils de communications unidirectionnel, il serait intéressant de pouvoir les mutualiser afin d'offrir un canal de communication bidirectionnel. Cette observation est de plus renforcé, étant donné que notre contrôleur FPGA met à disposition des broches pouvant être utilisé simultanément en entré ainsi qu'en sorti; au sein du langage VHDL, ce type de broche est défini comme suivant: "INOUT".
 	
-	Sachant maintenant que l'implémentation d'une broche bidirectionnel est possible du coté de notre processeur, il nous faud déterminer si elle est également possible du coté de notre accéléromètre. Pour cela, avec un oscilloscope, nous allons chercher à déterminer si la ligne MISO ou la ligne MOSI "drive" la ligne au repos ou non; traduisant un état haut (valeur de tension différent de zéro et constant) de la ligne au repos.
+	Sachant maintenant que l'implémentation d'une broche bidirectionnel est possible du coté de notre processeur, il nous faut déterminer si elle est également possible du côté de notre accéléromètre. Pour cela, avec un oscilloscope, nous allons chercher à déterminer si la ligne MISO ou la ligne MOSI "drive" la ligne au repos ou non; traduisant un état haut (valeur de tension différent de zéro et constant) de la ligne au repos.
 	
-	Afin de déterminer si ou ou non notre accéléromètre drive la ligne, nous avons mis en place une petite manipulation mettant en oeuvre un oscilloscope, une résistance, ainsi que notre accéléromètre. Nous avons connecté nos deux broches MISO et MOSI avec notre résistance, alimenté notre accéléromètre avec une source de tension en 3.3 volts et branché notre canal mutualisé à un oscilloscope. A partir de là, deux situations était possible, soit notre accéléromètre drive la ligne (un état haut constant différent de zéro), rendant ainsi toute possibilité de mutualisation impossible, soit ce derniers n'applique aucun état à la ligne au repos, nous permettant d'utiliser la ligne comme bon nous semble à tout moment.
+	Afin de déterminer si ou ou non notre accéléromètre drive la ligne, nous avons mis en place une petite manipulation mettant en oeuvre un oscilloscope, une résistance, ainsi que notre accéléromètre. Nous avons connecté nos deux broches MISO et MOSI avec notre résistance, alimenté notre accéléromètre avec une source de tension en 3.3 volts et branché notre canal mutualisé à un oscilloscope. À partir de là, deux situations étaient possible, soit notre accéléromètre drive la ligne (un état haut constant différent de zéro), rendant ainsi toute possibilité de mutualisation impossible, soit ce dernier n'applique aucun état à la ligne au repos, nous permettant d'utiliser la ligne comme bon nous semble à tout moment.
 	
 	Enfin, suite à notre manipulation, nous avons pu mettre en évidence que notre accéléromètre ne "drive" pas la ligne, étant donné que lorsque les deux lignes sont au repos, ces dernières soient toutes les deux à l'état bas (zéro constant).
 	
-	Ayant pu adapté le protocol SPI de notre accéléromètre à nos besoin, afin d'en minimiser le nombre de fil, il nous est maintenant possible de nous concentré sur la mise en place de la chaine dans son ensemble.
+	Ayant pu adapté le protocole SPI de notre accéléromètre à nos besoins, afin d'en minimiser le nombre de fil, il nous est maintenant possible de nous concentrer sur la mise en place de la chaine dans son ensemble.
 	
 	\chapter{De l'accéléromètre au FPGA}
 	
-		Afin de mettre en oeuvre un échange de données entre notre accéléromètre et notre carte programmable (FPGA), il nous a fallu mettre en place notre protocole de communication précédemment sélectionné, le bus SPI. Le protocole devant être impléménté au travers du langage VHDL, propre au circuit logique programmable.
+		Afin de mettre en oeuvre un échange de données entre notre accéléromètre et notre carte programmable (FPGA), il nous a fallu mettre en place notre protocole de communication précédemment sélectionné, le bus SPI. Le protocole devant être impléménter au travers du langage VHDL, propre au circuit logique programmable.
 		
-		Mais disposant d'un temps limité par le stage ainsi que par la volonté de mettre en place une chaine de contrôle complète, de plus, ayant au début du stage des connaissances limitées en VHDL ainsi que de la phylosophie, de la façon de pensé et concevoir des programme, qui est en tout point différents de la progammation logiciel sur microcontrôleur, nous avons fait le choix de nous tournée vers un module "SPI MASTER" opensource.		
-		Ce module "SPI MASTER" va s'intégré pour travaillé au plus près du matériel, afin de mettre en place une interface entre le comportement physique du SPI de notre accéléromètre et notre interface plus "haut niveau" au travers de la quelle nous exploitont le protocole SPI.
+		Mais disposant d'un temps limité par le stage ainsi que par la volonté de mettre en place une chaine de contrôle complète, de plus, ayant au début du stage des connaissances limitées en VHDL ainsi que de la philosophie, de la façon de penser et concevoir des programmes, qui est en tout point différents de la progammation logiciel sur micro-contrôleur, nous avons fait le choix de nous tourner vers un module "SPI MASTER" open-source.		
+		Ce module "SPI MASTER" va s'intégrer pour travailler au plus près du matériel, afin de mettre en place une interface entre le comportement physique du SPI de notre accéléromètre et notre interface plus "haut niveau" au travers de laquelle nous exploitons le protocole SPI.
 		
-		"Ce Ce module "SPI MASTER" est permet une programmation flexible de composent logic, afin de mettre en place une communication avec divers esclaves au travers d'une interface parallèle. Il permet la communication avec un nombre d'esclave à définir, pouvant être traité de manière indépendante, au travers du champ de données et de la fréquence de contrôle."
+		"Ce module "SPI MASTER" permet une programmation flexible de composant logique, afin de mettre en place une communication avec divers esclaves au travers d'une interface parallèle. Il permet la communication avec un nombre d'esclave à définir, pouvant être traité de manière indépendante, au travers du champ de données et de la fréquence de contrôle."
 		
 		\section{Contexte}
-			Le shéma de la communication SPI revient à interface full-duplex (transport simultané de l'information dans les deux sens) utilisant quatres fils. La clock (SCLK) drivé par le maître, mettant à disposition une clock synchrone. ensuite, le maître transmet la donnée via la sortie "Master out, Slave In" (MOSI) et reçoit celles du capteur par la ligne "M	aster In, Slave Out" (MISO).
+			Le schéma de la communication SPI revient à interface full-duplex (transport simultané de l'information dans les deux sens) utilisant quatre fils. L'horloge (SCLK) drivé par le maître, mettant à disposition une horloge synchrone. Ensuite, le maître transmet la donnée via la sortie "Master out, Slave In" (MOSI) et reçoit celles du capteur par la ligne "M	aster In, Slave Out" (MISO).
 			
-			Un maître peut communiquer avec un module esclave de diverse manière, mais la méthode commune revient à configurer chaque module esclave avec une ligne "Select Slave" indépendente et en partageant les autres ligne (clock, miso, mosi) entre les différents modules esclaves. Grâce à cette méthode, un module va ignorer les lignes partagé, tant que les ligne "SS" ne sera pas activé (mise à l'état bas).
+			Un maître peut communiquer avec un module esclave de diverse manière, mais la méthode commune revient à configurer chaque module esclave avec une ligne "Select Slave" indépendante et en partageant les autres ligne (horloge, miso, mosi) entre les différents modules esclaves. Grâce à cette méthode, un module va ignorer les lignes partagé, tant que les ligne "SS" ne sera pas activé (mise à l'état bas).
 			
 	\begin{figure}[!ht]
     \center
     %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{CH.png}\hss}\hfill\null
-  	\includegraphics[width=15cm]{spi_master_block.JPG}
+  	\includegraphics[width=10cm]{spi_master_block.JPG}
     \caption{SPI - implémentation commune}
 	\end{figure}
 	
-	Le protocole SPI a quatres mode de déploiement, basé sur deux paramètre, clock polarity (CPOL) et clock phase (CPHA). Le maître et l'esclave doivent utiliser le même mode de communication. 
-	Dans le cas ou CPOL serait à zéro, alors SCLK doit être à l'état haut, et le premiers front de la clock serait un front montant.
-	CPHA, lui, définie l'alignement des données, ainsi si CPHA est à zéro, alors le premier bit de donné écrit, lors du front déscendant de la ligne "SS" et lu lors du premier front de la clock. Si CPHA est à un, la donnée est écrite sur le premier front de clock et lu sur le deuxième front.
+	Le protocole SPI a quatre mode de déploiement, basé sur deux paramètres, clock polarity (CPOL) et clock phase (CPHA). Le maître et l'esclave doivent utiliser le même mode de communication. 
+	Dans le cas ou CPOL serait à zéro, alors SCLK doit être à l'état haut, et le premier front de la horloge serait un front montant.
+	CPHA, lui, définie l'alignement des données, ainsi si CPHA est à zéro, alors le premier bit de donnée écrit, lors du front descendant de la ligne "SS" et lu lors du premier front de l'horloge. Si CPHA est à un, la donnée est écrite sur le premier front de l'horloge et lu sur le deuxième front.
 	Toute la procédure décrite ci-dessus est décrite dans la figure suivante:
 	
 	\begin{figure}[!ht]
     \center
     %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{CH.png}\hss}\hfill\null
-  	\includegraphics[width=15cm]{spi_timing_diagram.JPG}
+  	\includegraphics[width=12cm]{spi_timing_diagram.JPG}
     \caption{SPI - CPOL , CPHA}
 	\end{figure}
 	
@@ -771,21 +774,21 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
 		\end{itemize}
 	
 	\section{transaction}
-		Un état sur le port "busy" indique quele composant est pret à accepté une commande. Le composant vérouille les paramètres (adresse et donnée) pour la transmission sur le premier front montant de la clock, lorque le port "enable" sera confirmé. Ensuite, sur la clock suivante, le composent configure le signal "busy" et commence la transaction. Une fois complète, ce dernier reçoit les données sur le port "rx\_data" et ce bit de donné reste sur le port jusqu'a l'arrivé du projet, généralisant ce fonctionnement tant que la transaction ne sera pas terminé.		
+		Un état sur le port "busy" indique que le composant est prêt à accepter une commande. Le composant verrouille les paramètres (adresse et donnée) pour la transmission sur le premier front montant de l'horloge, lorsque le port "enable" sera confirmé. Ensuite, sur la clock suivante, le composent configure le signal "busy" et commence la transaction. Une fois complète, ce dernier reçoit les données sur le port "rx\_data" et ce bit de donnée reste sur le port jusqu'à l'arrivée du projet, généralisant ce fonctionnement tant que la transaction ne sera pas terminée.		
 		
 		La figure suivante illustre une transaction typique. Le module maître transmet la donnée "1001" au module esclave, configuré avec CPOL = 1 et CPHA = 1, le maître reçoit en retour la donnée "1010".
 		
 	\begin{figure}[!ht]
     \center
-    %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{CH.png}\hss}\hfill\null
-  	\includegraphics[width=15cm]{transaction_timing_diagram_web.JPG}
+    %\hfill\hbox to 0pt{\hss\includegraphics[width=15cm]{CH.png}\hss}\hfill\null
+  	\includegraphics[width=12cm]{transaction_timing_diagram_web.JPG}
     \caption{diagramme d'état d'une transaction}
 	\end{figure}
 	
 	\section{Modification}
-		Une fois notre module pris en main, il nous a fallut le modifier afin de l'instantier avec l'utilisation des lignes miso et mosi mutuaisé, mettant en oeuvre trois fils au lieux de quatre. Pour cela nous avons utilisé le mode haute impédence nécessaire à l'utilisation des ports en entré sortie sur notre FPGA. Après avoir modifier le code afin de mutualiser les lignes miso et mosi, nous avons également du adapter l'algorithme précédemment établi afin de mettre en haute impédance la ligne en fonction des besoins, afin que cette dernière ne soit pas bloqué lors d'une écriture ou d'une lecture de données. 
+		Une fois notre module pris en main, il nous a fallu le modifier afin de l'instantier avec l'utilisation des lignes miso et mosi mutualiser, mettant en oeuvre trois fils au lieux de quatre. Pour cela nous avons utilisé le mode haute impédence nécessaire à l'utilisation des ports en entré sortie sur notre FPGA. Après avoir modifié le code afin de mutualiser les lignes miso et mosi, nous avons également dù adapter l'algorithme précédemment établi afin de mettre en haute impédance la ligne en fonction des besoins, afin que cette dernière ne soit pas bloqué lors d'une écriture ou d'une lecture de données. 
 		
-		Ainsi, lors d'une transaction, lorque le nombre de bit total sera atteint, la ligne sera mise en haute impédance afin de libérer cette dernière pour une possible lecture.
+		Ainsi, lors d'une transaction, lorsque le nombre de bit total sera atteint, la ligne sera mise en haute impédance afin de libérer cette dernière pour une possible lecture.
 		
 	\begin{lstlisting}
  		void SensorInit()
@@ -807,10 +810,10 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
 	\end{lstlisting}
 	
 	\section{Spi - application de plus "haut niveau"}
-		Par la suite, nous avons intantié une application de plus haut niveau ayant comme rôle d'encapsuler le notre module SPI ainsi que de nous permettre de configurer et d'adresser les registres souhaités de notre accléromètre.
+		Par la suite, nous avons intantié une application de plus haut niveau ayant comme rôle d'encapsuler le notre module SPI ainsi que de nous permettre de configurer et d'adresser les registres souhaités de notre accéléromètre.
 		
 		\subsection{Encapsulation du module SPI MASTER}
-			L'instantition de motre module SPI MASTER reste trivial dans cette api, étant donné que nous avons simplement à configurer les différents port et paramètre précédemment sité. Ainsi, le paramétrage s'effectue comme suivant:
+			L'instantition de notre module SPI MASTER reste trivial dans cette api, étant donné que nous avons simplement à configurer les différents ports et paramètre précédemment cité. Ainsi, le paramétrage s'effectue comme suivant:
 
 	\begin{lstlisting}
  		sm_accel: entity work.spi_master(SPI_ACCEL)
@@ -837,15 +840,15 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
 		\end{lstlisting}
 		
 		\subsection{Accès aux registres de l'accéléromètre}
-			Afin d'utiliser notre accéléromètre, nous avons à configurer divers registres pour que les données reçus soit conforme à l'utilisation que nous souhaitons faire de notre accéléromètre. C'est pourquoi, nous avons besoins d'effectuer les configurations suivantes:
+			Afin d'utiliser notre accéléromètre, nous avons à configurer divers registres pour que les données reçues soit conforme à l'utilisation que nous souhaitons faire de notre accéléromètre. C'est pourquoi, nous avons besoin d'effectuer les configurations suivantes:
 			
 			\begin{itemize}
-				\item Avoir un intervale de valeur évoluant de 0 à 8 g.
-				\item accéder aux registres contenant les valeurs échantillonnés par notre matériel sur l'axes des "Z"
-				\item Configurer un bit d'état, permettant de savoir si la mémoire interne peut être accédé en lecture ou non.				
+				\item Avoir un intervalle de valeur évoluant de 0 à 8 g.
+				\item accéder aux registres contenant les valeurs échantillonnées par notre matériel sur l'axes des "Z"
+				\item Configurer un bit d'état, permettant de savoir si la mémoire interne peut être accédée en lecture ou non.				
 			\end{itemize}
 			
-			Pour cela, nous avons implémenté deux tableaux de registres, le premiers contenant la configuration de l'accéléromètre et le deuxième contenant les registres à accéder en lecture.
+			Pour cela, nous avons implémenté deux tableaux de registres, le premier contenant la configuration de l'accéléromètre et le deuxième contenant les registres à accéder en lecture.
 		\begin{lstlisting}
  		constant ACCEL_CONFIG : T_WORD_ARR:= (
 			7x"2D" & ADXL_WRITE_REG & 8x"01",		--initiate protocol configure registers (standby <- 1 : standby mode)
@@ -863,36 +866,36 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
 			);
 		\end{lstlisting}
 		
-		Ces deux tableaux ainsi que le module SPI MASTER sont mise en application au travers de la machine d'état que nous allons maintenant décrire. Machine d'état pouvant être interprété comme l'algorythme de ce module de plus haut niveau.			
+		Ces deux tableaux ainsi que le module SPI MASTER sont mis en application au travers de la machine d'état que nous allons maintenant décrire. Machine d'état pouvant être interprété comme l'algorithme de ce module de plus haut niveau.			
 		
 		\subsection{Intégration globale - Machine d'état}
-				Au travers de la machine d'état ci-dessous, nous pouvons observer le comportement de notre module, pour que ce dernier puisse intéragir avec notre accéléromètre au travers de l'envoie et de la réception de données.
+				Au travers de la machine d'état ci-dessous, nous pouvons observer le comportement de notre module, pour que ce dernier puisse interagir avec notre accéléromètre au travers de l'envoie et de la réception de données.
 		
 			\begin{figure}[!ht]
     		\center
    		 	%\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{CH.png}\hss}\hfill\null
-  			\includegraphics[width=12cm]{acc_StateMach.png}
+  			\includegraphics[width=10cm]{acc_StateMach.png}
     		\caption{Machine d'état - module accéléromètre}
 			\end{figure}
 			
-			On retrouve ainsi un premiers état, "Reset\_st", qui nous permet de réinitialiser notre module, et ainsi notre communication. Ensuite viennent les états de configurations "Conf\_st" et "ConfBusy\_st" au travers des quels nous configurons les registres de l'accéléromètre que nous avons décris plus tôt. Puis viens un état d'attente " Idle\_st", état dans lequel l'accéléromètre se met en attente d'un évènement, qui dans notre cas va être me déclenchement d'une demande de lecture des données échantillonné par l'accéléromètre. Enfin, nous retrouvons les états de les lecture "Read\_st" et "ReadBusy\_st"; "Read\_st" permettant l'accès à un registre de valeur, puis basculant en "ReadBusy\_st" afin de déterminer si il reste ou non un registre à lire. Pour finalement retourner en état d'attente lorsque les trois registres, de 20 bits en tout formant la valeur échantillonné aurons été lu.		
+			On retrouve ainsi un premier état, "Reset\_st", qui nous permet de réinitialiser notre module et ainsi notre communication. Ensuite viennent les états de configurations "Conf\_st" et "ConfBusy\_st" au travers des quels nous configurons les registres de l'accéléromètre que nous avons décri plus tôt. Puis viens un état d'attente " Idle\_st", état dans lequel l'accéléromètre se met en attente d'un évènement, qui dans notre cas va être le déclenchement d'une demande de lecture des données échantillonnées par l'accéléromètre. Enfin, nous retrouvons les états de lecture "Read\_st" et "ReadBusy\_st"; "Read\_st" permettant l'accès à un registre de valeur, puis basculant en "ReadBusy\_st" afin de déterminer s'il reste ou non un registre à lire. Pour finalement retourner en état d'attente lorsque les trois registres, de 20 bits en tout formant la valeur échantillonnées aurons été lu.		
 	
 	\chapter{Le filtrage}
 	
 	\section{Etat de l'art}
-	Au sein de la chaine, le module de filtrage est la clef de voute de cette dernière. C'est au sein de ce module que va être intégré la partie de traitement du signal, que nous aborderons par la suite). Le traitement du signal, prend place au travers d'une fonction de transfère, devant nous permettre de moduler notre signal en fonction de la courbe de réponse souhaité pour notre chaine.
+	Au sein de la chaine, le module de filtrage est la clef de voute de cette dernière. C'est au sein de ce module que va être intégré la partie de traitement du signal, que nous aborderons par la suite). Le traitement du signal, prend place au travers d'une fonction de transfère, devant nous permettre de moduler notre signal en fonction de la courbe de réponse souhaitée pour notre chaine.
 	
 	En attendant que cette fonction de transfère soit déterminé grâce à la manipulation sur le banc de test (que nous décrirons également plus tard), nous avons un module ayant un rôle simple et précis, copier les données qu'il reçoit en entré, traiter ces dernières codé en complément à deux afin qu'elles puissent être interprété par notre DAC n'acceptant que des données non signé sur 16 bits. Notre module se base donc sur une machine d'état relativement simple.
 	
-	Lors du premier état "IDLE\_st", nous attendons qu'une donnée soit adressé au module et lorsque c'est le cas, nous effectuons un cast sur notre donnée codé sur 20 bits, afin de travaillé sur un mot de 16 bits, composé des 16 MSB du mot précédent, à destination du DAC. Ensuite, nous appliquons un offset afin de décaler notre mot complémenté à deux (évoluant de -32768 à +32767) afin que ce dernier devienne un mot non signé, codé de 0 à 65535.
+	Lors du premier état "IDLE\_st", nous attendons qu'une donnée soit adressée au module et lorsque c'est le cas, nous effectuons un cast sur notre donnée codé sur 20 bits, afin de travailler sur un mot de 16 bits, composé des 16 MSB du mot précédent, à destination du DAC. Ensuite, nous appliquons un offset afin de décaler notre mot complémenté à deux (évoluant de -32768 à +32767) afin que ce dernier devienne un mot non signé, codé de 0 à 65535.
 	
 	\chapter{Du FPGA au CNA}
 	
 	\section{Mise au point}
 	
-	Pour ce dernier module de la chaine de contrôle, nous avons à mettre en place la communcation entre le FPGA et notre DAC via une liaison SPI. Etant donné la nature de la transmission, nous n'avons pas besoins de mettre au point une nouvelle machine d'état.Assurant une liaison SPI, nous pouvons réutiliser notre code, développé pour la transmission entre l'accéléromètre et le FPGA. La seul modification à apporter et l'ajout d'un état nous permettant d'adresser un registre particulier sur le DAC, correspondant à l'une des lignes de sortie en tension du DAC. Cet état se comporte donc comme suivant.
+	Pour ce dernier module de la chaine de contrôle, nous avons à mettre en place la communication entre le FPGA et notre DAC via une liaison SPI. Etant donné la nature de la transmission, nous n'avons pas besoin de mettre au point une nouvelle machine d'état. Assurant une liaison SPI, nous pouvons réutiliser notre code, développé pour la transmission entre l'accéléromètre et le FPGA. La seule modification à apporter et l'ajout d'un état nous permettant d'adresser un registre particulier sur le DAC, correspondant à l'une des lignes de sortie en tension du DAC. Cet état se comporte donc comme suivant.
 	
-	Lorsque nous arrivons en transmission, nous concaténons quatres bit de poid fort correspondant à une configuration de registre permettant un swap instantanné entre l'entré et le registre le contrôle, à la suite des quels ont ajoute encore quatres bit correspondant à l'adresse de la ligne de sortie en tension. Enfin sont ajouté à la suite les 16 bits de données à transmettre.
+	Lorsque nous arrivons en transmission, nous concaténons quatre bit de poids fort correspondant à une configuration de registre permettant un swap instantané entre l'entrée et le registre le contrôle, à la suite des quels nous ajoutons encore quatre bit correspondant à l'adresse de la ligne de sortie en tension. Enfin sont ajoutés à la suite les 16 bits de données à transmettre.
 	
 		\begin{lstlisting}
  			when TRANSMITst =>
@@ -908,9 +911,9 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
 		
 		\section{Difficulté rencontré}
 		
-		Par la suite, alors que nous souhaitions mettre en place notre chaine de contrôle, afin de réaliser des tests sur notre maquette de piano, nous nous sommes aperçus d'un problème non pas sur la propagation des données, mais sur la stabilité du signal éléctrique de ces dernières. En effet, notre moteur réagicait au impulsion mesuré par notre accéléromètre, mais ce dernier restait très peu stable, et oscillait de manière aléatoire.
+		Par la suite, alors que nous souhaitions mettre en place notre chaine de contrôle, afin de réaliser des tests sur notre maquette de piano, nous nous sommes aperçus d'un problème non pas sur la propagation des données, mais sur la stabilité du signal électrique de ces dernières. En effet, notre moteur réagissait aux impulsions mesuré par notre accéléromètre, mais ce dernier restait très peu stable et oscillait de manière aléatoire.
 		
-		Ainsi, afin de déterminer la cause du problème, nous avons cherché à visualiser nos signaux à l'aide d'un oscilloscope, et nous avons obtenue les graphques ci-dessous.Pouvant observer notre signal "bruité", nous avons cherché à déterminé la cause de ce problème.
+		Ainsi, afin de déterminer la cause du problème, nous avons cherché à visualiser nos signaux à l'aide d'un oscilloscope et nous avons obtenue les graphiques ci-dessous. Pouvant observer notre signal "bruité", nous avons cherché à déterminer la cause de ce problème.
 		
 		\begin{figure}[!ht]
     \center
@@ -919,29 +922,31 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
 		\caption{Stabilité - graphique 1}
 	\end{figure}
 	
-	Dans un premiers temps, étant donné que nous travaillions sur un prototypage rapide, nous avions beaucoup de cable connecté à l'aide de connecteur rapide, ce qui pouvais être source de problème. Nous avons donc éliminer cette possibilité en concevant une carte "mezzanine" (carte que nous détaillerons lors d'un prochain chapitre) afin de disposer de branchement toujours amovible, mais d'une plus grande qualité.
+	Dans un premier temps, étant donné que nous travaillions sur un prototypage rapide, nous avions beaucoup de câble connecté à l'aide de connecteur rapide, ce qui pouvait être source de problème. Nous avons donc éliminé cette possibilité en concevant une carte "mezzanine" (carte que nous détaillerons lors d'un prochain chapitre) afin de disposer de branchement toujours amovible, mais d'une plus grande qualité.
 	
-	N'ayant toujours pas résolué notre problème, nous nous sommes tourné cette fois du coté de la propagation du signal éléectrique au sein du FPGA, à l'aide d'un outils de diagnostique interne "signal tap". A l'aide de cette oscilloscope numérique, nous avons pu remonté notre signal jusqu'à l'aparission du bruit, nous conduisant à une FIFO au sein du module DAC.
+	N'ayant toujours pas résolu notre problème, nous nous sommes tourné cette fois du côté de la propagation du signal électrique au sein du FPGA, à l'aide d'un outils de diagnostique interne "signal tap". À l'aide de cette oscilloscope numérique, nous avons pu remonter notre signal jusqu'à l'apparition du bruit, nous conduisant à une FIFO au sein du module DAC.
 	
-	Cette FIFO fut développé alors que j'avais peu de connaissance vis-à-vis du langage VHDL et de ces spécificité, afin de m'exercer. Ce qui me conduisit dans un "piège" de débutant, non visible lors de la phase de débug sous ModelSim. En effet, l'outil de débug, nous permet de simuler nos script, mais il reste une simulation, si bien qu'une recopie déclenché par un front montant d'une horloge système apparait comme fonctionnelle, alors qu'en application, il nous faudrais attendre que le front d'horloge soit passé, puis test l'état de cet "oenable" pour ensuite effectuer notre copie.
+	Cette FIFO fut développé alors que j'avais peu de connaissance vis-à-vis du langage VHDL et de ces spécificitées, afin de m'exercer. Ce qui me conduisit dans un "piège" de débutant, non visible lors de la phase de débug sous ModelSim. En effet, l'outil de débug, nous permet de simuler nos script, mais il reste une simulation, si bien qu'une recopie déclenchée par un front montant d'une horloge système apparait comme fonctionnelle, alors qu'en application, il nous faudrait attendre que le front d'horloge soit passé, puis test l'état de cet "oenable" pour ensuite effectuer notre copie.
 	
-	Ce méquanisme de conception se nomme la métastabilité.
+	Ce mécanisme de conception se nomme la métastabilité.
 	
 	Afin de remédier rapidement à ce problème, nous avons choisi d'implémenter une FIFO, mise à disposition par le framework du constructeur de la carte, éliminant ainsi tout problème de métastabilité.		
 		
 	\chapter{Une octave "augmenté"}
-		Après avoir mise au point cette première manipulation, devant mettre en oeuvre l'action d'une touche de piano, entrainant la frappe d'une corde; Ensemble étant fonctionnelle et ayant démontré la preuve de concepte, nous allons maintenant chercher à généraliser cette chaine sur un mécanisme composé de douzes touches.
+		Après avoir mise au point cette première manipulation, devant mettre en oeuvre l'action d'une touche de piano, entrainant la frappe d'une corde; Ensemble étant fonctionnelle et ayant démontré la preuve de concept, nous allons maintenant chercher à généraliser cette chaine sur un mécanisme composé de douze touches.
 		
-		Cette généralisation ayant été prévus dès le début du projet, le découpage de ce dernier en module, reste très avantageux. En effet, utilisant maintenant douzes touches, il nous faut récupérer les données provenant de douzes accéléromètre et donc appliquer douzes filtrages numériques indépendant. Pour cela, nous pouvons donc réutiliser nos deux premiers module (accéléromètre et Filtre) que nous allons dupliquer à l'aide d'une fonctionnalité fournie par le langage VHDL, les "GENERATE".
+		Cette généralisation ayant été prévus dès le début du projet, le découpage de ce dernier en module, reste très avantageux. En effet, utilisant maintenant douze touches, il nous faut récupérer les données provenant de douze accéléromètre et donc appliquer douze filtrages numériques indépendant. Pour cela, nous pouvons donc réutiliser nos deux premiers module (accéléromètre et Filtre) que nous allons dupliquer à l'aide d'une fonctionnalité fournie par le langage VHDL, les "GENERATE".
 		
-		Cette fonction, nous permet de pouvoir dupliquer un éléments de code, dans notre cas, douzes fois; et c'est là que tous l'intéret du VHDL apparait. Si nous avions implenté notre projet sur un micro-processeur, ces douzes nodule aurait fonctionné de manière sérialisé. Ici, grâce au VHDL, ces douzes nodules vont fonctionné de manière parfaitement parallèle, ainsi, si deux touches sont joué en même temps, les informations relative à celles-ci se propageront simultanement.
+		Cette fonction, nous permet de pouvoir dupliquer un éléments de code, dans notre cas, douze fois; et c'est là que tous l'intérêt du VHDL apparait. Si nous avions implanté notre projet sur un micro-processeur, ces douze nodule aurait fonctionné de manière sérialisée. Ici, grâce au VHDL, ces douze nodules vont fonctionner de manière parfaitement parallèle, ainsi, si deux touches sont jouée en même temps, les informations relative à celles-ci se propageront simultanément.
 		
-		La seul modification majeur qui va devoir être apporté, va être sur le dernier module, devant pouvoir stocker simultanément les informations de douzes nodules, pour ensuite sérialiser ces dernières, une par une, sur la ligne à destination de la communication SPI.
+		La seule modification majeur qui va devoir être apporté, va être sur le dernier module, devant pouvoir stocker simultanément les informations de douze nodules, pour ensuite sérialiser ces dernières, une par une, sur la ligne à destination de la communication SPI.
+		
+		\newpage
 		
 	\section{Modification du module DAC}
-		Devant maintenant récupérer les informations en prevenance de douzes accéléromètres et possiblement de manière simultanéé, il nous faud adapter notre dernier module. Là ou notre première implémentation se reposait sur la recopie d'une entré sur une sortie lors d'un acquitement signifiant qu'une donnée était disponible, il nous faut maintenant travailler avec notre douzaine de module ainsi que les acquitements certifiant la disponibilité de nouvelle données.
+		Devant maintenant récupérer les informations en provenance de douze accéléromètres et possiblement de manière simultanée, il nous faut adapter notre dernier module. Là où notre première implémentation se reposait sur la recopie d'une entrée sur une sortie lors d'un acquittement signifiant qu'une donnée était disponible, il nous faut maintenant travailler avec notre douzaine de modules ainsi que les acquittements certifiant la disponibilité de nouvelles données.
 		
-		Afin de nous contraindre à nos nouvelles contraintes, nous avons mise en place une architecture basé sur un ampilement de FIFO à horloge mixte. La logique de notre nouvelle architecture est illustré sur la figure suivante.
+		Afin de nous contraindre à nos nouvelles contraintes, nous avons mise en place une architecture basée sur un empilement de FIFO à horloge mixte. La logique de notre nouvelle architecture est illustrée sur la figure suivante.
 		
 	\begin{figure}[!ht]
     \center
@@ -950,11 +955,25 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
 		\caption{Une octave "augmenté" - Architecture}
 	\end{figure}
 		
-		Comme nous pouvons le voir sur la figure ci-dessus, cette nouvelle architecture se base sur un ensemble de douze FIFO pouvant être accéder de manière indépendante par chacun des modules auquel cette dernière est rattaché. Ensuite, nous exploitons encore une fois la spécificité du langage VHDL au travers d'une boucle "for" qui nous permet de pouvoir parser l'ensemble des FIFO sur un seul coup d'horloge du système (horloge ayant une fréquence différente de celle permettant le stockage des données dans les FIFO.
-		Grâce à ce méquanisme, nous pouvons, pour chaque coup d'horloge parser l'ensemble de nos FIFO, afin de déterminer si de nouvelles données sont disponible, pour ensuite les sérialiser sur une dernière FIFO relié à une api encapsulant le bus SPI qui va permettre l'envoie des données au DAC.
+		Comme nous pouvons le voir sur la figure ci-dessus, cette nouvelle architecture se base sur un ensemble de douze FIFO pouvant être accédé de manière indépendante par chacun des modules auquels cette dernière est rattachée. Ensuite, nous exploitons encore une fois la spécificité du langage VHDL au travers d'une boucle "for" qui nous permet de pouvoir parser l'ensemble des FIFO sur un seul coup d'horloge du système (horloge ayant une fréquence différente de celle permettant le stockage des données dans les FIFO.
+		Grâce à ce mécanisme, nous pouvons, pour chaque coup d'horloge parser l'ensemble de nos FIFO, afin de déterminer si de nouvelles données sont disponibles, pour ensuite les sérialiser sur une dernière FIFO relié à une api encapsulant le bus SPI qui va permettre l'envoie des données au DAC.
 		
-		Cette architecture n'a pas pu être testé en condition, sur la maquette, elle n'a pour l'instant été testé qu'en simulation sous l'outils de modélisation "ModelSim". Bien que permettant une simulation au plus proche des conditions réels, il nous faudra valider se modèle en phase de test, pour ainsi déterminer si les contraintes de temps et de propagation des données sont respecté; le cas échéant, il nous faudra mettre au point une architecture plus subtil.
-	
+		Cette architecture n'a pas pu être testé en condition, sur la maquette, elle n'a pour l'instant été testé qu'en simulation sous l'outil de modélisation "ModelSim". Bien que permettant une simulation au plus proche des conditions réels, il nous faudra valider ce modèle en phase de test, pour ainsi déterminer si les contraintes de temps et de propagation des données sont respectés; le cas échéant, il nous faudra mettre au point une architecture plus subtil.
+		
+		\section{Ouverture}
+		
+		Maintenant que notre chaine de contrôle est fonctionnel et que nous avons vu comment adapter son architecture afin d'évoluer vers un banc de test plus complet comprenant une douzaine de touches, il nous faut maintenant penser aux améliorations futur qui sans "dénaturer" le modèle existant nous permettrait d'apporter une valeur ajoutée au projet.
+		
+		C'est dans cet esprit que nous pourrions mettre en place une solution de monitoring, afin de pouvoir suivre en temps réel, l'évolution du signal au fur et à mesure de la chaine, afin de valider son traitement ainsi que son bon "comportement", sans avoir à passer par des outils de mesure difficilement transportable et encombrant.
+		
+	\begin{figure}[!ht]
+    \center
+   	%\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{CH.png}\hss}\hfill\null
+  	\includegraphics[width=12cm]{CH&MO.png}
+		\caption{Chaine de contrôle - Monitoring des informations}
+	\end{figure}
+		
+	Ci-dessus se trouve la maquette imaginer afin de monitorer le signal en provenance des accéléromètres avant et après l'étape de filtrage numérique, nous permettant ainsi comme dis plus haut, de caractériser et valiser notre modèle.
 
 
 
@@ -967,12 +986,12 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
 %--------------------------------------------------------------------------------------
 	\part{Asservissement et caractérisation}
 	
-	Lors de la précédente partie, nous avons abordé l'ensemble des aspects qui nous ont permis de mettre au point notre chaine de contrôle; en partant des données fournies par notre accéléromètre, leurs réceptions et leurs traitements au sein de notre carte programmable (FPGA), jusqu'à leur envoi et leur réception par le Convertisseur Numérique Analogique, permettant le contrôle du contrôleur moteur, en lui transmettant des consignes de fonctionnement.
+	Lors de la précédente partie, nous avons abordé l'ensemble des aspects qui nous ont permis de mettre au point notre chaine de contrôle; en partant des données fournies par notre accéléromètre, leurs réceptions et leurs traitements au sein de notre carte programmable (FPGA), jusqu'à leur envoie et leur réception par le Convertisseur Numérique Analogique, permettant le contrôle du contrôleur moteur, en lui transmettant des consignes de fonctionnement.
 	
 	Lors de cette partie, nous allons nous concentrer sur la mise au point de l'asservissement numérique, élément indispensable, devant prendre place au sein du filtre numérique de notre carte programmable FPGA.
 	
 	L'asservissement numérique est un processus en plusieurs étapes, consistant à piloter un système tiers, en mesurant périodiquement des valeurs de consigne, fournies par un système de capteurs, dans notre cas, un accéléromètre. 
-	Par la suite, ces données sont traitées par notre calculateur, mais étant donné le mode de traitement des informations imposé par notre calculateur est de nature numérique et cadencé dans le temps de façon périodique grâce à une horloge; les informations en entrée, provenant de nos capteurs, sont donc des grandeurs discrètes.
+	Par la suite, ces données sont traitées par notre calculateur, mais étant donné le mode de traitement des informations imposées par notre calculateur est de nature numérique et cadencé dans le temps de façon périodique grâce à une horloge; les informations en entrée, provenant de nos capteurs, sont donc des grandeurs discrètes.
 	
 	Les différentes étapes que l'on retrouve,  générique à tout système asservi sont les suivantes:
 	
@@ -995,19 +1014,19 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
 		\item  La synthèse d'un algorithme de calcul
 			Il s'agit d'établir une loi d'évolution du signal de commande numérique en fonction des signaux de mesure
 			et de référence, également numériques, afin de permettre au système asservi de satisfaire un cahier des
-			charges. Cette fonction est appelée correcteur numérique ou encore loi de commande numérique. Elle a pour
+			charges. Cette fonction est appelé correcteur numérique ou encore loi de commande numérique. Elle a pour
 			objectif de déterminer la valeur du signal numérique de commande à un instant d'échantillonnage, à partir 
 			d'un algorithme de commande, de mesure et de référence.
 	\end{itemize}
 	
 	Ainsi, l'on peut résumer sous forme de schéma bloque une structure classique d'asservissement numérique comme suivant:
 	
-	\begin{figure}[!ht]
-    \center
-    %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{Assert_1.png}\hss}\hfill\null
-  	\includegraphics[width=17cm]{Assert_1.png}
-    \caption{Structure classique d'asservissement numérique}
-	\end{figure}	
+%	\begin{figure}[!ht]
+%    \center
+%    %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{Assert_1.png}\hss}\hfill\null
+%  	\includegraphics[width=17cm]{Assert_1.png}
+%    \caption{Structure classique d'asservissement numérique}
+%	\end{figure}	
 	
 	De plus, l'asservissement numérique de notre projet implique la caractérisation de la fonction de transfère de notre système dans son ensemble.
 	Ainsi, afin de déterminer notre fonction de transfère, seront présenté les différents protocoles et les différentes manipulations effectués sur notre banc de test.
@@ -1025,7 +1044,7 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
 	\begin{figure}[!ht]
     \center
     %\hfill\hbox to 0pt{\hss\includegraphics[width=17cm]{Assert_1.png}\hss}\hfill\null
-  	\includegraphics[width=17cm]{Assert_2.png}
+  	\includegraphics[width=12cm]{Assert_2.png}
     \caption{Asservissement numérique du projet CHAMP}
 	\end{figure}	
 		
@@ -1065,13 +1084,13 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
     \caption{Schéma bloc - Première manipulation}
 	\end{figure}	
 		
-		Comme illustré ci-dessus, nous utilisons un générateur de fonction afin de transmettre une impulsion au contrôleur moteur, sous la forme d'une rampe croissante.
+		Tel que illustré ci-dessus, nous utilisons un générateur de fonction afin de transmettre une impulsion au contrôleur moteur, sous la forme d'une rampe croissante.
 		Grâce à l'oscilloscope numérique intégré au sein du logiciel de configuration des contrôleurs Faulhaber, nous avons pu mesurer la position du barreau aimanté en fonction du temps, via l'exploitation des données provenant des capteurs à effet hall, ainsi que le niveau de tension du signal analogique d'entrée.
 		
 		De plus, le contrôleur moteur de Faulhaber proposant différent mode de contrôle pour le moteur, tel qu'un contrôle en position, en vitesse et en accélération, nous avons cherché à exploiter les données mesurées, afin de caractériser ses différents modes de contrôle et valider ou non, leur bon fonctionnement, en accord avec le comportement souhaité.
 		
 		Nous avons tout d'abord commencé par tracer sous forme de graphiques, les courbes des trois différents modes de contrôle proposés par le contrôleur sous différents niveaux de tension, variant sur un intervalle allant de 1 volt, jusqu'à 5 volts.
-		De plus, nous avons également mesuré pour chaque niveau de tension, l'évolution de la grandeur analogique en entrée du contrôleur moteur. Tracer les courbes d'évolutions des grandeurs analogique en entré nous permet de nous assurer que les signaux discrets échantilloné et utilisé par le contrôleur, correspondent bien au signaux fournie par le générateur de fonction.
+		De plus, nous avons également mesuré pour chaque niveau de tension, l'évolution de la grandeur analogique en entrée du contrôleur moteur. Tracer les courbes d'évolutions des grandeurs analogiques en entré nous permet de nous assurer que les signaux discrets échantillonné et utilisé par le contrôleur, correspondent bien aux signaux fournie par le générateur de fonction.
 		
 		On retrouve ainsi, les graphiques suivants:
 		
@@ -1103,17 +1122,19 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
 		
 	Dans un premier temps, pour chacun des graphiques ci-dessus, on peut observer une évolution des courbes, qui paraît être en accord avec le comportement attendu. Ainsi, que l'on analyse le mode de position, de vitesse, ou d'accélération, on peut observer que l'ensemble des courbes décroissent de plus en plus rapidement, plus le niveau de tension appliqué devient élevé. Il en va de même pour les courbes du graphique de l'entrée analogique en fonction du temps, plus le niveau de tension augmente, plus la pente des rampes devient importante. Ainsi, jusqu'içi, nous restions plutôt confiants.
 	
-	Par la suite, nous avons commencé à nous intéresser et nous concentrer sur le mode de contrôle en accélération (mode torque) de notre contrôleur. En effet, étant donné qu'à l'aide de notre module, nous captons le signal d'accélération de la touche de notre piano, l'utilisation du contrôle en accélération (torque) de notre contrôleur nous parut comme étant un choix intéressant et logique pour le contrôle des moteurs; nous permettant de travailler sur les données brutes du signal d'accéléromètre, 	sans besoin de l'intégre pour en obtenir la vitesse, et donc d'intégrer avec ce dernier, des erreurs.
+	Par la suite, nous avons commencé à nous intéresser et nous concentrer sur le mode de contrôle en accélération (mode torque) de notre contrôleur. En effet, étant donné qu'à l'aide de notre module, nous captons le signal d'accélération de la touche de notre piano, l'utilisation du contrôle en accélération (torque) de notre contrôleur nous parut comme étant un choix intéressant et logique pour le contrôle des moteurs; nous permettant de travailler sur les données brutes du signal d'accéléromètre, 	sans besoin de l'intégrer pour en obtenir la vitesse et donc d'intégrer avec ce dernier, des erreurs.
 	
 	Étant donné que les données sont obtenues par intégrations successives, donc par sommes successives, les mesures ne peuvent pas être prises réellement en continu; donc, les sommes introduiront nécessairement de petites erreurs. D'autre part, même avec une mesure parfaitement exacte de l'accélération, on se retrouve avec une estimation de la vitesse qui dérive petit à petit, en fonction des erreurs accumulées. La position est obtenue en intégrant la vitesse, y compris son erreur d'intégration. Ainsi, l'erreur de position sera quadratique par rapport aux approximations initiales. 
 	
-	C'est pour cette raison, que nous nous sommes appliqué à mettre en place le contrôle en accélération sur notre contrôleur. Mais avant d'implanter cette solution, nous avons tout de même cherché à vérifier si se dit mode de contrôle en accélération (mode torque), appliquait au moteur un comportement image de l'accélération mesuré. Même si ce mode de contrôle paraissait être "idéal" pour le projet, un premier élément attira notre attention. Ce mode de contrôle en accélération étant nommé contrôle "Torque", il traduirait l'application d'un couple sur notre moteur, pour mettre ce dernier en mouvement, hors un couple appliqué à un moteur en translation, paraît quelque peut contradictoire.
+	C'est pour cette raison, que nous nous sommes appliqués à mettre en place le contrôle en accélération sur notre contrôleur. Mais avant d'implanter cette solution, nous avons tout de même cherché à vérifier si se dit mode de contrôle en accélération (mode torque), appliquait au moteur un comportement image de l'accélération mesuré. Même si ce mode de contrôle paraissait être "idéal" pour le projet, un premier élément attira notre attention. Ce mode de contrôle en accélération étant nommé contrôle "Torque", il traduirait l'application d'un couple sur notre moteur, pour mettre ce dernier en mouvement, hors un couple appliqué à un moteur en translation, paraît quelque peut contradictoire.
 	Une fois la documentation du contrôleur vérifié, il s'avère que ce mode de contrôle "Torque" soit un asservissement numérique sous la forme d'un correcteur Proportionnel Intégral (PI) en courant; ce dernier combinant l'action des correcteurs précédents pour améliorer les performances globales du système asservi. Mais, bien qu'étant un asservissement en courant, une solution de contrôle plutôt aisé à mettre en oeuvre, serait de comparer la courbe du contrôle en accélération avec la courbe de la deuxième dérivée du contrôle en position. En procédant ainsi, nous devrions avoir deux courbes ayant la même allure, permettant ainsi de valider le comportement du contrôle en accélération.
+	
+	\newpage
 	
 		\section{Caractérisation du mode de contrôle en accélération ou mode "Torque"}
 
 	Souhaitant obtenir une courbe d'accélération en nous basant sur un mode de contrôle en position, il va donc nous falloir dériver deux fois notre fonction, afin d'obtenir une courbe d'accélération exploitable.
-	Notre système à dérivé étant une fonction discrète, nous allons calculer sa dérivée première comme suivant: 
+	Notre système à dériver étant une fonction discrète, nous allons calculer sa dérivée première comme suivant: 
 	
 	\[	
 		f'(x) = \frac{f(x+h) - f(x-h)}{2h}
@@ -1141,22 +1162,24 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
 		\end{figure}}
 		
 		Grâce aux graphiques ci-dessous, nous pouvons nous apercevoir que nos deux graphiques ont une allure en rien comparable, jetant un doute sur le fonctionnement du mode "torque" de notre contrôleur moteur; posant la question du rôle de ce mode de contrôle, si ce dernier n'est pas destiné à être image d'un contrôle en accélération.
-		De plus, outre la non-adéquation avec le mode de contrôle "Torque", nous nous sommes demandé si le traitement du signal analogique par le contrôleur moteur, pouvait ou non, induire un retard, un décalage temporel entre la consigne mesurée et l'établissement de la valeur de contrôle en sortie du contrôleur.
+		De plus, outre la non-adéquation avec le mode de contrôle "Torque", nous nous sommes demandés si le traitement du signal analogique par le contrôleur moteur, pouvait ou non, induire un retard, un décalage temporel entre la consigne mesurée et l'établissement de la valeur de contrôle en sortie du contrôleur.
+		
+		\newpage
 		
 		\section{Du retard induit}
 		
 		Suite à la caractérisation du mode "Torque", comme nous l'avons dit précédemment, l'induction d'un retard entre la consigne mesurée et l'établissement de la valeur de contrôle en sortie du contrôleur, si elle existe, peut être un obstacle à l'établissement de notre fonction de transfère.
 		
-		Pour cela, à l'aide des données relevées plus tôt à partir des capteurs à effet hall, nous avons tracé de nouveaux graphiques afin de pouvoir visualisé le signal de contrôle, ainsi que le signal de consigne appliquée en entrée du contrôleur en fonction du temps.
+		Pour cela, à l'aide des données relevées plus tôt à partir des capteurs à effet hall, nous avons tracé de nouveaux graphiques afin de pouvoir visualiser le signal de contrôle, ainsi que le signal de consigne appliquée en entrée du contrôleur en fonction du temps.
 		
 		Nous avons commencé par appliquer un signal carré avec notre générateur de fonction, d'une amplitude variant d'un volt jusqu'à cinq Volts; en comparant les différents jeux de mesures réalisées sur la même base de temps, on arrive à un retard moyen d'une valeur de douze millisecondes.
 		
-		Ensuite, nous avons effectué le même test en appliquant une une rampe croissante avec notre générateur de fonction, et nous avons pu observer un retard d'en moyenne 10 millisecondes entre la consigne et le signal de sortie.
+		Ensuite, nous avons effectué le même test en appliquant une rampe croissante avec notre générateur de fonction et nous avons pu observer un retard d'en moyenne 10 millisecondes entre la consigne et le signal de sortie.
 		
 		\section{Conclusion}
 		Après avoir cherché à caractériser le comportement du contrôle en accélération de notre contrôleur moteur, puis après avoir observé le retard induit dans notre système par ce même contrôleur moteur, nous pouvons conclure que la manipulation mise en place, ne nous permet pas de pouvoir établir la fonction de transfère de notre module.
 		
-		Pour cela, nous allons mettre en place une seconde manipulation, dans laquelle le retard n'aura pas d'incidence. De plus, cette manipulation aura aussi l'avantage de nous permettre de mieux caractériser la contrôle "Torque" du contrôleur.
+		Pour cela, nous allons mettre en place une seconde manipulation, dans laquelle le retard n'aura pas d'incidence. De plus, cette manipulation aura aussi l'avantage de nous permettre de mieux caractériser le contrôle "Torque" du contrôleur.
 		
 		\newpage		
 		
@@ -1164,7 +1187,7 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
 	
 		\section{Introduction}
 	
-		Comme nous avons pu le voir précédemment, lors de la première manipulation, le retard induit par le contrôleur moteur, nous à poser soucis dans la première manipulation. Du fait, de ce retard, il nous était impossible de mettre en place un modèle afin de pouvoir déduire notre fonction de transfère.
+		Comme nous avons pu le voir précédemment, lors de la première manipulation, le retard induit par le contrôleur moteur nous a posé soucis dans la première manipulation. Du fait, de ce retard, il nous était impossible de mettre en place un modèle afin de pouvoir déduire notre fonction de transfère.
 		
 		Pour cela, nous avons mis en place cette deuxième expérience, qui a pour but de nous permettre de sortir un modèle, au sein du quel le retard n'aurait pas d'incidence; mais ne serait qu'un élément de l'équation à faire varier pour établir notre modèle. Pour cette manipulation, nous avons procédé, comme l'illustre le schéma bloc ci-dessous.		
 		
@@ -1175,9 +1198,9 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
     \caption{Schéma bloc - Seconde manipulation}
 	\end{figure}	
 	
-	Nous utilisons encore une fois notre générateur de fonction afin de générer un signal sinusoïdal à destination de notre contrôleur, ce signal analogique sinusoïdal sera varié selon deux paramètres. Tout d'abord son amplitude, évoluant sur un intervalle de trois Volts jusqu'à cinq Volts, puis c'est la fréquence du signal que nous ferons varier; fréquence qui devra évoluer entre vingt Hertz et 100 Hertz.	Faire varier ces paramètres va nous permettre de vérifier le paramètre ayant une incidence majeure sur le comportement du contrôleur.
+	Nous utilisons encore une fois notre générateur de fonction afin de générer un signal sinusoïdal à destination de notre contrôleur, ce signal analogique sinusoïdale sera varié selon deux paramètres. Tout d'abord son amplitude, évoluant sur un intervalle de trois Volts jusqu'à cinq Volts, puis c'est la fréquence du signal que nous ferons varier; fréquence qui devra évoluer entre vingt Hertz et 100 Hertz.	Faire varier ces paramètres va nous permettre de vérifier le paramètre ayant une incidence majeure sur le comportement du contrôleur.
 	
-	De plus, nous avons placé un accéléromètre sur notre bras aimenté, afin de pouvoir tracer sa courbe de réponse sur l'axe "Z" sur notre oscilloscope. Tracer cette courbe de réponse en même temps que la courbe fournie par le générateur de fonction va nous permettre d'observer l'ensemble des différences entre ces deux courbes et d'en déduire le déphasage ainsi que le retard.
+	De plus, nous avons placé un accéléromètre sur notre bras aimanté, afin de pouvoir tracer sa courbe de réponse sur l'axe "Z" sur notre oscilloscope. Tracer cette courbe de réponse en même temps que la courbe fournie par le générateur de fonction va nous permettre d'observer l'ensemble des différences entre ces deux courbes et d'en déduire le déphasage ainsi que le retard.
 	
 	Enfin, nous pourrons également mieux tenter de caractériser notre contrôle en accélération, étant donné que nous pourrons comparer des grandeurs physiques de même nature en entrée, comme en sortie du système. Ces données pourront être analysées au travers d'un diagramme de BODE.
 	
@@ -1247,7 +1270,7 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
     \caption{Amplitude en fonction de la fréquence}
 	\end{figure}
 	
-	Grâce aux courbes ci-dessous, on peut observer que nous disposant enfin d'un modèle à partir du quel nous pouvons déterminer une fonction de transfère de notre système. Mais avant cela, il nous reste un dernier graphique à analyser; disposant des rapports d'amplitudes entre nos signaux analogiques, nous pouvons réaliser un diagramme de BODE. Ce diagramme devrait nous permettre de pouvoir caractériser de manière précise notre contrôleur moteur.
+	Grâce aux courbes ci-dessous, on peut observer que nous disposont enfin d'un modèle à partir du quel nous pouvons déterminer une fonction de transfère de notre système. Mais avant cela, il nous reste un dernier graphique à analyser; disposant des rapports d'amplitudes entre nos signaux analogiques, nous pouvons réaliser un diagramme de BODE. Ce diagramme devrait nous permettre de pouvoir caractériser de manière précise notre contrôleur moteur.
 	
 	\begin{figure}[!ht]
     \center
@@ -1270,13 +1293,13 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
 		\section{Conclusion}
 			Après avoir reconstruit des signaux sinusoïdaux, puis avoir effectué une minimisation sous contrainte, afin de pouvoir déterminer les coefficients de déphasage ainsi que les rapports d'amplitudes entre le signal de notre oscilloscope et de notre accéléromètre, nous avons pu réaliser des graphiques nous permettant de déduire une fonction de transfère de notre système.
 			
-			Mais suite à la modélisation du diagramme de bode, nous pouvons conclure qu'étant déja dans la courbe de fréquence rejetée, le contrôle en accélération de notre contrôleur ne paraît pas être viable, invalidant de ce fait, nos courbes devant nous permettre de déterminer notre fonction de transfère.
+			Mais suite à la modélisation du diagramme de bode, nous pouvons conclure qu'étant déjà dans la courbe de fréquence rejetée, le contrôle en accélération de notre contrôleur ne paraît pas être viable, invalidant de ce fait, nos courbes devant nous permettre de déterminer notre fonction de transfère.
 			
 \newpage
 			
 		\chapter{Ouverture}
 	
-		Etant donnée les échecs connus avec les deux précédentes manipulations, une troisième doit être mise en place afin de déterminer efficacement le contrôle en vitesse du contrôleur.
+		Etant donné les échecs connus avec les deux précédentes manipulations, une troisième doit être mise en place afin de déterminer efficacement le contrôle en vitesse du contrôleur.
 		
 		Pour cela, nous allons procéder comme illustré sur le schéma bloc ci-dessous. La manipulation reprend le même principe que la deuxième, à la différence que nous allons intégrer le signal de l'accéléromètre au sein du FPGA pour fournir au contrôleur une courbe en adéquation avec un contrôle en vitesse.
 		
@@ -1287,7 +1310,7 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
     \caption{Schéma bloc - ouverture manipulation futur}
 	\end{figure}
 	
-	De  plus, le deuxième accéléromètre ne sera pas fixé physiquement sur le deuxième moteur, ce qui va nous permettre de le brancher à divers endroits dans le système afin de pouvoir identifier des sources de déphasage ou de retard. Ainsi, nous pourrons disposer d'une caractérisation très précise de notre système et pouvoir disposer d'une fonction de transfère viable.
+	De  plus, le deuxième accéléromètre ne sera pas fixer physiquement sur le deuxième moteur, ce qui va nous permettre de le brancher à divers endroits dans le système afin de pouvoir identifier des sources de déphasage ou de retard. Ainsi, nous pourrons disposer d'une caractérisation très précise de notre système et pouvoir disposer d'une fonction de transfère viable.
 	
 	
 	
@@ -1302,9 +1325,9 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
 \part{Les circuits imprimés réalisés}
 	
 	\section{Accéléromètre - evalBoard}
-		Alors que nous réalision la conception de notre chaine de contrôle, nous avons travaillé avec la carte d'évaluation du constructeur, étant fourni monté avec un accéléromètre, permettant une prise en main rapide du device. Plus tard, après avoir fini la conception de cette chaine de mesure, il nous à fallu monté notre PCB sur un marteau de la maquette de piano, ce qui à soulevé un "problème" dont nous étions déjà au fait; la carte d'évaluation étant trop grande. Devant s'insérer au sein d'une mécanique de précision, nous avons donc des contraintes de tailles précise à respecté afin d'équiper notre mécanique.
+		Alors que nous réalisions la conception de notre chaine de contrôle, nous avons travaillé avec la carte d'évaluation du constructeur, étant fourni monté avec un accéléromètre, permettant une prise en main rapide du device. Plus tard, après avoir fini la conception de cette chaine de mesure, il nous a fallu monté notre PCB sur un marteau de la maquette de piano, ce qui a soulevé un "problème" dont nous étions déjà au fait; la carte d'évaluation étant trop grande. Devant s'insérer au sein d'une mécanique de précision, nous avons donc des contraintes de tailles précise a respecter afin d'équiper notre mécanique.
 		
-		Nous avons donc conçu un nouveau PCB sous l'outil de conception et de routage "KICAD", répondant à nos contrainte de tailles; en voici une illustration.
+		Nous avons donc conçu un nouveau PCB sous l'outil de conception et de routage "KICAD", répondant à nos contraintes de tailles; en voici une illustration.
 		
  \textsc{\begin{figure}[h]
      \begin{minipage}[c]{.46\linewidth}
@@ -1317,13 +1340,29 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
          \includegraphics[width=7cm]{3D_print.PNG}
      \end{minipage}
  \end{figure}}
+ 
+ Une fois ce PCB à disposition, il nous a fallu l'insérer au sein de notre maquette. Pour cela, nous avons travaillé avec le service mécanique, second corps de métier travaillant sur le projet, ayant repensé l'ensemble de la mécanique interne du piano, afin de pouvoir insérer divers PCB dans ce dernier.
+ 
+ Le résultat de ce travail en collaboration, fut le support d'accéléromètre si dessous, nous permettant de fixer le PCB précédemment crée, sur le marteau, afin d'offrir une plateforme stable, assurant la bonne qualité des mesures effectuées.
+ 
+ \textsc{\begin{figure}[h]
+     \begin{minipage}[c]{.46\linewidth}
+         \centering
+         \includegraphics[width=7cm]{Accelerometre_v2.JPG}
+     \end{minipage}
+     \hfill%
+     \begin{minipage}[c]{.46\linewidth}
+         \centering
+         \includegraphics[width=7cm]{montage.jpg}
+     \end{minipage}
+ \end{figure}}
 	
 	
 	\section{Ampli AOP et intérupteur fin de course}
 	
-	La conception de cette carte fut motivé par deux éléments. Dans un premiers temps, lors de futur manipulation, nous allons avoir besoin de détecté lorsqu'une touche est au repos ou non, ce qui est rendu possible, grâce à l'utilisation d'intérupteur fin de course "optique" (une photodiode permettant de piloter un transistor. De plus, lors de manipulation sur notre banc de test, nous pensions avoir besoin de pouvoir amplifier un signal analogique provenant d'un générateur de fonction ou d'un capteur quelquonque.
+	La conception de cette carte fut motivée par deux éléments. Dans un premier temps, lors de futur manipulation, nous allons avoir besoin de détecter lorsqu'une touche est au repos ou non, ce qui est rendu possible, grâce à l'utilisation d'interrupteur fin de course "optique" (une photodiode permettant de piloter un transistor. De plus, lors de manipulation sur notre banc de test, nous pensions avoir besoin de pouvoir amplifier un signal analogique provenant d'un générateur de fonction ou d'un capteur quelquonque.
 	
-	C'est pourquoi nous avons mise au point ce PCB, composé d'un AOP et d'un circuit intégré permettant le contrôle de nos intérupteurs.
+	C'est pourquoi nous avons mise au point ce PCB, composé d'un AOP et d'un circuit intégré permettant le contrôle de nos interrupteurs.
 	
 	\textsc{\begin{figure}[h]
      \begin{minipage}[c]{.46\linewidth}
@@ -1340,7 +1379,7 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
 	
 	\section{Mezzanine pour connection de meilleur qualité}
 	
-	La réalisation de cette carte fut de nombreuse fois remise à plus tard, étant donné le prototypage rapide mise en place, la maquette à souvent été amené à évolué au fur et à mesure de la conception de la chaine. Mais une fois notre modèle aboutit, ainsi que les problèmes de métastabilité rencontré, nous nous sommes concentré à la réalisation de la carte de connection.
+	La réalisation de cette carte fut de nombreuse fois remise à plus tard, étant donné le prototypage rapide mise en place, la maquette a souvent été amenée à évoluer au fur et à mesure de la conception de la chaine. Mais une fois notre modèle aboutit, ainsi que les problèmes de métastabilités rencontrés, nous nous sommes concentré à la réalisation de la carte de connexion.
 	
 	\textsc{\begin{figure}[h]
      \begin{minipage}[c]{.46\linewidth}
@@ -1365,6 +1404,16 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
 %--------------------------------------------------------------------------------------
 
 \part{Conclusion}
+
+	Clôturant mes cinq années d'études à l'UTBM (Université de Technologie de Belfort-Montbéliard), j'ai effectué mon stage de fin d'étude au laboratoire de Physique Nucléaire et des Hautes Energies de Paris, au sein du service électronique, sous la tutelle de Monsieur Hervé LEBBOLO.
+
+Le projet mené vise la réalisation d'un système de motorisation asservie de la mécanique d'un piano à queue afin d'offrir de nouvelles couleurs aux préparateurs de pianos, ainsi que de nouvelles voies d'expression musicales aux interprètes tout en gardant intact le toucher traditionnel des mécaniques à répétition.
+
+Ce stage fut pour moi une véritable chance, me permettant de lier ma passion de la musique à mon domaine d'étude, de plus, il fut pour moi l'occasion de découvrir de nouvelles technologies lié au monde du système embarqué, de parfaire mes connaissances en traitement du signal, ainsi que d'être formé à la conception, au routage et fabrication de PCB.
+
+Au travers du développement de notre chaine de contrôle, j'ai pu appréhender de nouvelles technologies, qui m'était inconnu, le développement sur processeur FPGA, soutenu par le langage VHDL. De plus, au travers des manipulations sur banc de test, j'ai pu parfaire mes compétences en traitement du signal, afin de proposer une fonction de transfère pour notre système. Enfin, la conception de PCB sous KICAD, fut pour moi l'occasion d'être formé à un aspect de mon métier plus orienté électronique.
+
+De plus, de part l'autonomie de travail qui me fut accordé, j'ai eu à ma charge la gestion de mon temps, ainsi que la gestion de mon projet, sans contrainte. Cette expérience aura été pour moi l'occasion d'appréhender la gestion d'un projet de grande envergure, impliquant des personnes travaillant dans divers services et donc de diverses compétences.
 
 
 \part{Bibliographie}
@@ -1392,33 +1441,35 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de 2 fils de
 	
 \part{Annexe}
 
-	\section{Conception PCB - accéléromètre evalBoard}
+	\chapter{Conception PCB - accéléromètre evalBoard}
 		\includepdf[scale=1, pages=-]{FICHE_FABRICATION_OPBANDAOP.pdf}
-		\includepdf[scale=0.6, pages=1]{FICHE_LIAISON_SCHEMA_PCB_NEWS.pdf}	
+		\includepdf[scale=1, pages=1]{FICHE_LIAISON_SCHEMA_PCB_NEWS.pdf}	
 		\includepdf[scale=1, pages=1]{FICHIER_DIMENSION_EVALBOARD.pdf}
 		\includepdf[scale=1, pages=-]{PLAN_CABLAGE_TOP_ELEMENTS_EVALBOARD.pdf}
 		\includepdf[scale=1, pages=-]{PLAN_PERCAGE_EVALBOARD.pdf}
 		\includepdf[scale=1, pages=-]{EVAL_Printing_Impression_Schematique.pdf}	
 		\hfill\hbox to 0pt{\hss\includegraphics[width=15cm]{Liste_compos.png}\hss}\hfill\null\newline
 			
-	\section{Conception PCB - Ampli AOP et intérupteur fin de course}
-%		\includepdf[scale=1, pages=-]{AOP_FICHE_FABRICATION_OPBANDAOP}
-%		\includepdf[scale=1, pages=-]{AOP_FICHE_LIAISON_OPBANDAOP}	
-%		\includepdf[scale=1, pages=-]{AOP_FICHIER_DIMENSION_OPBANDAOP}
-%		\includepdf[scale=1, pages=-]{AOP_PLAN_CABLAGE_BOTTOM_ELEMENTS_OPBANDAOP}
-%		\includepdf[scale=1, pages=-]{AOP_PLAN_CABLAGE_TOP_ELEMENTS_OPBANDAOP}
-%		\includepdf[scale=1, pages=-]{AOP_PRINTING_IMPRESS_SCHEMATIC}	
-%		\includepdf[scale=1, pages=-]{AOP_PLAN_PERCAGE_OPBANDAOP}		
-%		\hfill\hbox to 0pt{\hss\includegraphics[width=10cm]{AOP_Liste_Compos.png}\hss}\hfill\null\newline
-%		\hfill\hbox to 0pt{\hss\includegraphics[width=10cm]{AOP_ListeComposants.png}\hss}\hfill\null\newline
+	\chapter{Conception PCB - Ampli AOP et intérupteur fin de course}
+		\includepdf[scale=1, pages=-]{AOP_FICHE_FABRICATION_OPBANDAOP}
+		\includepdf[scale=1, pages=-]{AOP_FICHE_LIAISON_OPBANDAOP}	
+		\includepdf[scale=1, pages=-]{AOP_FICHIER_DIMENSION_OPBANDAOP}
+		\includepdf[scale=1, pages=-]{AOP_PLAN_CABLAGE_BOTTOM_ELEMENTS_OPBANDAOP}
+		\includepdf[scale=1, pages=-]{AOP_PLAN_CABLAGE_TOP_ELEMENTS_OPBANDAOP}
+		\includepdf[scale=1, pages=-]{AOP_PRINTING_IMPRESS_SCHEMATIC}	
+		\includepdf[scale=1, pages=-]{AOP_PLAN_PERCAGE_OPBANDAOP}		
 		
-%	\section{Conception PCB - Mezzanine}
-%		\includepdf[scale=1, pages=-]{M_FICHE_FABRICATION_MEZZA}
-%		\includepdf[scale=1, pages=-]{M_FICHE_LIAISON_MEZZA}	
-%		\includepdf[scale=1, pages=-]{PLAN_CABLAGE_BOTTOM_ELEMENTS_MEZZA}
-%		\includepdf[scale=1, pages=-]{PLAN_CABLAGE_TOP_ELEMENTS_MEZZA}
-%		\includepdf[scale=1, pages=-]{PLAN_PERCAGE_MEZZA}
-%		\includepdf[scale=1, pages=-]{M_PRINTING_IMPRESS_SCHEMATIC}	
+		\hfill\hbox to 0pt{\hss\includegraphics[width=15cm]{AOP_Liste_Compos.png}\hss}\hfill\null\newline
+		
+		\hfill\hbox to 0pt{\hss\includegraphics[width=15cm]{AOP_ListeComposants.png}\hss}\hfill\null\newline
+		
+	\chapter{Conception PCB - Mezzanine}
+		\includepdf[scale=1, pages=-]{M_FICHE_FABRICATION_MEZZA}
+		\includepdf[scale=1, pages=-]{M_FICHE_LIAISON_MEZZA}	
+		\includepdf[scale=1, pages=-]{PLAN_CABLAGE_BOTTOM_ELEMENTS_MEZZA}
+		\includepdf[scale=1, pages=-]{PLAN_CABLAGE_TOP_ELEMENTS_MEZZA}
+		\includepdf[scale=1, pages=-]{PLAN_PERCAGE_MEZZA}
+		\includepdf[scale=1, pages=-]{M_PRINTING_IMPRESS_SCHEMATIC}	
 
 \end{document}
 

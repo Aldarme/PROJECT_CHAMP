@@ -20,37 +20,40 @@
 \contentsline {figure}{\numberline {10.5}{\ignorespaces SPI - electronique impl\IeC {\'e}mentation}}{41}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {12.1}{\ignorespaces SPI - impl\IeC {\'e}mentation commune}}{46}
-\contentsline {figure}{\numberline {12.2}{\ignorespaces SPI - CPOL , CPHA}}{46}
+\contentsline {figure}{\numberline {12.1}{\ignorespaces SPI - impl\IeC {\'e}mentation commune}}{47}
+\contentsline {figure}{\numberline {12.2}{\ignorespaces SPI - CPOL , CPHA}}{47}
 \contentsline {figure}{\numberline {12.3}{\ignorespaces diagramme d'\IeC {\'e}tat d'une transaction}}{48}
-\contentsline {figure}{\numberline {12.4}{\ignorespaces Machine d'\IeC {\'e}tat - module acc\IeC {\'e}l\IeC {\'e}rom\IeC {\`e}tre}}{50}
+\contentsline {figure}{\numberline {12.4}{\ignorespaces Machine d'\IeC {\'e}tat - module acc\IeC {\'e}l\IeC {\'e}rom\IeC {\`e}tre}}{51}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {14.1}{\ignorespaces Stabilit\IeC {\'e} - graphique 1}}{54}
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {15.1}{\ignorespaces Une octave "augment\IeC {\'e}" - Architecture}}{56}
-\contentsline {figure}{\numberline {15.2}{\ignorespaces Structure classique d'asservissement num\IeC {\'e}rique}}{59}
+\contentsline {figure}{\numberline {15.2}{\ignorespaces Chaine de contr\IeC {\^o}le - Monitoring des informations}}{57}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {16.1}{\ignorespaces Asservissement num\IeC {\'e}rique du projet CHAMP}}{61}
+\contentsline {figure}{\numberline {16.1}{\ignorespaces Asservissement num\IeC {\'e}rique du projet CHAMP}}{60}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {17.1}{\ignorespaces Mod\IeC {\`e}le quelquonque}}{62}
+\contentsline {figure}{\numberline {17.1}{\ignorespaces Mod\IeC {\`e}le quelquonque}}{61}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {18.1}{\ignorespaces Sch\IeC {\'e}ma bloc - Premi\IeC {\`e}re manipulation}}{63}
-\contentsline {figure}{\numberline {18.2}{\ignorespaces Graphique de position en fonction du temps}}{64}
-\contentsline {figure}{\numberline {18.3}{\ignorespaces Graphique de vitesse en fonction du temps}}{64}
-\contentsline {figure}{\numberline {18.4}{\ignorespaces Graphique d'acc\IeC {\'e}l\IeC {\'e}ration en fonction du temps}}{64}
-\contentsline {figure}{\numberline {18.5}{\ignorespaces Graphique des entr\IeC {\'e}es analogique en fonction du temps}}{64}
-\contentsline {figure}{\numberline {18.6}{\ignorespaces Graphique de la d\IeC {\'e}riv\IeC {\'e} seconde de la position en fonction du temps}}{66}
-\contentsline {figure}{\numberline {18.7}{\ignorespaces Graphique de l'acc\IeC {\'e}l\IeC {\'e}ration en fonction du temps}}{66}
+\contentsline {figure}{\numberline {18.1}{\ignorespaces Sch\IeC {\'e}ma bloc - Premi\IeC {\`e}re manipulation}}{62}
+\contentsline {figure}{\numberline {18.2}{\ignorespaces Graphique de position en fonction du temps}}{63}
+\contentsline {figure}{\numberline {18.3}{\ignorespaces Graphique de vitesse en fonction du temps}}{63}
+\contentsline {figure}{\numberline {18.4}{\ignorespaces Graphique d'acc\IeC {\'e}l\IeC {\'e}ration en fonction du temps}}{63}
+\contentsline {figure}{\numberline {18.5}{\ignorespaces Graphique des entr\IeC {\'e}es analogique en fonction du temps}}{63}
+\contentsline {figure}{\numberline {18.6}{\ignorespaces Graphique de la d\IeC {\'e}riv\IeC {\'e} seconde de la position en fonction du temps}}{65}
+\contentsline {figure}{\numberline {18.7}{\ignorespaces Graphique de l'acc\IeC {\'e}l\IeC {\'e}ration en fonction du temps}}{65}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {19.1}{\ignorespaces Sch\IeC {\'e}ma bloc - Seconde manipulation}}{68}
-\contentsline {figure}{\numberline {19.2}{\ignorespaces Graphique oscillo - acc\IeC {\'e}l\IeC {\'e}rom\IeC {\`e}tre - 20Hz, 3 Volts}}{70}
-\contentsline {figure}{\numberline {19.3}{\ignorespaces Graphique oscillo - acc\IeC {\'e}l\IeC {\'e}rom\IeC {\`e}tre - 20Hz, 4 Volts}}{70}
-\contentsline {figure}{\numberline {19.4}{\ignorespaces Graphique oscillo - acc\IeC {\'e}l\IeC {\'e}rom\IeC {\`e}tre - 20Hz, 5 Volts}}{70}
-\contentsline {figure}{\numberline {19.5}{\ignorespaces Minimisation de la fonction sinus}}{70}
-\contentsline {figure}{\numberline {19.6}{\ignorespaces D\IeC {\'e}phasage en fonction de la fr\IeC {\'e}quence}}{71}
-\contentsline {figure}{\numberline {19.7}{\ignorespaces Amplitude en fonction de la fr\IeC {\'e}quence}}{71}
-\contentsline {figure}{\numberline {19.8}{\ignorespaces Diagramme de BODE}}{72}
-\contentsline {figure}{\numberline {19.9}{\ignorespaces Diagramme g\IeC {\'e}n\IeC {\'e}rique de BODE}}{72}
+\contentsline {figure}{\numberline {19.1}{\ignorespaces Sch\IeC {\'e}ma bloc - Seconde manipulation}}{67}
+\contentsline {figure}{\numberline {19.2}{\ignorespaces Graphique oscillo - acc\IeC {\'e}l\IeC {\'e}rom\IeC {\`e}tre - 20Hz, 3 Volts}}{69}
+\contentsline {figure}{\numberline {19.3}{\ignorespaces Graphique oscillo - acc\IeC {\'e}l\IeC {\'e}rom\IeC {\`e}tre - 20Hz, 4 Volts}}{69}
+\contentsline {figure}{\numberline {19.4}{\ignorespaces Graphique oscillo - acc\IeC {\'e}l\IeC {\'e}rom\IeC {\`e}tre - 20Hz, 5 Volts}}{69}
+\contentsline {figure}{\numberline {19.5}{\ignorespaces Minimisation de la fonction sinus}}{69}
+\contentsline {figure}{\numberline {19.6}{\ignorespaces D\IeC {\'e}phasage en fonction de la fr\IeC {\'e}quence}}{70}
+\contentsline {figure}{\numberline {19.7}{\ignorespaces Amplitude en fonction de la fr\IeC {\'e}quence}}{70}
+\contentsline {figure}{\numberline {19.8}{\ignorespaces Diagramme de BODE}}{71}
+\contentsline {figure}{\numberline {19.9}{\ignorespaces Diagramme g\IeC {\'e}n\IeC {\'e}rique de BODE}}{71}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {20.1}{\ignorespaces Sch\IeC {\'e}ma bloc - ouverture manipulation futur}}{73}
+\contentsline {figure}{\numberline {20.1}{\ignorespaces Sch\IeC {\'e}ma bloc - ouverture manipulation futur}}{72}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
