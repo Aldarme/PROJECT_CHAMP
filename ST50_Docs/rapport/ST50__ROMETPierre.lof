@@ -8,10 +8,10 @@
 \contentsline {figure}{\numberline {5.2}{\ignorespaces M\IeC {\'e}canique de type Renner avec un mod\IeC {\`e}le 3D de l\IeC {\textquoteright }actuateur lin\IeC {\'e}aire}}{18}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {7.1}{\ignorespaces Chaine de cont\IeC {\^o}le d'une touche de Piano}}{23}
+\contentsline {figure}{\numberline {7.1}{\ignorespaces Cha\IeC {\^\i }ne de cont\IeC {\^o}le d'une touche de Piano}}{23}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {9.1}{\ignorespaces Chaine de cont\IeC {\^o}le d'une touche de Piano}}{35}
+\contentsline {figure}{\numberline {9.1}{\ignorespaces Cha\IeC {\^\i }ne de cont\IeC {\^o}le d'une touche de Piano}}{35}
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {10.1}{\ignorespaces SPI shema block}}{38}
 \contentsline {figure}{\numberline {10.2}{\ignorespaces SPI - signaux logiques}}{38}
@@ -28,19 +28,19 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {14.1}{\ignorespaces Stabilit\IeC {\'e} - graphique 1}}{54}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {15.1}{\ignorespaces Une octave "augment\IeC {\'e}" - Architecture}}{56}
-\contentsline {figure}{\numberline {15.2}{\ignorespaces Chaine de contr\IeC {\^o}le - Monitoring des informations}}{57}
+\contentsline {figure}{\numberline {15.1}{\ignorespaces Une octave "augment\IeC {\'e}e" - Architecture}}{56}
+\contentsline {figure}{\numberline {15.2}{\ignorespaces Cha\IeC {\^\i }ne de contr\IeC {\^o}le - Monitoring des informations}}{57}
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {16.1}{\ignorespaces Asservissement num\IeC {\'e}rique du projet CHAMP}}{60}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {17.1}{\ignorespaces Mod\IeC {\`e}le quelquonque}}{61}
+\contentsline {figure}{\numberline {17.1}{\ignorespaces Mod\IeC {\`e}le quelconque}}{61}
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {18.1}{\ignorespaces Sch\IeC {\'e}ma bloc - Premi\IeC {\`e}re manipulation}}{62}
 \contentsline {figure}{\numberline {18.2}{\ignorespaces Graphique de position en fonction du temps}}{63}
 \contentsline {figure}{\numberline {18.3}{\ignorespaces Graphique de vitesse en fonction du temps}}{63}
 \contentsline {figure}{\numberline {18.4}{\ignorespaces Graphique d'acc\IeC {\'e}l\IeC {\'e}ration en fonction du temps}}{63}
-\contentsline {figure}{\numberline {18.5}{\ignorespaces Graphique des entr\IeC {\'e}es analogique en fonction du temps}}{63}
-\contentsline {figure}{\numberline {18.6}{\ignorespaces Graphique de la d\IeC {\'e}riv\IeC {\'e} seconde de la position en fonction du temps}}{65}
+\contentsline {figure}{\numberline {18.5}{\ignorespaces Graphique des entr\IeC {\'e}es analogiques en fonction du temps}}{63}
+\contentsline {figure}{\numberline {18.6}{\ignorespaces Graphique de la d\IeC {\'e}riv\IeC {\'e}e seconde de la position en fonction du temps}}{65}
 \contentsline {figure}{\numberline {18.7}{\ignorespaces Graphique de l'acc\IeC {\'e}l\IeC {\'e}ration en fonction du temps}}{65}
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {19.1}{\ignorespaces Sch\IeC {\'e}ma bloc - Seconde manipulation}}{67}
