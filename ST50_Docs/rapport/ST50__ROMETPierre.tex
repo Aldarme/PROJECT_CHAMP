@@ -330,7 +330,7 @@ L’électronique qui permet la mesure du déplacement des touches (connectée �
 
 Pour guider les idées, un schéma envisageable d’implémentation est proposé sur la figure 3. L’implémentation optimale nécessite bien sûr une étude plus approfondie, il s’agit simplement ici de se de fixer les idées. Le moteur et les capteurs de positions sont représentés par les rectangles bleus ou rouges. Sur cette proposition, le rapport (R) entre l’action du moteur et celui du marteau est le même que pour le doigt de l’artiste soit environ 5,5. Les modifications apportées à la mécanique originale sont minimales. Avec un réglage approprié, la sensation de toucher sera adaptable aux désirs de l’artiste et restera très proche des sensations offertes par la mécanique à répétition et ce même si les marteaux sont lourds car le moteur accompagne en le soutenant le mouvement de la touche mais ne s’y substitue pas totalement.
 
-  \section{Boucle d'asservissement} %TODO
+  \section{Boucle d'asservissement}
 
 La qualité de la boucle de feedback est un point essentiel de notre entreprise. C’est ici que l’expertise de Laurent Bessières donne tout son sens musical au projet. L’asservissement devra d’une part donner aux artistes un confort de jeu digne des meilleures mécaniques avec en plus un équilibrage parfait sur toute l’étendue du clavier. D’autre part, et c’est peut être le plus important, un certain nombre de paramètres de la boucle d’asservissement seront modifiables.
 
@@ -372,7 +372,7 @@ Notons également que l’approche PHS permet d’étudier les réponses non lin
 	
 	\newpage
 	
-		\subsection{Un nouveau moyen d'expression} %TODO
+		\subsection{Un nouveau moyen d'expression}
 		
 		Afin de proposer de nouveaux moyens d'expression, il a tout d'abord fallu identifier au sein du piano, l'élément étant la source de l'identité "musicale" ; des harmoniques de l'instrument. C'est en modifiant, en retravaillant la mécanique autour de cette pièce, que nous pourrons apporter de nouvelles expériences de jeux.
 		
@@ -700,11 +700,13 @@ Au final, bien que de base, le bus I2C n'implique l'utilisation que de deux fils
 	
 	En effet, de deux fils de communication unidirectionnels, il serait intéressant de pouvoir les mutualiser afin d'offrir un canal de communication bidirectionnel. Cette observation est de plus renforcée, étant donné que notre contrôleur FPGA met à disposition des broches pouvant être utilisées simultanément en entrée ainsi qu'en sortie; au sein du langage VHDL, ce type de broche est défini comme suivant: "INOUT".
 	
-	Sachant maintenant que l'implémentation d'une broche bidirectionnelle est possible du coté de notre processeur, il nous faut déterminer si elle est également possible du côté de notre accéléromètre. Pour cela, avec un oscilloscope, nous allons chercher à déterminer si la ligne MISO ou la ligne MOSI "drive" la ligne au repos ou non; traduisant un état haut (valeur de tension différente de zéro et constante) de la ligne au repos.
+	Sachant maintenant que l'implémentation d'une broche bidirectionnelle est possible du côté de notre processeur, il nous faut déterminer si elle est également possible du côté de notre accéléromètre. Pour cela, avec un oscilloscope, nous allons chercher à déterminer si la ligne MISO ou la ligne MOSI "drive" la ligne au repos ou non.
 	
-	Afin de déterminer si oui ou non notre accéléromètre drive la ligne, nous avons mis en place une petite manipulation mettant en oeuvre un oscilloscope, une résistance, ainsi que notre accéléromètre. Nous avons connecté nos deux broches MISO et MOSI avec notre résistance, alimenté notre accéléromètre avec une source de tension en 3.3 volts et branché notre canal mutualisé à un oscilloscope. À partir de là, deux situations étaient possibles, soit notre accéléromètre drive la ligne (un état haut constant différent de zéro), rendant ainsi toute possibilité de mutualisation impossible, soit ce dernier n'applique aucun état à la ligne au repos, nous permettant d'utiliser la ligne comme bon nous semble à tout moment.
+	Afin de déterminer si oui ou non notre accéléromètre drive la ligne, nous avons mis en place une petite manipulation mettant en oeuvre un oscilloscope, une résistance, ainsi que notre accéléromètre. Nous avons utilisé notre résistance en tant que résistance de tirage à la masse (pull-down); ce montage nous permet d'appliquer un niveau "mou" à la ligne en externe, ainsi nous allons pouoir observer si la ligne diffère de la valeur par défaut.	
 	
-	Enfin, suite à notre manipulation, nous avons pu mettre en évidence que notre accéléromètre ne "drive" pas la ligne, étant donné que lorsque les deux lignes sont au repos, ces dernières sont toutes les deux à l'état bas (zéro constant).
+	À partir de là, deux situations étaient possibles: soit le niveau de la ligne se maintient à la valeur par défaut (apporté par le montage pull-down), soit le niveau de la ligne diffère de cette dernière; c'est alors que la ligne est drivée par un composant, rendant ainsi toute possibilité de mutualisation impossible.
+	
+	Suite à notre manipulation, nous avons pu mettre en évidence que notre accéléromètre ne "drive" pas la ligne, étant donné que cette derrière ne diffère pas de la valeur par défaut, nous permettant de mettre en place la mutualisation souhaitée des lignes MISO MOSI.
 	
 	Ayant pu adapter le protocole SPI de notre accéléromètre à nos besoins, afin d'en minimiser le nombre de fils, il nous est maintenant possible de nous concentrer sur la mise en place de la chaîne dans son ensemble.
 	
