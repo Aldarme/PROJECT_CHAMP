@@ -172,24 +172,22 @@ architecture filter_mapBitAvrg of filter is
 
  type   T_SPISTATE is ( IDLEst, Testst, CALIBst, Mapst, TRANSMITst);
  signal cState	: T_SPISTATE;
- signal Cstate2	:	T_SPISTATE;
+ signal cState2	:	T_SPISTATE;
+ signal cState3 : T_SPISTATE;
+ signal cState4 : T_SPISTATE;
  
  signal tmp17b		: signed(16 downto 0);
  signal signedTmp	: signed(16 downto 0);
  
- type myTab is array ( 0 to 63) of std_logic_vector(19 downto 0);
+ type myTab is array ( 0 to 1023) of std_logic_vector(19 downto 0); -- depth of the average array 1024 or 2048
  
- signal divider	: integer := 4;
- signal NBits		: integer := 64;
- signal index		: integer := 0;
- signal myData	: myTab;
- signal tmpAvrg	:	signed(19 downto 0);
- signal avrg		:	unsigned(19 downto 0);
- signal speed		:	signed(15 downto 0);
- signal spd_oe	:	std_logic;
- signal posit		:	signed(15 downto 0);
+ signal NBits		: integer := 1024;				-- Array delimiter
+ signal myData	: myTab;									-- Array of successive value of acceleration
+ signal avrg		:	signed(19 downto 0);	-- Calculated average
+ signal speed		:	signed(15 downto 0);		-- Speed data, obtain by integration of acceleration
+ signal spd_oe	:	std_logic;							
+ signal posit		:	signed(15 downto 0);		-- Position data, obtain by itegration of acceleration
  signal pos_oe	: std_logic;
- 
  
  component HexDisplay
 	port
@@ -212,7 +210,10 @@ architecture filter_mapBitAvrg of filter is
 		reset		=> RESET_SIGNAL
 	);
  
- 
+ --
+ -- Good acceleration data transmit
+ --	data transmit = acceleration - average acceleration
+ --
  flt: process(RESET_SIGNAL, CLOCK_50) is
   begin
 	if RESET_SIGNAL = '0' then
@@ -234,7 +235,7 @@ architecture filter_mapBitAvrg of filter is
 				
 			when Testst =>
 				
-				tmp17b <= resize(signed(RCV_TOFILTER(19 downto 4)) - signed(avrg), tmp17b'length);
+				tmp17b <= resize(signed(RCV_TOFILTER(19 downto 4)) - avrg, tmp17b'length);
 				cState 	<= CALIBst;
 				
 			when CALIBst	=>
@@ -259,116 +260,127 @@ architecture filter_mapBitAvrg of filter is
  --
  -- Slidding window average
  --
+ --	The average data (avrg) calculated below, is define has "signed"
+ --
  average: process(RESET_SIGNAL, CLOCK_50) is
 		
+		variable movIdx	:	integer	:= 0;			-- Most old value index of the acceleration array
 		
 	begin
 		
-		if resET_SIGNAL = '0' then
+		if RESET_SIGNAL = '0' then
 			
-			for I in 0 to 63 loop
-				myData(I) <= 20x"0"; 
+			for I in 0 to 1023 loop
+				myData(I) <= 20x"0";
 			end loop;
 			
-			divider	<= 0;
-			NBits		<= 0;
-			index		<= 0;
+			movIdx	:= 0;
+			avrg		<= 20x"0";
 			
-			cState2 <= IDLEst;
+			cState2	<= IDLEst;
 			
-		elsif rising_edge(CLOCK_50) then	
+		elsif rising_edge(CLOCK_50) then
 			
 			case cState2 is
 				
-				when IDLEst	=>
+				when IDLEst =>
 					
-					myData(index) <= RCV_TOFILTER;
+					avrg <= avrg + signed(RCV_TOFILTER) - signed(myData(movIdx));
+					myData(movIdx) <= RCV_TOFILTER;
 					
-					index <= index +1;
+					cState2 <= Testst;
 					
-					if index >= NBits-1 then
-						index <= 0;
+				when Testst =>
+					
+					if movIdx >= NBits -1 then
+						movIdx := 0;
+					else
+						movIdx := movIdx +1;
 					end if;
 					
-					cState2 <= CALIBst;
-					
-				when CALIBst =>
-					
-					for I in 0 to 63 loop
-						tmpAvrg <= tmpAvrg + signed(myData(I));
-					end loop;
-					
-					cState2 <= Mapst;
-					
-				when Mapst =>
-					
-					avrg <= shift_right(unsigned(tmpAvrg) , 6); --shift_right by 6 to divide by 64
-					
+				when others =>
 					cState2 <= IDLEst;
 					
-				when others =>
-					cState2	<= IDLEst;
-					
 			end case;
-		end if;		
- end process average;
+		end if;
+	end process average;
 
  --
- -- position integrator
+ -- Integrated acceleration
  --
  dp_dt: process(RESET_SIGNAL, FLT_OE_INPUT) is
 	
-	variable idx : integer := 0;
-	
- begin
- 
-	if RESET_SIGNAL = '0' then
-		
-		speed <= 16x"0";
-		
-	elsif rising_edge(flt_OE_INPUT) then
-		
-		speed <= speed + signed(RCV_TOFILTER(19 downto 4));
-		idx := idx + 1;
-		
-		if idx < 7 then
-			spd_oe <= '0';
-		else
-			spd_oe <= '1';
-			idx 		:= 0;
-		end if;
-	end if;
-	
-	
- end process dp_dt;
+	 begin
+	 
+		if RESET_SIGNAL = '0' then
+			
+			speed 	<= 16x"0";
+			spd_oe 	<= '0';
+			cState3 <= IDLEst;
+			
+		elsif rising_edge(flt_OE_INPUT) then
+				
+			case cState3 is
+				
+				when IDLEst =>
+					
+					speed <= shift_right(signed(RCV_TOFILTER(19 downto 4)),11) + speed;
+					spd_oe <= '1';
+					
+					cState3 <= Testst;
+					
+				when Testst =>
+					
+					spd_oe 	<= '0';
+					
+					cState3 <= IDLEst;			
+					
+				when others =>
+					cState3 <= IDLEst;
+			end case;
+		end if;	
+	end process dp_dt;
  
  --
- -- speed integrator
+ -- Integrated speed
  --
  dv_dt: process(RESET_SIGNAL, spd_oe) is
 	
-	variable idx : integer := 0;
-	
- begin
-	
-	if  RESET_SIGNAL = '0' then
+		variable idx : integer := 0;
 		
-		posit <= 16x"0";
+	 begin
 		
-	elsif rising_edge(spd_oe) then
-		
-		posit <= posit + speed;
-		idx := idx + 1;
-		
-		if idx < 2 then
-			pos_oe <= '0';
-		else
-			pos_oe 	<= '1';
-			idx			:= 0;
-		end if;		
-	end if;
- 
- end process dv_dt;
+		if  RESET_SIGNAL = '0' then
+			
+			posit		<= 16x"0";
+			pos_oe	<= '0';
+			cState4 <= IDLEst;
+			
+		elsif rising_edge(spd_oe) then
+			
+			case cState4 is
+				
+				when IDLEst =>
+					
+					posit <= shift_right(speed, 11) + (posit);
+					--posit <= shift_right(shift_right(signed(RCV_TOFILTER(19 downto 4)), 2), 20) + (shift_right(speed, 11) + (posit);
+					--0.001^2 is the same thing to divide by 1000000, correspnding to a shift right of 20 bits. 
+					--With our 16  bits word, it is like having our 16 bits at "0".
+					pos_oe <= '1';
+					
+					cState4 <= Testst;
+					
+				when Testst =>
+					
+					pos_oe <= '0';
+					
+					cState4 <= IDLEst;
+					
+				when others =>
+					cState4 <= IDLEst;
+			end case;			
+		end if; 
+	end process dv_dt;
 
 end filter_mapBitAvrg;
 
