@@ -155,15 +155,10 @@ architecture filter_mapBit of filter is
 
 end filter_mapBit;
 
-
-
 ----------------------------------------------------------------
 --
 --	Filter:
 --	 All amplitude data
---	 Acceleration average
---	 G integration to provide	-Spreed
---														-Position
 --
 ----------------------------------------------------------------
 architecture filter_mapBitAvrg of filter is
@@ -183,8 +178,10 @@ architecture filter_mapBitAvrg of filter is
  
  signal NBits		: integer := 1024;				-- Array delimiter
  signal myData	: myTab;									-- Array of successive value of acceleration
- signal avrg		:	signed(19 downto 0);	-- Calculated average
+ signal movIdx	:	integer	:= 0;						-- Most old value index of the acceleration array
+ signal avrg		:	signed(19 downto 0);		-- Calculated average
  signal speed		:	signed(15 downto 0);		-- Speed data, obtain by integration of acceleration
+ signal speedCtn: integer := 0;						-- Store the number of integration of acceleration since the beginning
  signal spd_oe	:	std_logic;							
  signal posit		:	signed(15 downto 0);		-- Position data, obtain by itegration of acceleration
  signal pos_oe	: std_logic;
@@ -209,8 +206,8 @@ architecture filter_mapBitAvrg of filter is
 		inNumb	=> to_integer(unsigned(SWITCH)),
 		reset		=> RESET_SIGNAL
 	);
- 
- --
+
+--
  -- Good acceleration data transmit
  --	data transmit = acceleration - average acceleration
  --
@@ -264,8 +261,6 @@ architecture filter_mapBitAvrg of filter is
  --
  average: process(RESET_SIGNAL, CLOCK_50) is
 		
-		variable movIdx	:	integer	:= 0;			-- Most old value index of the acceleration array
-		
 	begin
 		
 		if RESET_SIGNAL = '0' then
@@ -274,7 +269,7 @@ architecture filter_mapBitAvrg of filter is
 				myData(I) <= 20x"0";
 			end loop;
 			
-			movIdx	:= 0;
+			movIdx	<= 0;
 			avrg		<= 20x"0";
 			
 			cState2	<= IDLEst;
@@ -293,9 +288,9 @@ architecture filter_mapBitAvrg of filter is
 				when Testst =>
 					
 					if movIdx >= NBits -1 then
-						movIdx := 0;
+						movIdx <= 0;
 					else
-						movIdx := movIdx +1;
+						movIdx <= movIdx +1;
 					end if;
 					
 				when others =>
@@ -304,94 +299,5 @@ architecture filter_mapBitAvrg of filter is
 			end case;
 		end if;
 	end process average;
-
- --
- -- Integrated acceleration
- --
- dp_dt: process(RESET_SIGNAL, FLT_OE_INPUT) is
 	
-	 begin
-	 
-		if RESET_SIGNAL = '0' then
-			
-			speed 	<= 16x"0";
-			spd_oe 	<= '0';
-			cState3 <= IDLEst;
-			
-		elsif rising_edge(flt_OE_INPUT) then
-				
-			case cState3 is
-				
-				when IDLEst =>
-					
-					speed <= shift_right(signed(RCV_TOFILTER(19 downto 4)),11) + speed;
-					spd_oe <= '1';
-					
-					cState3 <= Testst;
-					
-				when Testst =>
-					
-					spd_oe 	<= '0';
-					
-					cState3 <= IDLEst;			
-					
-				when others =>
-					cState3 <= IDLEst;
-			end case;
-		end if;	
-	end process dp_dt;
- 
- --
- -- Integrated speed
- --
- dv_dt: process(RESET_SIGNAL, spd_oe) is
-	
-		variable idx : integer := 0;
-		
-	 begin
-		
-		if  RESET_SIGNAL = '0' then
-			
-			posit		<= 16x"0";
-			pos_oe	<= '0';
-			cState4 <= IDLEst;
-			
-		elsif rising_edge(spd_oe) then
-			
-			case cState4 is
-				
-				when IDLEst =>
-					
-					posit <= shift_right(speed, 11) + (posit);
-					--posit <= shift_right(shift_right(signed(RCV_TOFILTER(19 downto 4)), 2), 20) + (shift_right(speed, 11) + (posit);
-					--0.001^2 is the same thing to divide by 1000000, correspnding to a shift right of 20 bits. 
-					--With our 16  bits word, it is like having our 16 bits at "0".
-					pos_oe <= '1';
-					
-					cState4 <= Testst;
-					
-				when Testst =>
-					
-					pos_oe <= '0';
-					
-					cState4 <= IDLEst;
-					
-				when others =>
-					cState4 <= IDLEst;
-			end case;			
-		end if; 
-	end process dv_dt;
-
 end filter_mapBitAvrg;
-
-
-
-
-
-
-
-
-
-
-
-
