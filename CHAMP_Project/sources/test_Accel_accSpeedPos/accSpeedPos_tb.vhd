@@ -13,14 +13,15 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity tb_accSpeedPos is
+entity accSpeedPos_tb is
 end entity;
 
-Architecture arch_tb of tb_accSpeedPos is
+Architecture arch_tb of accSpeedPos_tb is
 
 	signal clock50_stub	: std_logic;
 	signal clock1k_stub	: std_logic;
-	signal flt_oe_stub	: std_logic;
+	signal flt_oeI_stub	: std_logic;
+	signal flt_oeO_stub	: std_logic;
 	signal flt_data_stub: std_logic_vector(19 downto 0);
 	signal tsmt_stub		: std_logic_vector(15 downto 0);
 	signal spd_oe_stub	: std_logic;
@@ -33,11 +34,14 @@ Architecture arch_tb of tb_accSpeedPos is
 	signal hex4_stub		: std_logic_vector(6 downto 0);
 	signal hex5_stub		: std_logic_vector(6 downto 0);
 	signal reset_stub		:	std_logic;
+	signal key_stub			: std_logic_vector(3 downto 0);
+	signal gpio_stub		: std_logic_vector(35 downto 0);
+	signal dac_oeO_stub	: std_logic;
 	
 	type T_STATE is (IDLEst, INCREMTst);
 	signal stbState : T_STATE;
 	
-	component filter
+	component ASP_filter
 		port
 		(
 			CLOCK_50   		:	IN	STD_LOGIC;
@@ -57,6 +61,25 @@ Architecture arch_tb of tb_accSpeedPos is
 			RESET_SIGNAL	:	IN 	STD_LOGIC
 		);		
 	end component;
+		
+	component ASP_spi_DAC
+		port
+		(
+			CLOCK_50   		: IN STD_LOGIC;
+			KEY    				: IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+			GPIO_SPI_CLK	:	INOUT STD_LOGIC;
+			GPIO_SPI_SS		:	INOUT STD_LOGIC;
+			GPIO_SPI_SDIO	:	INOUT STD_LOGIC;
+			RECV_DATA			:	IN STD_LOGIC_VECTOR(15 DOWNTO 0);		-- acceleration data supply by filter
+			DAC_OE_INPUT	:	IN STD_LOGIC;												-- acceleration data oenable input
+			DAC_SPEED_DATA: IN STD_LOGIC_VECTOR(15 DOWNTO 0);		-- speed data supply by filter
+			DAC_SPD_OE_IN	: IN STD_LOGIC;												-- speed data oenable input
+			DAC_POS_DATA	: IN STD_LOGIC_VECTOR(15 downto 0);		-- position data supply by filter
+			DAC_POS_OE_IN	: IN STD_LOGIC;												-- position data oenable input
+			DAC_OE_OUTPUT	:	OUT STD_LOGIC;
+			RESET_SIGNAL 	:	IN STD_LOGIC
+		);
+	end component;
 	
 	begin
 	
@@ -65,13 +88,13 @@ Architecture arch_tb of tb_accSpeedPos is
 	sw_stub				<= (others => '0');
 	reset_stub		<= '0', '1' after 97.0 ns;
 	
-	flt: filter
+	asp_flt: ASP_filter
 		port map
 		(
 			CLOCK_50   		=> clock50_stub,
-			FLT_OE_INPUT	=> flt_oe_stub,
+			FLT_OE_INPUT	=> flt_oeI_stub,
 			RCV_TOFILTER	=> flt_data_stub,
-			FLT_OE_OUTPUT	=> flt_oe_stub,
+			FLT_OE_OUTPUT	=> flt_oeO_stub,
 			TSMT_TOANALOG	=> tsmt_stub,
 			SPD_OE_OUTPUT	=> spd_oe_stub,
 			SPD_OUTPUT		=> spd_out_stub,
@@ -85,11 +108,29 @@ Architecture arch_tb of tb_accSpeedPos is
 			RESET_SIGNAL	=> reset_stub
 		);
 		
+	asp_spiD: ASP_spi_DAC
+		port map
+		(
+			CLOCK_50   		=> clock50_stub,
+			KEY    				=> key_stub,
+			GPIO_SPI_CLK	=> gpio_stub(0),
+			GPIO_SPI_SS		=> gpio_stub(1),
+			GPIO_SPI_SDIO	=> gpio_stub(2),
+			RECV_DATA			=> tsmt_stub,
+			DAC_OE_INPUT	=> flt_oeO_stub,
+			DAC_SPEED_DATA=> spd_out_stub,
+			DAC_SPD_OE_IN	=> spd_oe_stub,
+			DAC_POS_DATA	=> pos_data_stub,
+			DAC_POS_OE_IN	=> pos_oe_stub,
+			DAC_OE_OUTPUT	=> dac_oeO_stub,
+			RESET_SIGNAL 	=> reset_stub
+		);
+		
 	IncrmtStub: process(reset_stub, clock1k_stub) is
 		begin
 			if reset_stub = '0' then
 				
-				flt_oe_stub 	<= '0';
+				flt_oeI_stub 	<= '0';
 				flt_data_stub	<= (others => '0');
 				
 				stbState <= IDLEst;
@@ -100,7 +141,7 @@ Architecture arch_tb of tb_accSpeedPos is
 					
 					when IDLEst =>
 						
-						flt_oe_stub <= '1';
+						flt_oeI_stub <= '1';
 						stbState <= INCREMTst;
 						
 					when INCREMTst =>

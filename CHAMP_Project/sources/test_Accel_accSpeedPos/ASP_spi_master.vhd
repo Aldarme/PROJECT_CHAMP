@@ -35,7 +35,7 @@ USE ieee.std_logic_1164.all;
 USE ieee.std_logic_arith.all;
 USE ieee.std_logic_unsigned.all;
 
-ENTITY spi_master IS
+ENTITY ASP_spi_master IS
   GENERIC(
     slaves  : INTEGER := 4;  --number of spi slaves
     d_width : INTEGER := 2); --data bus width
@@ -55,14 +55,14 @@ ENTITY spi_master IS
     rx_data : OUT    STD_LOGIC_VECTOR(d_width-1 DOWNTO 0);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      --data received
 	 MISOMOSI: INOUT 	STD_LOGIC
 	);
-END spi_master;
+END ASP_spi_master;
 
 --------------------------------------------------------------------------
 --
 -- First architecture for 3 wires SPI to communicate with accelerometer
 --
 --------------------------------------------------------------------------
-ARCHITECTURE SPI_ACCEL OF spi_master IS
+ARCHITECTURE SPI_ACCEL OF ASP_spi_master IS
 
   TYPE machine IS(ready, execute);                           --state machine data type
   SIGNAL state       : machine;                              --current state
@@ -213,7 +213,7 @@ END ARCHITECTURE SPI_ACCEL;
 --Scd architecture for 3 wires SPI to communicate with DAC
 --
 --------------------------------------------------------------------------
-ARCHITECTURE SPI_DAC OF spi_master IS
+ARCHITECTURE SPI_DAC OF ASP_spi_master IS
 
   TYPE machine IS(ready, execute);                           --state machine data type
   SIGNAL state       : machine;                              --current state

@@ -7,7 +7,7 @@ use ieee.numeric_std.all;
 use ieee.math_real.all;
 use work.all;
 
-entity spi_accel is
+entity ASP_spi_accel is
 	PORT
 	(
 		CLOCK_50   		:  IN STD_LOGIC;
@@ -24,9 +24,9 @@ entity spi_accel is
 
 end entity;
 
-architecture rtl of spi_accel is
+architecture rtl of ASP_spi_accel is
 
-COMPONENT spi_master
+COMPONENT ASP_spi_master
   GENERIC(
     slaves  : INTEGER := 4;  --number of spi slaves
     d_width : INTEGER := 2
@@ -125,7 +125,7 @@ GPIO_SPI_SS		<= spi_ss_n(0);	--GPIO(3)
 LEDR	<= spi_dataz(19 downto 2);
 LEDG(7 downto 6)	<= spi_dataz(1 downto 0);
 
-sm_accel: entity work.spi_master(SPI_ACCEL)
+sm_accel: entity work.ASP_spi_master(SPI_ACCEL)
 
   GENERIC MAP (
     slaves  => 1,

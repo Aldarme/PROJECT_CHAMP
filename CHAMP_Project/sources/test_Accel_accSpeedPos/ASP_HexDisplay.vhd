@@ -2,7 +2,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity HexDisplay is
+entity ASP_HexDisplay is
 	port
 	(
 		hex_4		: out	std_logic_vector(6 downto 0);
@@ -12,7 +12,7 @@ entity HexDisplay is
 	);
 end entity;
 
-architecture hexArch of HexDisplay is
+architecture hexArch of ASP_HexDisplay is
 
 begin
 

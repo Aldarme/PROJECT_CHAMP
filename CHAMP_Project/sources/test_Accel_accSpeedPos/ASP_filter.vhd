@@ -7,7 +7,7 @@ use ieee.numeric_std.all;
 use ieee.math_real.all;
 use work.all;
 
-entity filter is
+entity ASP_filter is
 	PORT
 	(
 		CLOCK_50   		:	IN	STD_LOGIC;
@@ -38,7 +38,7 @@ END ENTITY;
 --														-Position
 --
 ----------------------------------------------------------------
-architecture filter_mapBitAvrgANDInteg of filter is
+architecture filter_mapBitAvrgANDInteg of ASP_filter is
  
  signal offset : signed(16 downto 0) := 17x"08000";
 
@@ -58,7 +58,7 @@ architecture filter_mapBitAvrgANDInteg of filter is
  signal movIdx	:	integer	:= 0;						-- Most old value index of the acceleration array
  signal avrg		:	signed(19 downto 0);		-- Calculated average
  
- component HexDisplay
+ component ASP_HexDisplay
 	port
 	(
 		hex_4		: out	std_logic_vector(6 downto 0);
@@ -70,7 +70,7 @@ architecture filter_mapBitAvrgANDInteg of filter is
  
  begin
  
- sevDisp : HexDisplay
+ sevDisp : ASP_HexDisplay
 	port map
 	(
 		hex_4		=> HEX4Disp,

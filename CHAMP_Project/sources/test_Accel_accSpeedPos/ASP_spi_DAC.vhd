@@ -7,7 +7,7 @@ use ieee.numeric_std.all;
 use ieee.math_real.all;
 use work.all;
 
-entity spi_DAC is
+entity ASP_spi_DAC is
 	PORT
 	(
 		CLOCK_50   		: IN STD_LOGIC;
@@ -32,10 +32,10 @@ end entity;
 --	Archi with IP catalog FIFO
 --
 ---------------------------------------------------------
-architecture dac_IPFifo of spi_DAC is
+architecture dac_IPFifo of ASP_spi_DAC is
 
 --SPI master component
- COMPONENT spi_master
+ COMPONENT ASP_spi_master
   GENERIC(
     slaves  : INTEGER := 4;  --number of spi slaves
     d_width : INTEGER := 2
@@ -163,7 +163,7 @@ begin
  DAC_ADRS(14)	<= "1110";		--DAC 14
  DAC_ADRS(15)	<= "1111";		--DAC 15
 
- sm_dac: entity work.spi_master(SPI_DAC)
+ sm_dac: entity work.ASP_spi_master(SPI_DAC)
 
   GENERIC MAP (
     slaves  => 1,

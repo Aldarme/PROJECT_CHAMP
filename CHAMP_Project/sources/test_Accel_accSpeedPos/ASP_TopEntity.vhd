@@ -7,7 +7,7 @@ use ieee.numeric_std.all;
 use ieee.math_real.all;
 use work.all;
 
-entity TopEntity is
+entity ASP_TopEntity is
 	port
 	(
 		TOP_CLOCK_50:	IN STD_LOGIC;
@@ -21,10 +21,10 @@ entity TopEntity is
 	);
 end entity;
 
-architecture topArchi of TopEntity is
+architecture topArchi of ASP_TopEntity is
 
  --ACCELEROMETER
- COMPONENT spi_accel
+ COMPONENT ASP_spi_accel
 	PORT
 	(
 		CLOCK_50   		:	IN STD_LOGIC;
@@ -41,7 +41,7 @@ architecture topArchi of TopEntity is
   END COMPONENT;
   
  --FILTER
- COMPONENT filter
+ COMPONENT ASP_filter
 	PORT
 	(
 		CLOCK_50   		:	IN	STD_LOGIC;
@@ -63,7 +63,7 @@ architecture topArchi of TopEntity is
  END COMPONENT;
  
  --DAC
- COMPONENT spi_DAC
+ COMPONENT ASP_spi_DAC
 	PORT
 	(
 		CLOCK_50   		: IN STD_LOGIC;
@@ -108,7 +108,7 @@ architecture topArchi of TopEntity is
  
 reset_all <= TOP_KEY(3);
  
- s_accel: spi_accel
+ s_accel: ASP_spi_accel
 	PORT MAP
 	(
 		CLOCK_50   		=> TOP_CLOCK_50,
@@ -123,7 +123,7 @@ reset_all <= TOP_KEY(3);
 		RESET_SIGNAL	=> reset_all
 	);
 
- f_flt: entity work.filter(filter_mapBitAvrgANDInteg)
+ f_flt: entity work.ASP_filter(filter_mapBitAvrgANDInteg)
 	PORT MAP
 	(
 		CLOCK_50   		=> TOP_CLOCK_50,
@@ -143,7 +143,7 @@ reset_all <= TOP_KEY(3);
 		RESET_SIGNAL	=> reset_all
 	);
 	
- s_dac: entity work.spi_DAC(dac_IPFifo)
+ s_dac: entity work.ASP_spi_DAC(dac_IPFifo)
 	PORT MAP
 	(
 		CLOCK_50   			=> TOP_CLOCK_50,
