@@ -54,6 +54,7 @@ architecture topArchi of TopEntity is
 		SPD_COUNT			: OUT INTEGER;													-- Store the number of integration of acceleration since the beginning
 		POS_OE_OUTPUT	:	OUT STD_LOGIC;
 		POS_OUTPUT		: OUT STD_LOGIC_VECTOR(15 DOWNTO 0);		-- Position data, obtain by itegration of acceleration
+		POS_COUNT			: OUT INTEGER;
 		SWITCH				:	IN 	STD_LOGIC_VECTOR(17 DOWNTO 0);
 		HEX4Disp			: OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
 		HEX5Disp			: OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
@@ -65,37 +66,42 @@ architecture topArchi of TopEntity is
  COMPONENT spi_DAC
 	PORT
 	(
-		CLOCK_50   		:	IN STD_LOGIC;
-		KEY    				:	IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+		CLOCK_50   		: IN STD_LOGIC;
+		KEY    				: IN STD_LOGIC_VECTOR(3 DOWNTO 0);
 		GPIO_SPI_CLK	:	INOUT STD_LOGIC;
 		GPIO_SPI_SS		:	INOUT STD_LOGIC;
 		GPIO_SPI_SDIO	:	INOUT STD_LOGIC;
-		RECV_DATA			:	IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-		DAC_OE_INPUT	:	IN STD_LOGIC;
+		RECV_DATA			:	IN STD_LOGIC_VECTOR(15 DOWNTO 0);		-- acceleration data supply by filter
+		DAC_OE_INPUT	:	IN STD_LOGIC;												-- acceleration data oenable input
+		DAC_SPEED_DATA: IN STD_LOGIC_VECTOR(15 DOWNTO 0);		-- speed data supply by filter
+		DAC_SPD_OE_IN	: IN STD_LOGIC;												-- speed data oenable input
+		DAC_POS_DATA	: IN STD_LOGIC_VECTOR(15 downto 0);		-- position data supply by filter
+		DAC_POS_OE_IN	: IN STD_LOGIC;												-- position data oenable input
 		DAC_OE_OUTPUT	:	OUT STD_LOGIC;
 		RESET_SIGNAL 	:	IN STD_LOGIC
 	);
  END COMPONENT;
  
------------------- SIGNAL
+------------------ SIGNAL ---------------------------------------------
 
 	type   T_SPISTATE is (RESETst, WAITSt, TREATMENTst, TOANALOGst);
 	signal cState : T_SPISTATE;
  
-	signal accel_dataz	:	std_logic_vector(19 downto 0);
-	signal accel_enable	:	std_logic;
+	signal accel_dataz		:	std_logic_vector(19 downto 0);
+	signal accel_enable		:	std_logic;
 	
-	signal flt_oe_output:	std_logic;
-	signal filter_toDac	:	std_logic_vector(15 downto 0);
-	signal spd_oe_out 	: std_logic;
-	signal spd_out 			: std_logic_vector(15 downto 0);
-	signal std_cnt			: integer;
-	signal pos_oe_out		: std_logic;
-	signal pos_out			:std_logic_vector(15 downto 0);
+	signal flt_oe_output	:	std_logic;
+	signal filter_toDac		:	std_logic_vector(15 downto 0);
+	signal flt_spd_oe_out	: std_logic;
+	signal flt_spd_out 		: std_logic_vector(15 downto 0);
+	signal flt_std_cnt		: integer;
+	signal flt_pos_oe_out	: std_logic;
+	signal flt_pos_out		: std_logic_vector(15 downto 0);
+	signal flt_pos_cnt		: integer;
 	
-	signal dac_output		:	std_logic;
+	signal dac_output			:	std_logic;
 	
-	signal reset_all		:	STD_LOGIC := '0';
+	signal reset_all			:	STD_LOGIC := '0';
  
 ------------------ INSTANTIATION
  begin
@@ -125,11 +131,12 @@ reset_all <= TOP_KEY(3);
 		RCV_TOFILTER	=> accel_dataz,
 		FLT_OE_OUTPUT	=> flt_oe_output,
 		TSMT_TOANALOG	=> filter_toDac,
-		SPD_OE_OUTPUT	=> spd_oe_out,
-		SPD_OUTPUT		=> spd_out,						-- Speed data, obtain by integration of acceleration
-		SPD_COUNT			=> std_cnt,						-- Store the number of integration of acceleration since the beginning
-		POS_OE_OUTPUT	=> pos_oe_out,
-		POS_OUTPUT		=> pos_out,						-- Position data, obtain by itegration of acceleration
+		SPD_OE_OUTPUT	=> flt_spd_oe_out,
+		SPD_OUTPUT		=> flt_spd_out,						-- Speed data, obtain by integration of acceleration
+		SPD_COUNT			=> flt_std_cnt,						-- Store the number of integration of acceleration since the beginning
+		POS_OE_OUTPUT	=> flt_pos_oe_out,
+		POS_OUTPUT		=> flt_pos_out,						-- Position data, obtain by integration of acceleration
+		POS_COUNT			=> flt_pos_cnt,
 		SWITCH				=> SW,
 		HEX4Disp			=> HEX4,
 		HEX5Disp			=> HEX5,
@@ -139,15 +146,19 @@ reset_all <= TOP_KEY(3);
  s_dac: entity work.spi_DAC(dac_IPFifo)
 	PORT MAP
 	(
-		CLOCK_50   		=> TOP_CLOCK_50,
-		KEY    				=> TOP_KEY,
-		GPIO_SPI_CLK	=> TOP_GPIO(5),
-		GPIO_SPI_SS		=> TOP_GPIO(3),
-		GPIO_SPI_SDIO	=> TOP_GPIO(1),
-		RECV_DATA			=> filter_toDac,
-		DAC_OE_INPUT	=> flt_oe_output,
-		DAC_OE_OUTPUT	=> dac_output,
-		RESET_SIGNAL 	=> reset_all
+		CLOCK_50   			=> TOP_CLOCK_50,
+		KEY    					=> TOP_KEY,
+		GPIO_SPI_CLK		=> TOP_GPIO(5),
+		GPIO_SPI_SS			=> TOP_GPIO(3),
+		GPIO_SPI_SDIO		=> TOP_GPIO(1),
+		RECV_DATA				=> filter_toDac,				-- acceleration data supply by filter
+		DAC_OE_INPUT		=> flt_oe_output,				-- acceleration data oenable input
+		DAC_SPEED_DATA	=> flt_spd_out,					-- speed data supply by filter
+		DAC_SPD_OE_IN		=> flt_spd_oe_out,			-- speed data oenable input
+		DAC_POS_DATA		=> flt_pos_out,					-- position data supply by filter
+		DAC_POS_OE_IN		=> flt_pos_oe_out,			-- position data oenable input
+		DAC_OE_OUTPUT		=> dac_output,
+		RESET_SIGNAL 		=> reset_all
 	);
  
 ------------------ PROCESS

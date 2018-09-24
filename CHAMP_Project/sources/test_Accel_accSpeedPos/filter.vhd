@@ -20,6 +20,7 @@ entity filter is
 		SPD_COUNT			: OUT INTEGER;													-- Store the number of integration of acceleration since the beginning
 		POS_OE_OUTPUT	:	OUT STD_LOGIC;
 		POS_OUTPUT		: OUT STD_LOGIC_VECTOR(15 DOWNTO 0);		-- Position data, obtain by itegration of acceleration
+		POS_COUNT			: OUT INTEGER;
 		SWITCH				:	IN 	STD_LOGIC_VECTOR(17 DOWNTO 0);
 		HEX4Disp			: OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
 		HEX5Disp			: OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
