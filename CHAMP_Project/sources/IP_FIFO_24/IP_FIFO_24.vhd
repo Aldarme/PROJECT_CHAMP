@@ -48,7 +48,8 @@ ENTITY IP_FIFO_24 IS
 		wrreq		: IN STD_LOGIC ;
 		empty		: OUT STD_LOGIC ;
 		full		: OUT STD_LOGIC ;
-		q		: OUT STD_LOGIC_VECTOR (23 DOWNTO 0)
+		q		: OUT STD_LOGIC_VECTOR (23 DOWNTO 0);
+		usedw		: OUT STD_LOGIC_VECTOR (9 DOWNTO 0)
 	);
 END IP_FIFO_24;
 
@@ -58,6 +59,7 @@ ARCHITECTURE SYN OF ip_fifo_24 IS
 	SIGNAL sub_wire0	: STD_LOGIC ;
 	SIGNAL sub_wire1	: STD_LOGIC ;
 	SIGNAL sub_wire2	: STD_LOGIC_VECTOR (23 DOWNTO 0);
+	SIGNAL sub_wire3	: STD_LOGIC_VECTOR (9 DOWNTO 0);
 
 
 
@@ -81,7 +83,8 @@ ARCHITECTURE SYN OF ip_fifo_24 IS
 			wrreq	: IN STD_LOGIC ;
 			empty	: OUT STD_LOGIC ;
 			full	: OUT STD_LOGIC ;
-			q	: OUT STD_LOGIC_VECTOR (23 DOWNTO 0)
+			q	: OUT STD_LOGIC_VECTOR (23 DOWNTO 0);
+			usedw	: OUT STD_LOGIC_VECTOR (9 DOWNTO 0)
 	);
 	END COMPONENT;
 
@@ -89,6 +92,7 @@ BEGIN
 	empty    <= sub_wire0;
 	full    <= sub_wire1;
 	q    <= sub_wire2(23 DOWNTO 0);
+	usedw    <= sub_wire3(9 DOWNTO 0);
 
 	scfifo_component : scfifo
 	GENERIC MAP (
@@ -110,7 +114,8 @@ BEGIN
 		wrreq => wrreq,
 		empty => sub_wire0,
 		full => sub_wire1,
-		q => sub_wire2
+		q => sub_wire2,
+		usedw => sub_wire3
 	);
 
 
@@ -138,7 +143,7 @@ END SYN;
 -- Retrieval info: PRIVATE: RAM_BLOCK_TYPE NUMERIC "0"
 -- Retrieval info: PRIVATE: SYNTH_WRAPPER_GEN_POSTFIX STRING "0"
 -- Retrieval info: PRIVATE: UNDERFLOW_CHECKING NUMERIC "0"
--- Retrieval info: PRIVATE: UsedW NUMERIC "0"
+-- Retrieval info: PRIVATE: UsedW NUMERIC "1"
 -- Retrieval info: PRIVATE: Width NUMERIC "24"
 -- Retrieval info: PRIVATE: dc_aclr NUMERIC "0"
 -- Retrieval info: PRIVATE: diff_widths NUMERIC "0"
@@ -169,6 +174,7 @@ END SYN;
 -- Retrieval info: USED_PORT: full 0 0 0 0 OUTPUT NODEFVAL "full"
 -- Retrieval info: USED_PORT: q 0 0 24 0 OUTPUT NODEFVAL "q[23..0]"
 -- Retrieval info: USED_PORT: rdreq 0 0 0 0 INPUT NODEFVAL "rdreq"
+-- Retrieval info: USED_PORT: usedw 0 0 10 0 OUTPUT NODEFVAL "usedw[9..0]"
 -- Retrieval info: USED_PORT: wrreq 0 0 0 0 INPUT NODEFVAL "wrreq"
 -- Retrieval info: CONNECT: @clock 0 0 0 0 clock 0 0 0 0
 -- Retrieval info: CONNECT: @data 0 0 24 0 data 0 0 24 0
@@ -177,6 +183,7 @@ END SYN;
 -- Retrieval info: CONNECT: empty 0 0 0 0 @empty 0 0 0 0
 -- Retrieval info: CONNECT: full 0 0 0 0 @full 0 0 0 0
 -- Retrieval info: CONNECT: q 0 0 24 0 @q 0 0 24 0
+-- Retrieval info: CONNECT: usedw 0 0 10 0 @usedw 0 0 10 0
 -- Retrieval info: GEN_FILE: TYPE_NORMAL IP_FIFO_24.vhd TRUE
 -- Retrieval info: GEN_FILE: TYPE_NORMAL IP_FIFO_24.inc FALSE
 -- Retrieval info: GEN_FILE: TYPE_NORMAL IP_FIFO_24.cmp TRUE
