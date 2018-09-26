@@ -18,8 +18,8 @@ end entity;
 
 Architecture arch_tb of accSpeedPos_tb is
 
-	signal clock50_stub	: std_logic;
-	signal clock1k_stub	: std_logic;
+	signal clock50_stub	: std_logic := '0';
+	signal clock1k_stub	: std_logic := '1';
 	signal flt_oeI_stub	: std_logic;
 	signal flt_oeO_stub	: std_logic;
 	signal flt_data_stub: std_logic_vector(19 downto 0);
@@ -84,7 +84,7 @@ Architecture arch_tb of accSpeedPos_tb is
 	begin
 	
 	clock50_stub 	<= not clock50_stub after 10 ns;		-- system clock
-	clock1k_stub	<= not clock1k_stub after 1  ms;		-- freq. of 1KHz allow to simulate data rate of acceleromter
+	clock1k_stub	<= not clock1k_stub after 500000 ns;		-- freq. of 1KHz allow to simulate data rate of acceleromter
 	sw_stub				<= (others => '0');
 	reset_stub		<= '0', '1' after 97.0 ns;
 	
@@ -108,25 +108,25 @@ Architecture arch_tb of accSpeedPos_tb is
 			RESET_SIGNAL	=> reset_stub
 		);
 		
-	asp_spiD: ASP_spi_DAC
-		port map
-		(
-			CLOCK_50   		=> clock50_stub,
-			KEY    				=> key_stub,
-			GPIO_SPI_CLK	=> gpio_stub(0),
-			GPIO_SPI_SS		=> gpio_stub(1),
-			GPIO_SPI_SDIO	=> gpio_stub(2),
-			RECV_DATA			=> tsmt_stub,
-			DAC_OE_INPUT	=> flt_oeO_stub,
-			DAC_SPEED_DATA=> spd_out_stub,
-			DAC_SPD_OE_IN	=> spd_oe_stub,
-			DAC_POS_DATA	=> pos_data_stub,
-			DAC_POS_OE_IN	=> pos_oe_stub,
-			DAC_OE_OUTPUT	=> dac_oeO_stub,
-			RESET_SIGNAL 	=> reset_stub
-		);
+--	asp_spiD: ASP_spi_DAC
+--		port map
+--		(
+--			CLOCK_50   		=> clock50_stub,
+--			KEY    				=> key_stub,
+--			GPIO_SPI_CLK	=> gpio_stub(0),
+--			GPIO_SPI_SS		=> gpio_stub(1),
+--			GPIO_SPI_SDIO	=> gpio_stub(2),
+--			RECV_DATA			=> tsmt_stub,
+--			DAC_OE_INPUT	=> flt_oeO_stub,
+--			DAC_SPEED_DATA=> spd_out_stub,
+--			DAC_SPD_OE_IN	=> spd_oe_stub,
+--			DAC_POS_DATA	=> pos_data_stub,
+--			DAC_POS_OE_IN	=> pos_oe_stub,
+--			DAC_OE_OUTPUT	=> dac_oeO_stub,
+--			RESET_SIGNAL 	=> reset_stub
+--		);
 		
-	IncrmtStub: process(reset_stub, clock1k_stub) is
+	IncrmtStub: process(reset_stub, clock50_stub) is
 		begin
 			if reset_stub = '0' then
 				
@@ -135,20 +135,25 @@ Architecture arch_tb of accSpeedPos_tb is
 				
 				stbState <= IDLEst;
 				
-			elsif rising_edge(clock1k_stub) then
+			elsif rising_edge(clock50_stub) or falling_edge(clock50_stub)then            
 				
 				case stbState is
 					
 					when IDLEst =>
-						
-						flt_oeI_stub <= '1';
-						stbState <= INCREMTst;
-						
+							
+						if clock1k_stub'event AND clock1k_stub = '1' then
+							flt_oeI_stub <= '1';
+							stbState <= INCREMTst;
+						else
+							stbState <= IDLEst;
+						end if;
+							
 					when INCREMTst =>
-						
+							
 						flt_data_stub <= std_logic_vector(to_signed(to_integer(signed(flt_data_stub)) + 1, flt_data_stub'length));
+						flt_oeI_stub <= '0';
 						stbState <= IDLEst;
-						
+							
 					when others =>
 						stbState <= IDLEst;
 				end case;			

@@ -68,7 +68,8 @@ COMPONENT IP_FIFO_24
 		wrreq		: IN STD_LOGIC ;
 		empty		: OUT STD_LOGIC ;
 		full		: OUT STD_LOGIC ;
-		q				: OUT STD_LOGIC_VECTOR (23 DOWNTO 0)
+		q				: OUT STD_LOGIC_VECTOR (23 DOWNTO 0);
+		usedw		: OUT STD_LOGIC_VECTOR (9 DOWNTO 0)
 	);
 END COMPONENT;
 
@@ -84,7 +85,7 @@ signal spi_sclk   : STD_LOGIC;
 signal spi_txdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
 signal spi_rxdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
 
-type   T_SPISTATE is (IDLEst, WRITEst, TRANSMITCONFst, TRANSMITst, WAITENDTRANSst, CPDATAst, INCREMTst);
+type   T_SPISTATE is (IDLEst, WRITEst, TRANSMITCONFst, TRANSMITst, WAITENDTRANSst, CPDATAst, INCREMTst, RESETst);
 signal cState     	: T_SPISTATE;
 signal cStateAcc    : T_SPISTATE;
 signal cStateSpd    : T_SPISTATE;
@@ -108,14 +109,16 @@ signal	cpt_spiClock	: integer 	:= 0;
 
 --FIFO SIGNALs
 type fifo_stLgVect is array (0 to 3) of std_logic_vector(23 downto 0);	-- Four words of 24 bits to write fifos
-type fifo_stdLG 	 is array (0 to 3) of std_logic;					-- Three oenable
+type fifo_nbrW is array (0 to 3) of STD_LOGIC_VECTOR (9 DOWNTO 0);	-- Four words of 10 bits to know nbr of word into fifo
+type fifo_stdLG 	 is array (0 to 3) of std_logic;											-- Three oenable
 
 signal fifo_write : fifo_stLgVect;
 signal fifo_read  : fifo_stLgVect;
-signal fifo_oe_w  : fifo_stdLG;
-signal fifo_oe_r  : fifo_stdLG;
-signal isEmpty		:	fifo_stdLG;
-signal isFull			: fifo_stdLG;
+signal fWord			: fifo_nbrW;
+signal fifo_oe_w  : fifo_stdLG := (others => '0');
+signal fifo_oe_r  : fifo_stdLG := (others => '0');
+signal isEmpty		:	fifo_stdLG := (others => '0');
+signal isFull			: fifo_stdLG := (others => '0');
 
 --Data format, to transmit correct word to spi DAC
 type SPI_CONF is array (0 to 15) of std_logic_vector (3 downto 0);
@@ -127,7 +130,7 @@ begin
  reset_n <= RESET_SIGNAL;
 
  GPIO_SPI_CLK	<= spi_sclk;		--GPIO( 5 )
- GPIO_SPI_SS		<= spi_ss_n(0);	--GPIO( 7 )
+ GPIO_SPI_SS	<= spi_ss_n(0);	--GPIO( 7 )
  
  DAC_COMMAND(0)		<= "0000";--Write code to n
  DAC_COMMAND(1)		<= "1000";--write code to all
@@ -162,6 +165,8 @@ begin
  DAC_ADRS(13)	<= "1101";		--DAC 13
  DAC_ADRS(14)	<= "1110";		--DAC 14
  DAC_ADRS(15)	<= "1111";		--DAC 15
+ 
+ 
 
  sm_dac: entity work.ASP_spi_master(SPI_DAC)
 
@@ -188,69 +193,74 @@ begin
 
 	fifoIpAcc: IP_FIFO_24																 
 	PORT MAP                                           
-	(                                                  
-		clock	=> CLOCK_50,                               
-		data	=> fifo_write(0),                         
-		rdreq	=> fifo_oe_r(0),                          	
+	(
+		clock	=> CLOCK_50,   
+		data	=> fifo_write(0),
+		rdreq	=> fifo_oe_r(0),
 		wrreq	=> fifo_oe_w(0),
 		empty	=> isEmpty(0),
 		full	=> isFull(0),
-		q			=> fifo_read(0)
+		q			=> fifo_read(0),
+    usedw => fWord(0)
 	);
 	
 	fifoIpSpeed: IP_FIFO_24
 	PORT MAP
 	(
-		clock	=> CLOCK_50,
+		clock	=> CLOCK_50,   
 		data	=> fifo_write(1),
-		rdreq	=> fifo_oe_r(1), 
+		rdreq	=> fifo_oe_r(1),
 		wrreq	=> fifo_oe_w(1),
 		empty	=> isEmpty(1),
 		full	=> isFull(1),
-		q			=> fifo_read(1)
+		q			=> fifo_read(1),
+    usedw => fWord(1)		
 	);
 	
 	fifoIpPos: IP_FIFO_24
 	PORT MAP
 	(
-		clock	=> CLOCK_50,
+		clock	=> CLOCK_50,   
 		data	=> fifo_write(2),
-		rdreq	=> fifo_oe_r(2), 
+		rdreq	=> fifo_oe_r(2),
 		wrreq	=> fifo_oe_w(2),
 		empty	=> isEmpty(2),
 		full	=> isFull(2),
-		q			=> fifo_read(2)
+		q			=> fifo_read(2),
+    usedw => fWord(2)
 	);
 	
 	fifoIpSpi: IP_FIFO_24
 	PORT MAP
 	(
-		clock	=> CLOCK_50,
+		clock	=> CLOCK_50,   
 		data	=> fifo_write(3),
-		rdreq	=> fifo_oe_r(3), 
+		rdreq	=> fifo_oe_r(3),
 		wrreq	=> fifo_oe_w(3),
 		empty	=> isEmpty(3),
 		full	=> isFull(3),
-		q			=> fifo_read(3)
+		q			=> fifo_read(3),
+    usedw => fWord(3)
 	);
 	
 	--
-	-- Key reset process																								--fifo_write(i)
-	--                                                                  --fifo_read(i)
-	samp: process(reset_n, CLOCK_50) is                                 --fifo_oe_w(i) 
-	                                                                    --fifo_oe_r(i) 
-	begin                                                               --isEmpty(i)		
-		if(reset_n = '0') then                                            --isFull(i)		
+	-- Key reset process
+	--
+	samp: process(reset_n, CLOCK_50) is
+	 
+	begin
+		if(reset_n = '0') then
 			
 			SampKey <= ( others=> '1' );
 			
-		elsif(rising_edge(CLOCK_50)) then																	--RECV_DATA			
-			                                                                --DAC_OE_INPUT	
-			SampKey <= KEY;                                                 --DAC_SPEED_DATA
-			                                                                --DAC_SPD_OE_IN	
-		end if;                                                           --DAC_POS_DATA	
-	end process samp;                                                   --DAC_POS_OE_IN	
-	                                                                    --DAC_OE_OUTPUT	
+		elsif(rising_edge(CLOCK_50)) then
+			
+			SampKey <= KEY;
+			 
+		end if;
+	end process samp;
+	
+	
 	--
 	--	Acceleration data store
 	--
@@ -259,12 +269,12 @@ begin
 		begin
 				
 			if reset_n = '0' then
-				
+					
 				fifo_write(0) <= (others => '0');
 				fifo_oe_w(0)	<= '0';
 				cStateAcc 		<= IDLEst;
 					
-			elsif rising_edge( CLOCK_50) then
+			elsif rising_edge(CLOCK_50) then
 					
 				case cStateAcc is
 					
@@ -279,8 +289,12 @@ begin
 						
 					when WRITEst =>
 						
-						fifo_write(0) <= DAC_COMMAND(6) & DAC_ADRS(0) & RECV_DATA;
-						fifo_oe_w(0)	<= '0';
+						fifo_write(0) <= DAC_COMMAND(6) & DAC_ADRS(0) & RECV_DATA;						
+						cStateAcc 		<= RESETst;
+						
+					when RESETst =>
+						
+						fifo_oe_w(0)	<= '0';						
 						cStateAcc 		<= IDLEst;
 						
 					when others =>
@@ -297,7 +311,7 @@ begin
 		begin
 				
 			if reset_n = '0' then
-				
+					
 				fifo_write(1) <= (others => '0');
 				fifo_oe_w(1)	<= '0';
 				cStateSpd <= IDLEst;
@@ -318,8 +332,12 @@ begin
 					when WRITEst =>
 						
 						fifo_write(1) <= DAC_COMMAND(6) & DAC_ADRS(1) & DAC_SPEED_DATA;
-						fifo_oe_w(1)	<= '0';
-						cStateSpd <= IDLEst;
+						cStateSpd <= RESETst;
+						
+					when RESETst =>
+						
+						fifo_oe_w(1)	<= '0';						
+						cStateSpd 		<= IDLEst;
 						
 					when others =>
 						cStateSpd <= IDLEst;
@@ -335,7 +353,7 @@ begin
 		begin
 				
 			if reset_n = '0' then
-				
+					
 				fifo_write(2) <= (others => '0');
 				fifo_oe_w(2)	<= '0';
 				cStatePos 		<= IDLEst;
@@ -356,7 +374,11 @@ begin
 					when WRITEst =>
 						
 						fifo_write(2) <= DAC_COMMAND(6) & DAC_ADRS(2) & DAC_POS_DATA;
-						fifo_oe_w(2)	<= '0';
+						cStatePos 		<= RESETst;
+						
+					when RESETst =>
+						
+						fifo_oe_w(2)	<= '0';						
 						cStatePos 		<= IDLEst;
 						
 					when others =>
@@ -371,17 +393,20 @@ begin
 	--
 	RnWFifos : process(reset_n, CLOCK_50) is 
 			
-			variable index : integer;
+			variable index : integer := 0;
 			
 		begin
 			
 			if reset_n = '0' then
 				
-				fifo_oe_r(0) <= '0';
-				fifo_oe_r(1) <= '0';
-				fifo_oe_r(2) <= '0';
-				fifo_oe_r(3) <= '0';
-				fifo_oe_w(3) <= '0';
+				fifo_oe_r(0)	<= '0';
+				fifo_oe_r(1) 	<= '0';
+				fifo_oe_r(2)	<= '0';
+				fifo_oe_r(3)	<= '0';
+				fifo_read(0)	<= (others => '0');
+				fifo_read(1)	<= (others => '0');
+				fifo_read(2)	<= (others => '0');
+				fifo_write(3) <= (others => '0');
 				
 				cStateRnW <= IDLEst;
 				
@@ -439,6 +464,7 @@ begin
 			if reset_n = '0' then
 				
 				fifo_oe_r(3) 	<= '0';
+				fifo_read(3)	<= (others => '0');
 				spi_enable		<= '0';
 				DAC_OE_OUTPUT	<= '0';
 				

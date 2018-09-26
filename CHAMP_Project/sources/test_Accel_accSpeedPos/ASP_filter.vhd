@@ -40,7 +40,7 @@ END ENTITY;
 ----------------------------------------------------------------
 architecture filter_mapBitAvrgANDInteg of ASP_filter is
  
- signal offset : signed(16 downto 0) := 17x"08000";
+ signal offset : signed(16 downto 0) := 17x"08000";		--offset of 32768 (8000 Hex) to transform signed word into an unsigned word
 
  type   T_SPISTATE is ( IDLEst, Testst, CALIBst, Mapst, TRANSMITst);
  signal cState	: T_SPISTATE;
@@ -131,7 +131,7 @@ architecture filter_mapBitAvrgANDInteg of ASP_filter is
  --
  --	The average data (avrg) calculated below, is define has "signed"
  --
- average: process(RESET_SIGNAL, CLOCK_50) is												--IDLEst, Testst, CALIBst, Mapst, TRANSMITst
+ average: process(RESET_SIGNAL, CLOCK_50) is
 		
 	begin
 		
@@ -245,6 +245,7 @@ architecture filter_mapBitAvrgANDInteg of ASP_filter is
 			
 			POS_OUTPUT		<= 16x"0";
 			POS_OE_OUTPUT	<= '0';
+			POS_COUNT			<= 0;
 			cState4 <= IDLEst;
 			
 		elsif rising_edge(CLOCK_50) then
@@ -262,6 +263,7 @@ architecture filter_mapBitAvrgANDInteg of ASP_filter is
 				when Mapst =>
 					
 					POS_OUTPUT <= std_logic_vector(signed(SPD_OUTPUT) + signed(POS_OUTPUT));
+					POS_COUNT	 <= POS_COUNT +1;
 					
 					cState4 <= TRANSMITst;
 					
