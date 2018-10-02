@@ -96,7 +96,7 @@ BEGIN
 
 	scfifo_component : scfifo
 	GENERIC MAP (
-		add_ram_output_register => "OFF",
+		add_ram_output_register => "ON",
 		intended_device_family => "Cyclone IV E",
 		lpm_numwords => 1024,
 		lpm_showahead => "OFF",
@@ -139,7 +139,7 @@ END SYN;
 -- Retrieval info: PRIVATE: LegacyRREQ NUMERIC "1"
 -- Retrieval info: PRIVATE: MAX_DEPTH_BY_9 NUMERIC "0"
 -- Retrieval info: PRIVATE: OVERFLOW_CHECKING NUMERIC "0"
--- Retrieval info: PRIVATE: Optimize NUMERIC "0"
+-- Retrieval info: PRIVATE: Optimize NUMERIC "1"
 -- Retrieval info: PRIVATE: RAM_BLOCK_TYPE NUMERIC "0"
 -- Retrieval info: PRIVATE: SYNTH_WRAPPER_GEN_POSTFIX STRING "0"
 -- Retrieval info: PRIVATE: UNDERFLOW_CHECKING NUMERIC "0"
@@ -158,7 +158,7 @@ END SYN;
 -- Retrieval info: PRIVATE: wsFull NUMERIC "1"
 -- Retrieval info: PRIVATE: wsUsedW NUMERIC "0"
 -- Retrieval info: LIBRARY: altera_mf altera_mf.altera_mf_components.all
--- Retrieval info: CONSTANT: ADD_RAM_OUTPUT_REGISTER STRING "OFF"
+-- Retrieval info: CONSTANT: ADD_RAM_OUTPUT_REGISTER STRING "ON"
 -- Retrieval info: CONSTANT: INTENDED_DEVICE_FAMILY STRING "Cyclone IV E"
 -- Retrieval info: CONSTANT: LPM_NUMWORDS NUMERIC "1024"
 -- Retrieval info: CONSTANT: LPM_SHOWAHEAD STRING "OFF"
