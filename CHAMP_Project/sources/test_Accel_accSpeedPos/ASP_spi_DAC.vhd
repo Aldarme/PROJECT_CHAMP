@@ -109,16 +109,25 @@ signal	cpt_spiClock	: integer 	:= 0;
 
 --FIFO SIGNALs
 type fifo_stLgVect is array (0 to 3) of std_logic_vector(23 downto 0);	-- Four words of 24 bits to write fifos
-type fifo_nbrW is array (0 to 3) of STD_LOGIC_VECTOR (9 DOWNTO 0);	-- Four words of 10 bits to know nbr of word into fifo
-type fifo_stdLG 	 is array (0 to 3) of std_logic;											-- Three oenable
+type fifo_nbrW is array (0 to 3) of STD_LOGIC_VECTOR (9 downto 0);			-- Four words of 10 bits to know nbr of word into fifo
 
 signal fifo_write : fifo_stLgVect;
 signal fifo_read  : fifo_stLgVect;
+signal fSpi_write : std_logic_vector(23 downto 0);
+signal fSpi_read	: std_logic_vector(23 downto 0);
+
+signal fifo_oe_w	: std_logic_vector(0 to 2);
+signal fifo_oe_r	: std_logic_vector(0 to 2);
+signal fSpi_oe_w	:	std_logic;
+signal fSpi_oe_r	: std_logic;
+
+signal isEmpty		:	std_logic_vector(0 to 2);
+signal isFull			: std_logic_vector(0 to 2);
+signal fSpi_isEmp	: std_logic;
+signal fSpi_isFull: std_logic;
+
 signal fWord			: fifo_nbrW;
-signal fifo_oe_w  : fifo_stdLG := (others => '0');
-signal fifo_oe_r  : fifo_stdLG := (others => '0');
-signal isEmpty		:	fifo_stdLG := (others => '0');
-signal isFull			: fifo_stdLG := (others => '0');
+signal fSpi_fWord	: std_logic_vector(9 downto 0);
 
 --Data format, to transmit correct word to spi DAC
 type SPI_CONF is array (0 to 15) of std_logic_vector (3 downto 0);
@@ -131,6 +140,8 @@ begin
 
  GPIO_SPI_CLK	<= spi_sclk;		--GPIO( 5 )
  GPIO_SPI_SS	<= spi_ss_n(0);	--GPIO( 7 )
+ 
+ --DAC_OE_OUTPUT <= '0';
  
  DAC_COMMAND(0)		<= "0000";--Write code to n
  DAC_COMMAND(1)		<= "1000";--write code to all
@@ -194,14 +205,14 @@ begin
 	fifoIpAcc: IP_FIFO_24																 
 	PORT MAP                                           
 	(
-		clock	=> CLOCK_50,   
+		clock	=> CLOCK_50,
 		data	=> fifo_write(0),
 		rdreq	=> fifo_oe_r(0),
 		wrreq	=> fifo_oe_w(0),
 		empty	=> isEmpty(0),
 		full	=> isFull(0),
 		q			=> fifo_read(0),
-    usedw => fWord(0)
+    usedw	=> fWord(0)
 	);
 	
 	fifoIpSpeed: IP_FIFO_24
@@ -214,7 +225,7 @@ begin
 		empty	=> isEmpty(1),
 		full	=> isFull(1),
 		q			=> fifo_read(1),
-    usedw => fWord(1)		
+    usedw	=> fWord(1)		
 	);
 	
 	fifoIpPos: IP_FIFO_24
@@ -227,20 +238,20 @@ begin
 		empty	=> isEmpty(2),
 		full	=> isFull(2),
 		q			=> fifo_read(2),
-    usedw => fWord(2)
+    usedw	=> fWord(2)
 	);
 	
 	fifoIpSpi: IP_FIFO_24
 	PORT MAP
 	(
 		clock	=> CLOCK_50,   
-		data	=> fifo_write(3),
-		rdreq	=> fifo_oe_r(3),
-		wrreq	=> fifo_oe_w(3),
-		empty	=> isEmpty(3),
-		full	=> isFull(3),
-		q			=> fifo_read(3),
-    usedw => fWord(3)
+		data	=> fSpi_write,
+		rdreq	=> fSpi_oe_r,
+		wrreq	=> fSpi_oe_w,
+		empty	=> fSpi_isEmp,
+		full	=> fSpi_isFull,
+		q			=> fSpi_read,  
+    usedw	=> fSpi_fWord  
 	);
 	
 	--
@@ -269,8 +280,7 @@ begin
 		begin
 				
 			if reset_n = '0' then
-					
-				fifo_write(0) <= (others => '0');
+				
 				fifo_oe_w(0)	<= '0';
 				cStateAcc 		<= IDLEst;
 					
@@ -312,7 +322,6 @@ begin
 				
 			if reset_n = '0' then
 					
-				fifo_write(1) <= (others => '0');
 				fifo_oe_w(1)	<= '0';
 				cStateSpd <= IDLEst;
 					
@@ -354,7 +363,6 @@ begin
 				
 			if reset_n = '0' then
 					
-				fifo_write(2) <= (others => '0');
 				fifo_oe_w(2)	<= '0';
 				cStatePos 		<= IDLEst;
 					
@@ -393,7 +401,7 @@ begin
 	--
 	RnWFifos : process(reset_n, CLOCK_50) is 
 			
-			variable index : integer := 0;
+			variable index : integer range 0 to 2:= 0;
 			
 		begin
 			
@@ -402,11 +410,7 @@ begin
 				fifo_oe_r(0)	<= '0';
 				fifo_oe_r(1) 	<= '0';
 				fifo_oe_r(2)	<= '0';
-				fifo_oe_r(3)	<= '0';
-				fifo_read(0)	<= (others => '0');
-				fifo_read(1)	<= (others => '0');
-				fifo_read(2)	<= (others => '0');
-				fifo_write(3) <= (others => '0');
+				index 				:= 0;
 				
 				cStateRnW <= IDLEst;
 				
@@ -417,8 +421,8 @@ begin
 					when IDLEst =>
 							
 						if isEmpty(index) = '0' then
-							fifo_oe_r(index) <= '1';	--enable fifo read for acceleration, speed, position
-							fifo_oe_w(3)		 <= '1';	--enable fifo write for FIFO_spi
+							fifo_oe_r(index) <= '1';		--enable fifo read for acceleration, speed, position
+							fSpi_oe_w		 		 <= '1';		--enable fifo write for FIFO_spi
 							
 							cStateRnW <= CPDATAst;
 						else
@@ -427,9 +431,9 @@ begin
 							
 					when CPDATAst =>
 							
-						fifo_write(3) 	 <= fifo_read(index);
+						fSpi_write		 	 <= fifo_read(index);
 						fifo_oe_r(index) <= '0';
-						fifo_oe_w(3) 		 <= '0';
+						fSpi_oe_w 		 	 <= '0';
 							
 						if index <= 2 then
 							cStateRnW <= INCREMTst;
@@ -438,9 +442,8 @@ begin
 						end if;
 							
 					when INCREMTst =>
-						
-						index := index +1;
-						if index <= 2 then
+						if index < 2 then
+							index := index +1;
 							cStateRnW <= IDLEst;
 						else
 							index := 0;
@@ -463,9 +466,8 @@ begin
 			
 			if reset_n = '0' then
 				
-				fifo_oe_r(3) 	<= '0';
-				fifo_read(3)	<= (others => '0');
-				spi_enable		<= '0';
+				fSpi_oe_r 		<= '0';
+			  spi_enable		<= '0';
 				DAC_OE_OUTPUT	<= '0';
 				
 				cStateSpi <= IDLEst;
@@ -476,26 +478,26 @@ begin
 					
 					when IDLEst =>
 						
-						if isEmpty(3) = '0' then
+						if fSpi_isEmp = '0' then
 							
-							fifo_oe_r(3) 	<= '1';
+							fSpi_oe_r		 	<= '1';
 							spi_enable		<= '1';
 							DAC_OE_OUTPUT	<= '1';
 							
-							cStateSpi <= CPDATAst;							
+							cStateSpi <= CPDATAst;
 						else
 							cStateSpi <= IDLEst;
 						end if;
 					
 					when CPDATAst =>
 							
-						spi_txdata <= fifo_read(3);
+						spi_txdata <= fSpi_read;
 						
 						cStateSpi <= TRANSMITst;
 						
 					when TRANSMITst =>
 						
-						fifo_oe_r(3)	<= '0';
+						fSpi_oe_r			<= '0';
 						spi_enable		<= '0';
 						DAC_OE_OUTPUT	<= '0';
 						
