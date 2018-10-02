@@ -84,7 +84,7 @@ Architecture arch_tb of accSpeedPos_tb is
 	begin
 	
 	clock50_stub 	<= not clock50_stub after 10 ns;		-- system clock
-	clock1k_stub	<= not clock1k_stub after 500000 ns;		-- freq. of 1KHz allow to simulate data rate of acceleromter
+	clock1k_stub	<= not clock1k_stub after 50000 ns;	-- freq. of 1KHz allow to simulate data rate of acceleromter, but need to accelerate freq to have a shorter simulation time (period of 0.1 ms). 
 	sw_stub				<= (others => '0');
 	reset_stub		<= '0', '1' after 97.0 ns;
 	
@@ -108,23 +108,23 @@ Architecture arch_tb of accSpeedPos_tb is
 			RESET_SIGNAL	=> reset_stub
 		);
 		
---	asp_spiD: ASP_spi_DAC
---		port map
---		(
---			CLOCK_50   		=> clock50_stub,
---			KEY    				=> key_stub,
---			GPIO_SPI_CLK	=> gpio_stub(0),
---			GPIO_SPI_SS		=> gpio_stub(1),
---			GPIO_SPI_SDIO	=> gpio_stub(2),
---			RECV_DATA			=> tsmt_stub,
---			DAC_OE_INPUT	=> flt_oeO_stub,
---			DAC_SPEED_DATA=> spd_out_stub,
---			DAC_SPD_OE_IN	=> spd_oe_stub,
---			DAC_POS_DATA	=> pos_data_stub,
---			DAC_POS_OE_IN	=> pos_oe_stub,
---			DAC_OE_OUTPUT	=> dac_oeO_stub,
---			RESET_SIGNAL 	=> reset_stub
---		);
+	asp_spiD: ASP_spi_DAC
+		port map
+		(
+			CLOCK_50   		=> clock50_stub,
+			KEY    				=> key_stub,
+			GPIO_SPI_CLK	=> gpio_stub(0),
+			GPIO_SPI_SS		=> gpio_stub(1),
+			GPIO_SPI_SDIO	=> gpio_stub(2),
+			RECV_DATA			=> tsmt_stub,
+			DAC_OE_INPUT	=> flt_oeO_stub,
+			DAC_SPEED_DATA=> spd_out_stub,
+			DAC_SPD_OE_IN	=> spd_oe_stub,
+			DAC_POS_DATA	=> pos_data_stub,
+			DAC_POS_OE_IN	=> pos_oe_stub,
+			DAC_OE_OUTPUT	=> dac_oeO_stub,
+			RESET_SIGNAL 	=> reset_stub
+		);
 		
 	IncrmtStub: process(reset_stub, clock50_stub) is
 		begin
