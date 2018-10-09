@@ -1,4 +1,4 @@
-update=28/03/2018 16:06:24
+update=09/10/2018 10:44:31
 version=1
 last_client=kicad
 [pcbnew]
@@ -23,9 +23,21 @@ ModuleOutlineThickness=0.150000000000
 [cvpcb]
 version=1
 NetIExt=net
+[general]
+version=1
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60
 [eeschema]
 version=1
-LibDir=librairie
+LibDir=
 [eeschema/libraries]
 LibName1=power
 LibName2=device
@@ -59,17 +71,4 @@ LibName29=opto
 LibName30=atmel
 LibName31=contrib
 LibName32=valves
-LibName33=librairie/adxl355
-LibName34=librairie/cnt-6pins
-[general]
-version=1
-[schematic_editor]
-version=1
-PageLayoutDescrFile=
-PlotDirectoryName=
-SubpartIdSeparator=0
-SubpartFirstId=65
-NetFmtName=
-SpiceForceRefPrefix=0
-SpiceUseNetNumbers=0
-LabSize=60
+LibName33=C:/Users/promet/Documents/Projet_CHAMP/PCB/DIY_KICAD_LIBRARY/DIY_COMPONENTS/accelerometers/accelerometers
