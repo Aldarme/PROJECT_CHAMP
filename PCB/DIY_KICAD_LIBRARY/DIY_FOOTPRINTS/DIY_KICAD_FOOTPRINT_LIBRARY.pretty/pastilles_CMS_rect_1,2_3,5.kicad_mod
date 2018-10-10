@@ -1,0 +1,9 @@
+(module pastilles_CMS_rect_1,2_3,5 (layer F.Cu) (tedit 5BBDD7F7)
+  (fp_text reference REF** (at -2.5 -2.5) (layer F.SilkS) hide
+    (effects (font (size 1 1) (thickness 0.15)))
+  )
+  (fp_text value pastilles_rect (at -1 -4) (layer F.Fab) hide
+    (effects (font (size 1 1) (thickness 0.15)))
+  )
+  (pad 1 smd rect (at 0 0 90) (size 1.2 3.5) (layers F.Cu F.Paste F.Mask))
+)
