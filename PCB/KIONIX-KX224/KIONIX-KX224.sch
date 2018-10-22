@@ -39,8 +39,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "Kionix KX3624 eval_board"
-Date "2018-10-09"
-Rev "1.0"
+Date "2018-10-16"
+Rev "1.5"
 Comp "LPNHE"
 Comment1 "ROMET Pierre"
 Comment2 ""
@@ -129,58 +129,8 @@ F 3 "" H 7250 4350 50  0001 C CNN
 	1    7250 4350
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	3600 2300 2900 2300
-Wire Wire Line
-	3600 2400 2950 2400
-Wire Wire Line
-	2950 2400 2950 2750
-Wire Wire Line
-	3600 2500 2950 2500
-Connection ~ 2950 2500
-Wire Wire Line
-	4100 2300 4600 2300
-Wire Wire Line
-	4100 2400 4600 2400
-Wire Wire Line
-	4750 3400 5950 3400
-Wire Wire Line
-	5050 2800 5050 3550
-Connection ~ 5050 3400
-Wire Wire Line
-	5050 3850 5050 4500
-Wire Wire Line
-	5550 3700 5950 3700
-Wire Wire Line
-	6250 4050 6250 4450
-Wire Wire Line
-	6350 4050 6350 4250
-Wire Wire Line
-	6350 4250 6250 4250
-Connection ~ 6250 4250
-Wire Wire Line
-	6450 4050 6450 4450
-Wire Wire Line
-	7250 3400 7250 4350
-Wire Wire Line
-	7250 2800 7250 3100
-Wire Wire Line
-	5050 2800 7250 2800
-Wire Wire Line
-	6450 2800 6450 3150
-Wire Wire Line
-	6750 3500 7250 3500
-Connection ~ 7250 3500
-Wire Wire Line
-	5950 3800 5550 3800
-Wire Wire Line
-	5550 3800 5550 4050
-Wire Wire Line
-	5550 4050 5050 4050
-Connection ~ 5050 4050
 Text Label 6450 2800 2    60   ~ 0
 VDD
-Connection ~ 6450 2800
 $Comp
 L Conn_01x01 J1
 U 1 1 5BBDD490
@@ -258,8 +208,6 @@ F 3 "" H 4900 2500 50  0001 C CNN
 	1    4900 2500
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	4600 2500 4100 2500
 $Comp
 L Jumper JP2
 U 1 1 5BBDF7F0
@@ -269,6 +217,69 @@ F 1 "Jumper" H 2600 2220 50  0000 C CNN
 F 2 "Capacitors_SMD:C_1210" H 2600 2300 50  0001 C CNN
 F 3 "" H 2600 2300 50  0001 C CNN
 	1    2600 2300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5200 4050 5050 4050
+Wire Wire Line
+	5800 3800 5800 4050
+Wire Wire Line
+	5950 3800 5800 3800
+Wire Wire Line
+	6450 2800 7250 2800
+Wire Wire Line
+	4600 2500 4100 2500
+Connection ~ 6450 2800
+Connection ~ 5050 4050
+Connection ~ 7250 3500
+Wire Wire Line
+	6750 3500 7250 3500
+Wire Wire Line
+	6450 2800 6450 3150
+Wire Wire Line
+	7250 2800 7250 3100
+Wire Wire Line
+	7250 3400 7250 4350
+Wire Wire Line
+	6450 4050 6450 4450
+Connection ~ 6250 4250
+Wire Wire Line
+	6350 4250 6250 4250
+Wire Wire Line
+	6350 4050 6350 4250
+Wire Wire Line
+	6250 4050 6250 4450
+Wire Wire Line
+	5550 3700 5950 3700
+Wire Wire Line
+	5050 3850 5050 4500
+Connection ~ 5050 3400
+Wire Wire Line
+	5050 3400 5050 3550
+Wire Wire Line
+	4750 3400 5950 3400
+Wire Wire Line
+	4100 2400 4600 2400
+Wire Wire Line
+	4100 2300 4600 2300
+Connection ~ 2950 2500
+Wire Wire Line
+	3600 2500 2950 2500
+Wire Wire Line
+	2950 2400 2950 2750
+Wire Wire Line
+	3600 2400 2950 2400
+Wire Wire Line
+	3600 2300 2900 2300
+$Comp
+L Jumper JP3
+U 1 1 5BC5A8B4
+P 5500 4050
+F 0 "JP3" H 5500 4200 50  0000 C CNN
+F 1 "Jumper" H 5500 3970 50  0000 C CNN
+F 2 "Capacitors_SMD:C_1210" H 5500 4050 50  0001 C CNN
+F 3 "" H 5500 4050 50  0001 C CNN
+	1    5500 4050
 	1    0    0    -1  
 $EndComp
 $EndSCHEMATC
