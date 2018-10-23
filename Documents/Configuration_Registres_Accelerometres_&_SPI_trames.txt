@@ -59,7 +59,7 @@ ST-AIS3624
 		pour cela nous avons du mettre à "1", le bit "SIM" du registre "CTRL_REG4".
 		
 		RW	/	MS	/	@(5->0)	/	Data(7->0)
-		1bit	1bit	5bits		8bits
+		1bit	1bit	6bits		8bits
 		
 
 KX-224
