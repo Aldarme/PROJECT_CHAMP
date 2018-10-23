@@ -1,0 +1,111 @@
+
+ADXL355
+	
+	Registre de configuration:
+	
+		Avant de pouvoir modifier les registres de configuration de l'ADXL355,
+		il est nécessaire de mettre ce derniers en mode "configuration" (standby mode).
+		-> Registre "POWER_CTL" @ 0x2D, on set le bit "STANDBY" à "1"
+		
+		On souhaite limiter la mise en defaut de l'acceleromètre, on reset le device 
+		a chaque démarrage.
+		-> Registre "Reset" @ 0x2F, on set le mot suivant: "0x52"
+		
+		On souhaite avoir la plus large gamme de mesure sur "g" (+-8g)
+		-> Registre "Range" @ 0x2C, on set les bit "Range" à "11"
+		
+		On souhaite fixer un ODR de 1Khz
+		-> Register "Filter" @ 0x28, on set le mot suivant: "0x02"
+		
+		Une fois la configuration effectué, on ferme le mode de configuration 
+		du device (bascule en "mesurement mode")
+		-> Registre "POWER_CTL" @ 0x2D, on set le bit "STANDBY" à "0"
+		
+	Registre de lecture:
+	
+		On souhaite lire l'axe des "Z", constitué d"un mot de 20 bits, sur 3 registres 
+		différents.
+		-> Registre "ZDATA1" @ 0x10 (4 bits à lire)
+		-> Registre "ZDATA2" @ 0x0F (8 bits à lire)
+		-> Registre "ZDATA3" @ 0x0E (8 bits à lire)
+
+
+ST-AIS3624
+	
+	Registre de configuration:
+	
+		On souhaite fixer l'ODR de notre device à 1KHz
+		-> Registre 'CTRL_REG1" @ 0x20, on set le mot suivant: "0x3C"
+		
+		On veut que le buffer de données de l'axes Z, réparti sur 2 registres,
+		ne soit pas mise à jours entre la lecture des deux registres.
+		On souhaite avoir la gamme de mesure la plus large pour "g" (+-24g)	- gamme +-6g/+-12g/+-24g
+		On souhaite activer le mode SPI 3 wires
+		-> Registre 'CTRL_REG4" @ 0x23, on set le mot suivant: "0xB1"
+		
+	Registre de lecture:
+	
+		L'AIS3624 renvoie des données codé sur 16 bits, avec 12 bits de resolution.
+		
+		On souhaite lire l'axe des "Z", constitué d"un mot de 16 bits, sur 2 registres 
+		différents.
+		-> Registre "OUT_Z_L" @ 0x2C (8 bits à lire)
+		-> Registre "OUT_Z_H" @ 0x2D (8 bits à lire)
+		
+	Trame SPI:
+	
+		Le SPI sur ce device peut etre configuré en mode 3 ou 4 files.
+		Pour les besoins du projet, nous avons choisi de le configurer en mode 3 files,
+		pour cela nous avons du mettre à "1", le bit "SIM" du registre "CTRL_REG4".
+		
+		RW	/	MS	/	@(5->0)	/	Data(7->0)
+		1bit	1bit	5bits		8bits
+		
+
+KX-224
+
+	Registre de configuration:
+		
+		Avant de pouvoir modifier les registres de configuration de l'ADXL355,
+		il est nécessaire de mettre ce derniers en mode "configuration" (standby mode).
+		-> Registre "CNTL1" @ 0x18, on set le bit "PC1" à "0" => "0xD0"
+		
+		On souhaite un mode de performance "haute resolution"
+		Souhaitant avoir la plus large gamme de mesure sur "g" (+-32g) - gamme +-8g/+-16g/+-32g
+		-> Registre "CNTL1" @ 0x18, on set le mot suivant: "0x50"
+		
+		On fixe un ODR étant le plus proche possible de 1Khz
+		-> Registre "ODCNTL" @ 0x1B, on set le mot suivant: "0x5X" (ODR a déterminer)
+		
+		On souhaite activer le mode SPI 3 wires
+		-> Register "INC1" @ 0x1c, on set le mot suivant: "0x01"
+		
+		Une fois la configuration effectué, on ferme le mode de configuration 
+		du device (bascule en "mesurement mode")
+		-> Registre "CNTL1" @ 0x18, on set le bit "PC1" à "1" => "0xD0"
+		
+	Registre de lecture:
+	
+		L'KX224 renvoie des données codé sur 16 bits.
+		
+		On souhaite lire l'axe des "Z", constitué d"un mot de 16 bits, sur 2 registres 
+		différents.
+		-> Registre "ZOUTL" @ 0x0A (8 bits à lire)
+		-> Registre "ZOUTH" @ 0x0B (8 bits à lire)
+	
+	Trame SPI:
+		
+		Le SPI sur ce device peut etre configuré en mode 3 ou 4 files.
+		Pour les besoins du projet, nous avons choisi de le configurer en mode 3 files,
+		pour cela nous avons du mettre à "1", le bit "SPI3E" du registre "INC1".
+		
+		W	/	@(6->0)	/	Data(7->0)
+		1bit	7bits		8bits
+		
+		R	/	@(6->0)	/	EXTRA BIT	/	Data(7->0)
+		1bit	7bits		1bit			8bits
+		
+		All command are send MSB first
+		All data are received MSB first
+		
+		
