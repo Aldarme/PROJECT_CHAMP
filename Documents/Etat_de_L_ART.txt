@@ -1,0 +1,37 @@
+État de l’art
+
+
+
+Dossier « Asservissement » :
+	On retrouve l’ensemble des résultats des expériences réalisées sur la maquette du piano afin de déterminer la fonction de transfère de notre modèle, ainsi que la caractérisation du mode de contrôleur en accélération du contrôleur moteur.
+
+- Relevés de jeux de données
+- Analyse des jeux de données
+
+Le dossier « largeurImp&AnIn » porte sur la 1ère manipulation mise en place, qui nous a permis de mettre en évidence le problème du retard dans notre chaîne de contrôle.
+
+La dernière analyse en date pour la caractérisation du contrôle « torque », ainsi que pour la fonction de transfère se trouve dans le dossier « testOscillo2 ».
+
+Dossier « CHAMP_Projet » :
+	Ce dossier contient trois sous-dossier :
+	- « save_.sof_file » : qui contient les « .sof » des dernières compilations validées, la dernière en date, date du 5 juin 2018
+	- « source » : qui contient l’ensemble des fichiers sources VHDL (.vhd) du projet.
+	- « test_accel2 » : qui contient les sources du projet pour l’environnement de développement sous le logiciel QUARTUS ainsi que pour ModelSim.
+
+Dossier « code » :
+	Contient des sources initiales du projet réalisé par Olivier LEDORTZ
+
+Dossier « DE2-115 » :
+	Contient la documentation technique de la carte d’évaluation DE2-115 ainsi que les drivers nécessaires.
+
+Dossier Documents :
+	Contient l’ensemble des datasheets qui sont nécessaires au projet.
+
+Dossier GANT :
+	Contient les diagrammes de Gant des étapes de mon projet.
+
+Dossier PCB :
+	Contient les divers PCB réalisé sous KICAD pour le projet.
+
+Dossier ST50_docs :
+	Contient l’ensemble de la documentions nécessaire à la réalisation de mon rapport de stage.
