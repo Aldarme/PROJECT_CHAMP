@@ -1,14 +1,14 @@
 (export (version D)
   (design
     (source C:/Users/promet/Documents/Projet_CHAMP/PCB/KIONIX-KX224/KIONIX-KX224.sch)
-    (date "24/10/2018 11:47:06")
+    (date "24/10/2018 16:39:35")
     (tool "Eeschema 4.0.7")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
         (title "Kionix KX3624 eval_board")
         (company LPNHE)
-        (rev 1.5)
-        (date 2018-10-16)
+        (rev 1.6)
+        (date 2018-10-24)
         (source KIONIX-KX224.sch)
         (comment (number 1) (value "ROMET Pierre"))
         (comment (number 2) (value ""))
@@ -118,12 +118,12 @@
         (pin (num 15) (name ~) (type input))
         (pin (num 16) (name ~) (type input)))))
   (libraries
+    (library (logical device)
+      (uri "C:\\Program Files\\KiCad\\share\\kicad\\library\\device.lib"))
     (library (logical conn)
       (uri "C:\\Program Files\\KiCad\\share\\kicad\\library\\conn.lib"))
     (library (logical accelerometers)
-      (uri C:\Users\promet\Documents\Projet_CHAMP\PCB\DIY_KICAD_LIBRARY\DIY_COMPONENTS\accelerometers\accelerometers.lib))
-    (library (logical device)
-      (uri "C:\\Program Files\\KiCad\\share\\kicad\\library\\device.lib")))
+      (uri C:\Users\promet\Documents\Projet_CHAMP\PCB\DIY_KICAD_LIBRARY\DIY_COMPONENTS\accelerometers\accelerometers.lib)))
   (nets
     (net (code 1) (name /SCLK)
       (node (ref J1) (pin 4))
