@@ -38,8 +38,8 @@ USE ieee.std_logic_unsigned.all;
 
 ENTITY ASP_spi_master_Rw_adaptative_wordLenght IS
   GENERIC(
-    slaves  : INTEGER := 0;  --number of spi slaves
-    d_width : INTEGER := 0); --data bus width
+    slaves  : INTEGER := 0;	--number of spi slaves
+    d_width : INTEGER := 0);	--data bus width 
   PORT(
     clock   : IN     STD_LOGIC;                             --system clock
     reset_n : IN     STD_LOGIC;                             --asynchronous reset
@@ -82,8 +82,8 @@ BEGIN
 
   PROCESS(clock, reset_n)
   
-  VARIABLE BITCOUNTER	: INTEGER :=0;
-  VARIABLE tmp 			: std_logic := '0';
+  VARIABLE BITCOUNTER : INTEGER 	:=0;
+  VARIABLE tmp 		 : std_logic := '0';
 	 
   BEGIN
 
@@ -167,8 +167,8 @@ BEGIN
 					else
 						if BITCOUNTER < 16 then											--BITCOUNTER < 16, WRITE Mode send a 16 bit word 
 							MISOMOSI  <= tx_buffer(d_width-1);               	--clock out data bit
-							tx_buffer <= tx_buffer(d_width-2 DOWNTO 1) & '0';	--shift data transmit buffer
-						end if;
+							tx_buffer <= tx_buffer(d_width-2 DOWNTO (d_width-(d_width-1))) & '0';	--shift data transmit buffer 	
+						end if;                                                                                  	
 					end if;
 						
 					BITCOUNTER := BITCOUNTER +1;
@@ -210,4 +210,4 @@ BEGIN
       END CASE;
     END IF;
   END PROCESS; 
-END ARCHITECTURE SPI_17_BITS; 
+END ARCHITECTURE SPI_adaptative; 
