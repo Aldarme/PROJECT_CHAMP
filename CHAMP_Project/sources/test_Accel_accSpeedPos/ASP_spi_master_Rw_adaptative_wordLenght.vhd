@@ -79,31 +79,31 @@ ARCHITECTURE SPI_adaptative OF ASP_spi_master_Rw_adaptative_wordLenght IS
   SIGNAL last_bit_rx : INTEGER RANGE 0 TO d_width*2;			 --last rx data bit location
   
 BEGIN
-
+		
   PROCESS(clock, reset_n)
-  
+		
   VARIABLE BITCOUNTER : INTEGER 	:=0;
   VARIABLE tmp 		 : std_logic := '0';
 	 
   BEGIN
-
+			
     IF(reset_n = '0') THEN        --reset system
       busy <= '1';                --set busy signal
       ss_n <= (OTHERS => '1');    --deassert all slave select lines
       MISOMOSI <= 'Z';            --set master out to high impedance
       rx_data <= (OTHERS => '0'); --clear receive data port
       state <= ready;             --go to ready state when reset is exited
-
+			
     ELSIF(clock'EVENT AND clock = '1') THEN -- <-> rising_edge(clock)
       
 		CASE state IS               --state machine
-
+					
         WHEN ready =>
           busy <= '0';             --clock out not busy signal
           ss_n <= (OTHERS => '1'); --set all slave select outputs high
           MISOMOSI <= 'Z';         --set mosi output high impedance
           continue <= '0';         --clear continue flag
-				
+						
           --user input to initiate transaction
           IF(enable = '1') THEN       
             busy <= '1';             --set busy signal
@@ -128,11 +128,11 @@ BEGIN
           ELSE
             state <= ready;          --remain in ready state
           END IF;
-
+					
         WHEN execute =>
           busy <= '1';        --set busy signal
           ss_n(slave) <= '0'; --set proper slave select output
-          
+						
           --system clock to sclk ratio is met
           IF(count = clk_ratio) THEN        
             count <= 1;                     --reset system-to-spi clock counter
@@ -142,71 +142,68 @@ BEGIN
             ELSE
               clk_toggles <= clk_toggles + 1; --increment spi clock toggles counter
             END IF;
-            
+							
             --spi clock toggle needed
             IF(clk_toggles <= d_width*2 AND ss_n(slave) = '0') THEN
               sclk <= NOT sclk; --toggle spi clock
             END IF;
-            
+							
             --receive data from SPI slave
             IF(assert_data = '0' AND clk_toggles < last_bit_rx + 1 AND ss_n(slave) = '0') THEN
-					
-					rx_buffer <= rx_buffer(d_width-2 DOWNTO 0) & MISOMOSI; --shift in received bit
-					
+							rx_buffer <= rx_buffer(d_width-2 DOWNTO 0) & MISOMOSI; --shift in received bit
             END IF;
-				
+							
             --transmit data to SPI slave
 				IF(assert_data = '1' AND clk_toggles < last_bit_rx) THEN
 						
-					if (BITCOUNTER = 7 ) then
+					if (BITCOUNTER = 0 ) then				--Here, check the READ/Write bit
 						tmp := tx_buffer(d_width-1);
 					end if;
 						
 					if (BITCOUNTER >= 8 and tmp = '1') then
 						MISOMOSI <= 'Z';
 					else
-						if BITCOUNTER < 16 then											--BITCOUNTER < 16, WRITE Mode send a 16 bit word 
-							MISOMOSI  <= tx_buffer(d_width-1);               	--clock out data bit
-							tx_buffer <= tx_buffer(d_width-2 DOWNTO (d_width-(d_width-1))) & '0';	--shift data transmit buffer 	
+						if BITCOUNTER < 16 then								--BITCOUNTER < 16, WRITE Mode send a 16 bit word 
+							MISOMOSI  <= tx_buffer(d_width-1);  --clock - out data bit
+							tx_buffer <= tx_buffer(d_width-2 DOWNTO 0) & '0';	--shift data transmit buffer
 						end if;                                                                                  	
 					end if;
 						
 					BITCOUNTER := BITCOUNTER +1;
 				END IF;
-            
+							
             --last data receive, but continue
             IF(clk_toggles = last_bit_rx AND cont = '1') THEN
               tx_buffer <= tx_data;                       --reload transmit buffer
               clk_toggles <= last_bit_rx - d_width*2 + 1; --rst spi clock toggle cnter
               continue <= '1';                            --set continue flag
             END IF;
-            
+							
             --normal end of transaction, but continue
             IF(continue = '1') THEN  
               continue <= '0';      --clear continue flag
               busy <= '0';          --clock out signal that first receive data is ready
               rx_data <= rx_buffer; --clock out received data to output port    
             END IF;
-            
+							
             --end of transaction
             IF((clk_toggles = d_width*2 + 1) AND cont = '0') THEN
               busy <= '0';             --clock out not busy signal
               ss_n <= (OTHERS => '1'); --set all slave selects high
-				  sclk <= NOT sclk;
+							sclk <= NOT sclk;
               MISOMOSI <= 'Z';         --set mosi output high impedance
               rx_data <= rx_buffer;    --clock out received data to output port
-				  BITCOUNTER := 0;
-				  tmp := '0';
+							BITCOUNTER := 0;
+							tmp := '0';
               state <= ready;          --return to ready state
             ELSE                       --not end of transaction
               state <= execute;        --remain in execute state
             END IF;
-          
+							
           ELSE        --system clock and sclk ratio don't met
             count <= count + 1; --increment counter
             state <= execute;   --remain in execute state
           END IF;
-
       END CASE;
     END IF;
   END PROCESS; 
