@@ -6,17 +6,17 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.all;
 use IEEE.MATH_REAL.all;
 
-entity adxl355_beh is
-	 generic(
+entity ASP_KX224_beh is
+	generic(
 		SIZE   : INTEGER:=20;	-- 20 bits data
 		ARANGE : REAL:=8.0		-- +-8g
-	 );
-	 port(
-	   SCLK 	: in  STD_LOGIC;	--SPI clock
-	   CSB  	: in  STD_LOGIC;	--slave selection
-	   SDI_O  : INOUT  STD_LOGIC	--MOSI/Miso
-	   --SDO  : out STD_LOGIC		--MISO
-	     );
+	);
+	port(
+	  SCLK	: in  STD_LOGIC;		--SPI clock
+	  CSB  	: in  STD_LOGIC;		--slave selection
+	  SDI_O : INOUT  STD_LOGIC	--MOSI/Miso
+	  --SDO : out STD_LOGIC			--MISO
+	);
 end entity;
 
 --}} End of automatically maintained section
@@ -32,16 +32,16 @@ use IEEE.MATH_REAL.all;
 -- Architecture 3 wires
 --
 --------------------------------------------------------------
-architecture ThreeWires of adxl355_beh is
+architecture ThreeWires of ASP_KX224_beh is
 
 -- SPI Interface
 signal iBit        : integer		:= 0;
 signal isAddress   : std_logic	:= '0';
 signal ReadWriteB  : std_logic	:= '0';
 signal Instruction : std_logic_vector( 7 downto 0) := 8x"0";
-signal TxData      : std_logic_vector( 8 downto 0) := 8x"0";	--From accelerometer (slave) to master
-signal RxData      : std_logic_vector( 8 downto 0) := 8x"0";	--From master to accelerometer (slave) | data store but never used
-signal SpiReg      : std_logic_vector( 8 downto 0) := 8x"0";
+signal TxData      : std_logic_vector( 8 downto 0) := 9x"0";	--From accelerometer (slave) to master
+signal RxData      : std_logic_vector( 8 downto 0) := 9x"0";	--From master to accelerometer (slave) | data store but never used
+signal SpiReg      : std_logic_vector( 8 downto 0) := 9x"0";
 
 ---
 --- KX224 Registers addresses
@@ -49,8 +49,8 @@ signal SpiReg      : std_logic_vector( 8 downto 0) := 8x"0";
 constant KX_READ_REG    : std_logic := '1';
 constant KX_WRITE_REG   : std_logic := '0';
 
-constant KX_ZOUT_L  : std_logic_vector(7 downto 0):=7x"0A";
-constant KX_ZOUT_H  : std_logic_vector(7 downto 0):=7x"0B";
+constant KX_ZOUT_L  : std_logic_vector(6 downto 0) := 7x"0A";
+constant KX_ZOUT_H  : std_logic_vector(6 downto 0) := 7x"0B";
 
 constant SPI_ADD_FIELD	: std_logic_vector(16 downto 9)	:=(others=>'0');	--Champ d'addresses
 constant SPI_DATA_FIELD : std_logic_vector(8 downto 0)	:=(others=>'0');	--EXTRABIT & Champ de données
@@ -126,7 +126,7 @@ begin
 				ReadWriteB <= SDI_O;	--SDI
 			end if;
 				
-			vInst := Instruction(Instruction'HIGH downto 0) & SDI_O;	--Serialize SDI_O data into "vInst"
+			vInst := Instruction(Instruction'HIGH-1 downto 0) & SDI_O;	--Serialize SDI_O data into "vInst"
 			Instruction <= vInst;
 				
 			if iBit = Instruction'HIGH-1 then	--handler for circular buffer || if iBit = 8
@@ -136,18 +136,18 @@ begin
 				case vInst(KX_ZOUT_L'RANGE) is
 						
 					when KX_ZOUT_L =>
-						TxData(8) 			 <= 0;
-						TxData(7 downto 0) <= dataz1;
+						TxData(8) 					<= '0';
+						TxData(7 downto 0)	<= dataz1;
 						
 					when KX_ZOUT_H =>
-						TxData(8) 			 <= 0;
-						TxData(7 downto 0) <= dataz2;
+						TxData(8) 			 		<= '0';
+						TxData(7 downto 0) 	<= dataz2;
 						
 					when others =>
-						TxData(8) 			 <= 0;
-						TxData(7 downto 0) <= SpiReg;
-						
+						TxData(8) 			 		<= '0';
+						TxData(7 downto 0) 	<= SpiReg(8 downto 1);						
 				end case;
+				
 			else
 				iBit <= iBit+1;
 			end if;
