@@ -75,7 +75,7 @@ KX-224
 		-> Registre "CNTL1" @ 0x18, on set le mot suivant: "0x50"
 		
 		On fixe un ODR étant le plus proche possible de 1Khz
-		-> Registre "ODCNTL" @ 0x1B, on set le mot suivant: "0x5X" (ODR a déterminer)
+		-> Registre "ODCNTL" @ 0x1B, on set le mot suivant: "0x07" (ODR fixé à 1600Hz)
 		
 		On souhaite activer le mode SPI 3 wires
 		-> Register "INC1" @ 0x1c, on set le mot suivant: "0x01"
