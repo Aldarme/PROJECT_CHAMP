@@ -39,8 +39,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "EvalBoard_AIS3624"
-Date "2018-10-24"
-Rev "1.6"
+Date "2018-11-12"
+Rev "2.0"
 Comp "LPNHE"
 Comment1 "ROMET Pierre"
 Comment2 ""
@@ -83,7 +83,7 @@ Text Label 4300 2400 0    60   ~ 0
 CS/SCL
 Text Label 4900 2500 0    60   ~ 0
 SCLK
-Text Label 6450 2600 0    60   ~ 0
+Text Label 4300 2600 0    60   ~ 0
 Miso/Mosi
 Wire Wire Line
 	3950 2400 4300 2400
@@ -186,17 +186,6 @@ Connection ~ 7150 3400
 Wire Wire Line
 	5000 4100 5000 4300
 $Comp
-L Jumper JP1
-U 1 1 5BC45F84
-P 5350 2600
-F 0 "JP1" H 5350 2750 50  0000 C CNN
-F 1 "Jumper" H 5350 2520 50  0001 C CNN
-F 2 "Capacitors_SMD:C_1210" H 5350 2600 50  0001 C CNN
-F 3 "" H 5350 2600 50  0001 C CNN
-	1    5350 2600
-	-1   0    0    1   
-$EndComp
-$Comp
 L Jumper JP2
 U 1 1 5BC46186
 P 4600 2500
@@ -206,32 +195,6 @@ F 2 "Capacitors_SMD:C_0805" H 4600 2500 50  0001 C CNN
 F 3 "" H 4600 2500 50  0001 C CNN
 	1    4600 2500
 	1    0    0    -1  
-$EndComp
-$Comp
-L Jumper JP3
-U 1 1 5BC467B7
-P 4600 2600
-F 0 "JP3" H 4600 2750 50  0000 C CNN
-F 1 "Jumper" H 4600 2520 50  0001 C CNN
-F 2 "Capacitors_SMD:C_0805" H 4600 2600 50  0001 C CNN
-F 3 "" H 4600 2600 50  0001 C CNN
-	1    4600 2600
-	-1   0    0    1   
-$EndComp
-Wire Wire Line
-	4900 2600 5050 2600
-Wire Wire Line
-	5650 2600 5850 2600
-$Comp
-L Jumper JP4
-U 1 1 5BC4B0E2
-P 6150 2600
-F 0 "JP4" H 6150 2750 50  0000 C CNN
-F 1 "Jumper" H 6150 2520 50  0001 C CNN
-F 2 "Capacitors_SMD:C_0805" H 6150 2600 50  0001 C CNN
-F 3 "" H 6150 2600 50  0001 C CNN
-	1    6150 2600
-	-1   0    0    1   
 $EndComp
 $Comp
 L Conn_02x03_Odd_Even J1
