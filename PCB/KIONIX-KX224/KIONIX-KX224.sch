@@ -39,8 +39,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "Kionix KX3624 eval_board"
-Date "2018-10-24"
-Rev "1.6"
+Date "2018-11-12"
+Rev "v2.0"
 Comp "LPNHE"
 Comment1 "ROMET Pierre"
 Comment2 ""
@@ -64,7 +64,7 @@ U 1 1 5BBCCA62
 P 5050 3700
 F 0 "C1" H 5075 3800 50  0000 L CNN
 F 1 "100nF" H 5075 3600 50  0000 L CNN
-F 2 "Capacitors_SMD:C_0603" H 5088 3550 50  0001 C CNN
+F 2 "Capacitors_SMD:C_0805" H 5088 3550 50  0001 C CNN
 F 3 "" H 5050 3700 50  0001 C CNN
 	1    5050 3700
 	1    0    0    -1  
@@ -80,7 +80,7 @@ F 3 "" H 7250 3250 50  0001 C CNN
 	1    7250 3250
 	1    0    0    -1  
 $EndComp
-Text Label 2300 2300 2    60   ~ 0
+Text Label 2900 2300 2    60   ~ 0
 VDD
 $Comp
 L GNDREF #PWR01
@@ -97,7 +97,7 @@ Text Label 4600 2300 0    60   ~ 0
 CS/SCL
 Text Label 4600 2400 0    60   ~ 0
 SCLK
-Text Label 5200 2500 0    60   ~ 0
+Text Label 4600 2500 0    60   ~ 0
 Miso/Mosi
 Text Label 4750 3400 2    60   ~ 0
 VDD
@@ -131,34 +131,12 @@ F 3 "" H 7250 4350 50  0001 C CNN
 $EndComp
 Text Label 6450 2800 2    60   ~ 0
 VDD
-$Comp
-L Jumper JP1
-U 1 1 5BBDF0A5
-P 4900 2500
-F 0 "JP1" H 4900 2650 50  0000 C CNN
-F 1 "Jumper" H 4900 2420 50  0000 C CNN
-F 2 "Capacitors_SMD:C_0805" H 4900 2500 50  0001 C CNN
-F 3 "" H 4900 2500 50  0001 C CNN
-	1    4900 2500
-	1    0    0    -1  
-$EndComp
-$Comp
-L Jumper JP2
-U 1 1 5BBDF7F0
-P 2600 2300
-F 0 "JP2" H 2600 2450 50  0000 C CNN
-F 1 "Jumper" H 2600 2220 50  0000 C CNN
-F 2 "Capacitors_SMD:C_1210" H 2600 2300 50  0001 C CNN
-F 3 "" H 2600 2300 50  0001 C CNN
-	1    2600 2300
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
-	5200 4050 5050 4050
+	5050 4050 5800 4050
 Wire Wire Line
-	5800 3800 5800 4050
+	5800 4050 5800 3800
 Wire Wire Line
-	5950 3800 5800 3800
+	5800 3800 5950 3800
 Wire Wire Line
 	6450 2800 7250 2800
 Wire Wire Line
@@ -205,17 +183,6 @@ Wire Wire Line
 	3600 2400 2950 2400
 Wire Wire Line
 	3600 2300 2900 2300
-$Comp
-L Jumper JP3
-U 1 1 5BC5A8B4
-P 5500 4050
-F 0 "JP3" H 5500 4200 50  0000 C CNN
-F 1 "Jumper" H 5500 3970 50  0000 C CNN
-F 2 "Capacitors_SMD:C_1210" H 5500 4050 50  0001 C CNN
-F 3 "" H 5500 4050 50  0001 C CNN
-	1    5500 4050
-	1    0    0    -1  
-$EndComp
 $Comp
 L Conn_02x03_Odd_Even J1
 U 1 1 5BD03BD2
