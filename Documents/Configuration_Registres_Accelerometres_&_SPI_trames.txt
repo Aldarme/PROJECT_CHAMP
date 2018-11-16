@@ -31,7 +31,13 @@ ADXL355
 
 
 ST-AIS3624
-	
+		
+	Connections du pad:
+		-> La broche 16 (SDI) du composant devient bi-directionnelle en interface "3-wire",
+			donc il n'est pas nécessaire de connecter la broche 15 (SDO) (internal Pull-UP resistor).
+		-> la broche 12 (CS) du composant doit être directement relié au signal pour activer le mode "SPI".
+			Pour activer le mode "I2C", il est nécesaire de relier la broche 12 (CS) à la broche 14 (Vdd-IO).
+		
 	Registre de configuration:
 	
 		On souhaite fixer l'ODR de notre device à 1KHz
