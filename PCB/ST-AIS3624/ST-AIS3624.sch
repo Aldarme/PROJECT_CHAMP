@@ -107,7 +107,7 @@ $EndComp
 Wire Wire Line
 	5850 3500 5600 3500
 Wire Wire Line
-	5600 3500 5600 4300
+	5600 4300 5600 3500
 Wire Wire Line
 	5000 4300 6400 4300
 Wire Wire Line
@@ -115,7 +115,7 @@ Wire Wire Line
 Text Label 4550 3600 0    60   ~ 0
 VDD
 Wire Wire Line
-	5850 3600 4550 3600
+	4550 3600 5850 3600
 Wire Wire Line
 	5850 3700 5600 3700
 Connection ~ 5600 3700
@@ -177,13 +177,6 @@ Wire Wire Line
 Text Label 7550 3400 0    60   ~ 0
 Miso/Mosi
 Wire Wire Line
-	6850 3400 7550 3400
-Wire Wire Line
-	6850 3500 7150 3500
-Wire Wire Line
-	7150 3500 7150 3400
-Connection ~ 7150 3400
-Wire Wire Line
 	5000 4100 5000 4300
 $Comp
 L Jumper JP2
@@ -207,4 +200,6 @@ F 3 "" H 3650 2500 50  0001 C CNN
 	1    3650 2500
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	6850 3400 7550 3400
 $EndSCHEMATC
