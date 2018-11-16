@@ -194,7 +194,7 @@ begin
     cont     => '0',                  --continuous mode command
     clk_div  => 5,										--system clock cycles, based on 1/2 period of clock (~10MHz -> 3 ; 100K -> 250)
     addr     => 0,                    --address of slave
-    tx_data  => spi_txdata,           --data to transmit
+    tx_data  => fSpi_read,           --data to transmit
     sclk     => spi_sclk,             --spi clock
     ss_n     => spi_ss_n,             --slave select
     busy     => spi_busy,             --busy / data ready signal
@@ -481,7 +481,7 @@ begin
 						if fSpi_isEmp = '0' then
 							
 							fSpi_oe_r		 	<= '1';
-							spi_enable		<= '1';
+							
 							DAC_OE_OUTPUT	<= '1';
 							
 							cStateSpi <= CPDATAst;
@@ -491,13 +491,14 @@ begin
 					
 					when CPDATAst =>
 							
-						spi_txdata <= fSpi_read;
-						
+						--spi_txdata <= fSpi_read;
+						spi_enable		<= '1';
+						fSpi_oe_r			<= '0';
 						cStateSpi <= TRANSMITst;
 						
 					when TRANSMITst =>
 						
-						fSpi_oe_r			<= '0';
+						
 						spi_enable		<= '0';
 						DAC_OE_OUTPUT	<= '0';
 						
