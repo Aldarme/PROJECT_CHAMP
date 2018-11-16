@@ -42,18 +42,29 @@ architecture filter_mapBitAvrgANDInteg of ASP_filter is
  
  signal offset : signed(16 downto 0) := 17x"08000";		--offset of 32768 (8000 Hex) to transform signed word into an unsigned word
 
- type   T_SPISTATE is ( IDLEst, Testst, CALIBst, MAPst, ADDst, TRANSMITst);
+ type   T_SPISTATE is ( IDLEst, Testst, CALIBst, MAPst, REMAPst, ADDst, TRANSMITst);
  signal cState	: T_SPISTATE;
  signal cState2	:	T_SPISTATE;
  signal cState3 : T_SPISTATE;
  signal cState4 : T_SPISTATE;
  
+ --acceleration
  signal tmp17b		: signed(16 downto 0);
  signal signedTmp	: signed(16 downto 0);
  signal avrg17b		: signed(16 downto 0);
  signal avgSgnTmp	: signed(16 downto 0);
- signal speedAdd 	: signed(16 downto 0);
- signal sgnSpdTmp	: signed(16 downto 0);
+ signal spdtmp17 	: signed(16 downto 0);
+ --speed
+ signal sgnSpdTmp	: integer;
+ signal SpdTmpadd	: integer;
+ signal speedAdder: integer;
+ signal speedAdBuf: integer;
+ signal lessOffset: integer;
+ --position
+ signal withoffs : integer;
+ signal posAdder : integer;
+ 
+ 
  
  type myTab is array(0 to 1023) of std_logic_vector(15 downto 0); -- depth of the average array 1024 or 2048
  
@@ -90,7 +101,12 @@ architecture filter_mapBitAvrgANDInteg of ASP_filter is
  flt: process(RESET_SIGNAL, CLOCK_50) is
   begin
 	if RESET_SIGNAL = '0' then
+		
 		FLT_OE_OUTPUT <= '0';
+		tmp17b		<= 17x"0";
+		signedTmp	<= 17x"0";
+		TSMT_TOANALOG <= 16x"0";
+		
 		cState <= IDLEst;
 		
 	elsif rising_edge(CLOCK_50) then
@@ -114,11 +130,11 @@ architecture filter_mapBitAvrgANDInteg of ASP_filter is
 			when CALIBst	=>
 				
 				signedTmp <= tmp17b + offset;
+				FLT_OE_OUTPUT <= '1';
 				cState 	<= TRANSMITst;
 				
 			when TRANSMITst =>
 				
-				FLT_OE_OUTPUT <= '1';
 				TSMT_TOANALOG <= std_logic_vector(unsigned(signedTmp(15 downto 0)) - unsigned(avrg));
 				cState 	<= IDLEst;
 				
@@ -159,7 +175,7 @@ architecture filter_mapBitAvrgANDInteg of ASP_filter is
 					if(FLT_OE_INPUT = '0') then
 						cState2 <= IDLEst;
 					else
-						cState2 	<= Testst;
+						cState2 <= Testst;
 					end if;
 					
 				when Testst =>
@@ -195,10 +211,13 @@ architecture filter_mapBitAvrgANDInteg of ASP_filter is
 		end if;
 	end process average;
 
+	
  --
  -- Integrated acceleration
  --
- dp_dt: process(RESET_SIGNAL, CLOCK_50) is
+ dp_dt: process(RESET_SIGNAL, CLOCK_50) is	--IDLEst, Testst, CALIBst, MAPst, ADDst, TRANSMITst
+			
+			variable tmpLess : integer;
 			
 	begin
 			
@@ -207,6 +226,11 @@ architecture filter_mapBitAvrgANDInteg of ASP_filter is
 			SPD_OUTPUT 		<= 16x"0";
 			SPD_OE_OUTPUT <= '0';
 			SPD_COUNT			<= 0;
+			sgnSpdTmp			<= 0;--17x"0";
+			lessOffset		<= 0;
+			speedAdBuf		<= 0;--17x"0";17x"0";
+			SpdTmpadd			<= 0;--17x"0";17x"0";
+			speedAdder		<= 0;--17x"0";17x"0";
 			cState3 			<= IDLEst;
 			
 		elsif rising_edge(CLOCK_50) then
@@ -217,26 +241,47 @@ architecture filter_mapBitAvrgANDInteg of ASP_filter is
 					
 					SPD_OE_OUTPUT <= '0';
 					
-					if flt_OE_INPUT = '1' then
-						cState3 <= CALIBst;
+					if FLT_OE_INPUT = '1' then
+						cState3 <= Testst;
 					else
 						cState3 <= IDLEst;
 					end if;
 					
+				when Testst =>
+					
+					sgnSpdTmp	<= to_integer(unsigned(signedTmp(15 downto 0)) - unsigned(avrg));
+					cState3 <= CALIBst;
+					
 				when CALIBst =>
 					
-					speedAdd <= resize(signed(RCV_TOFILTER(19 downto 4)), speedAdd'length);
+					lessOffset <= sgnSpdTmp - to_integer(offset);
+					cState3 <= REMAPst;
+					
+				when REMAPst =>
+					
+					if lessOffset > -1800 AND lessOffset < 1800 then
+						tmpLess := 0;
+						speedAdder <= 0;
+					else
+						tmpLess := lessOffset;
+					end if;
+					
+					cState3 <= ADDst;
+					
+				when ADDst =>
+					
+					speedAdder <= tmpLess + speedAdder;
 					cState3 <= MAPst;
 					
 				when MAPst =>
 					
-					sgnSpdTmp	<= speedAdd + offset;
+					SpdTmpadd <= speedAdder + to_integer(offset);
 					SPD_OE_OUTPUT <= '1';
 					cState3 <= TRANSMITst;
 					
 				when TRANSMITst =>
 					
-					SPD_OUTPUT	<= std_logic_vector(unsigned(sgnSpdTmp(15 downto 0) + signed(SPD_OUTPUT)));
+					SPD_OUTPUT	<= std_logic_vector(to_unsigned(SpdTmpadd, 16));
 					SPD_COUNT		<= SPD_COUNT + 1;
 					cState3 <= IDLEst;
 					
@@ -246,10 +291,13 @@ architecture filter_mapBitAvrgANDInteg of ASP_filter is
 		end if;	
 	end process dp_dt;
  
+ 
  --
  -- Integrated speed
  --
  dv_dt: process(RESET_SIGNAL, CLOCK_50) is
+		
+		variable tmpLess : integer;
 		
 	 begin
 		
@@ -269,19 +317,35 @@ architecture filter_mapBitAvrgANDInteg of ASP_filter is
 					POS_OE_OUTPUT <= '0';
 					
 					if SPD_OE_OUTPUT = '1' then
-						cState4 <= Mapst;
+						cState4 <= Testst;
 					else
 						cState4 <= IDLEst;
 					end if;
 					
-				when Mapst =>
+				when Testst =>
 					
+					if speedAdder > -1000 AND speedAdder < 1000 then
+						tmpLess := 0;
+						posAdder <= 0;
+					else
+						tmpLess := speedAdder;
+					end if;					
+					cState4 <= CALIBst;
+					
+				when CALIBst =>
+					
+					posAdder <= tmpLess + posAdder;					
+					cState4 <= ADDst;
+					
+				when ADDst =>
+					
+					withoffs <= posAdder + to_integer(offset);
 					POS_OE_OUTPUT <= '1';
 					cState4 <= TRANSMITst;
 					
 				when TRANSMITst =>
 					
-					POS_OUTPUT <= std_logic_vector(unsigned(SPD_OUTPUT) + unsigned(POS_OUTPUT));
+					POS_OUTPUT <= std_logic_vector(to_unsigned(withoffs, 16));
 					POS_COUNT	 <= POS_COUNT +1;
 					cState4 <= Testst;
 					
