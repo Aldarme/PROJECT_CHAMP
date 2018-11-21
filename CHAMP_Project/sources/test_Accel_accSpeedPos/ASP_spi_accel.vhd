@@ -1,5 +1,26 @@
--- Quartus II VHDL Template
--- Binary Counter
+--------------------------------------------------------------------------------
+--
+-- FileName:         ASP_spi_accel.vhd
+-- Dependencies:     none
+-- Design Software:  Quartus II Version 17.1.0
+--
+-- This file provide:
+--		Adaptative configuration according to the accelerometer used
+--		The register configuration of our accelerometer by serializing data 
+--			through SPI protocol
+--		The capacity to read data measure by our accelerometer by 
+--			reading data through SPI protocol
+-- 
+-- Acceleromter datas read:
+--	Axe Z
+-- 
+-- Version History
+-- Version 1.0 08/06/2018 - Pierre ROMET
+-- 	Possibility to configure & read accelerometer ADXL355
+--
+-- Version 1.5 15/11/2018 - Pierre ROMET
+--	Adaptative configuration according to the accelerometer used 
+--------------------------------------------------------------------------------
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -71,7 +92,7 @@ COMPONENT ASP_spi_master_Rw_adaptative_wordLenght
 	);
 END COMPONENT;
 
-constant ACC_CONF : natural := 2; -- 0 = ADXL355 ; 1 = AIS3624 ; 2 = KX224 / Define the arch according to the used acc
+constant ACC_CONF : natural := 0; -- 0 = ADXL355 ; 1 = AIS3624 ; 2 = KX224 / Define the arch according to the used acc
 
 signal reset_n : STD_LOGIC;
 signal SampKey : STD_LOGIC_VECTOR(3 DOWNTO 0);
@@ -140,8 +161,8 @@ constant ACCEL_READ_ADXL355 : T_WORD_ARR := (
 			);
 			
 constant ACCEL_CONFIG_AIS3634 : T_WORD_ARR := (
-			BIT_WRITE_REG & AIS_MS_BIT & 6x"20" & 8x"3C",	-- 203Ch -- ODR to 1Khz and axes enable
-			BIT_WRITE_REG & AIS_MS_BIT & 6x"23" & 8x"B1"	-- 23B1h -- secure data between L&H register data Z & SCALE & SPI 3 wires enable
+			BIT_WRITE_REG & AIS_MS_BIT & 6x"23" & 8x"31",	-- 23B1h -- secure data between L&H register data Z & SCALE & SPI 3 wires enable
+			BIT_WRITE_REG & AIS_MS_BIT & 6x"20" & 8x"3C"	-- 203Ch -- ODR to 1Khz and axes enable
 			);
 			
 constant ACCEL_READ_AIS3634 : T_WORD_ARR := (
