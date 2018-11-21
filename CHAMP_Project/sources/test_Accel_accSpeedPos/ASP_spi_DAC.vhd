@@ -1,10 +1,24 @@
--- Quartus II VHDL Template
--- Binary Counter
+--------------------------------------------------------------------------------
+--
+-- FileName:         ASP_spi_DAC.vhd
+-- Dependencies:     none
+-- Design Software:  Quartus II Version 17.1.0
+--
+-- This file provide an architecture to serialize tree different types of data
+--  throught the SPI link.
+-- Those data are:
+--	Acceleration
+--	Speed
+--	Position
+-- 
+-- Version History
+-- Version 1.0 21/11/2018 - Pierre ROMET
+--	functional architecture - satisfactory ModelSim modelisation
+--------------------------------------------------------------------------------
 
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use ieee.math_real.all;
 use work.all;
 
 entity ASP_spi_DAC is
@@ -12,16 +26,16 @@ entity ASP_spi_DAC is
 	(
 		CLOCK_50   		: IN STD_LOGIC;
 		KEY    				: IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-		GPIO_SPI_CLK	:	INOUT STD_LOGIC;
-		GPIO_SPI_SS		:	INOUT STD_LOGIC;
-		GPIO_SPI_SDIO	:	INOUT STD_LOGIC;
+		GPIO_SPI_CLK	:	INOUT STD_LOGIC;										-- SPI clock
+		GPIO_SPI_SS		:	INOUT STD_LOGIC;										-- SPI select slave
+		GPIO_SPI_SDIO	:	INOUT STD_LOGIC;										-- SPI bi-directionnal pipe
 		RECV_DATA			:	IN STD_LOGIC_VECTOR(15 DOWNTO 0);		-- acceleration data supply by filter
 		DAC_OE_INPUT	:	IN STD_LOGIC;												-- acceleration data oenable input
 		DAC_SPEED_DATA: IN STD_LOGIC_VECTOR(15 DOWNTO 0);		-- speed data supply by filter
 		DAC_SPD_OE_IN	: IN STD_LOGIC;												-- speed data oenable input
 		DAC_POS_DATA	: IN STD_LOGIC_VECTOR(15 downto 0);		-- position data supply by filter
 		DAC_POS_OE_IN	: IN STD_LOGIC;												-- position data oenable input
-		DAC_OE_OUTPUT	:	OUT STD_LOGIC;
+		DAC_OE_OUTPUT	:	OUT STD_LOGIC;											-- Master state machine oenable
 		RESET_SIGNAL 	:	IN STD_LOGIC
 	);
 
@@ -73,47 +87,38 @@ COMPONENT IP_FIFO_24
 	);
 END COMPONENT;
 
-signal reset_n : STD_LOGIC;
-signal SampKey : STD_LOGIC_VECTOR(3 DOWNTO 0);
-
-signal ss_n       : STD_LOGIC_VECTOR(0 DOWNTO 0); 
-signal spi_enable : STD_LOGIC;
-signal spi_ss_n   : STD_LOGIC_VECTOR(0 DOWNTO 0); 
-signal spi_busy   : STD_LOGIC;
-signal spi_pbusy  : STD_LOGIC;
-signal spi_sclk   : STD_LOGIC;
-signal spi_txdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
-signal spi_rxdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
-
-type   T_SPISTATE is (IDLEst, WRITEst, TRANSMITCONFst, TRANSMITst, WAITENDTRANSst, CPDATAst, INCREMTst, RESETst);
-signal cState     	: T_SPISTATE;
-signal cStateAcc    : T_SPISTATE;
-signal cStateSpd    : T_SPISTATE;
-signal cStatePos    : T_SPISTATE;
-signal cStateRnW    : T_SPISTATE;
-signal cStateSpi    : T_SPISTATE;
-
-type    T_WORD_ARR is array (natural range <>) of std_logic_vector;
+type T_SPISTATE 		is (IDLEst, WRITEst, TRANSMITCONFst, TRANSMITst, WAITENDTRANSst, CPDATAst, INCREMTst, RESETst);
+type T_WORD_ARR			is array (natural range <>) of std_logic_vector;
+type SPI_CONF 			is array (0 to 15) of std_logic_vector (3 downto 0);
+type fifo_stLgVect	is array (0 to 3) of std_logic_vector(23 downto 0);		-- Four words of 24 bits to write fifos
+type fifo_nbrW 			is array (0 to 3) of STD_LOGIC_VECTOR (9 downto 0);		-- Four words of 10 bits to know nbr of word into fifo
 
 constant WRITEnUPDATE  	: std_logic_vector(3 downto 0) := 4x"3";
 constant DAC_ADDRESS		: std_logic_vector(3 downto 0) := 4x"0";
 
 constant SPI_CONFIG : T_WORD_ARR:= (
 			WRITEnUPDATE,
-			DAC_ADDRESS			
-			);
+			DAC_ADDRESS);
 
-signal	previous			: std_logic := '0';
-signal	current				: std_logic	:= '0';
-signal	cpt_spiClock	: integer 	:= 0;
+signal cState     	: T_SPISTATE;
+signal cStateRnW    : T_SPISTATE;
+signal cStateSpi    : T_SPISTATE;
+
+signal reset_n : STD_LOGIC;
+signal SampKey : STD_LOGIC_VECTOR(3 DOWNTO 0);
+
+--SPI
+signal ss_n       : STD_LOGIC_VECTOR(0 DOWNTO 0); 
+signal spi_enable : STD_LOGIC;
+signal spi_ss_n   : STD_LOGIC_VECTOR(0 DOWNTO 0); 
+signal spi_busy   : STD_LOGIC;
+signal spi_pbusy  : STD_LOGIC;
+signal spi_sclk   : STD_LOGIC;
+signal spi_rxdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
 
 --FIFO SIGNALs
-type fifo_stLgVect is array (0 to 3) of std_logic_vector(23 downto 0);	-- Four words of 24 bits to write fifos
-type fifo_nbrW is array (0 to 3) of STD_LOGIC_VECTOR (9 downto 0);			-- Four words of 10 bits to know nbr of word into fifo
-
 signal fifo_write : fifo_stLgVect;
 signal fifo_read  : fifo_stLgVect;
-signal fSpi_write : std_logic_vector(23 downto 0);
 signal fSpi_read	: std_logic_vector(23 downto 0);
 
 signal fifo_oe_w	: std_logic_vector(0 to 2);
@@ -129,10 +134,12 @@ signal fSpi_isFull: std_logic;
 signal fWord			: fifo_nbrW;
 signal fSpi_fWord	: std_logic_vector(9 downto 0);
 
---Data format, to transmit correct word to spi DAC
-type SPI_CONF is array (0 to 15) of std_logic_vector (3 downto 0);
-signal DAC_COMMAND	: SPI_CONF;
-signal DAC_ADRS			: SPI_CONF;
+--DAC register format
+signal DAC_COMMAND	: SPI_CONF;	--register config
+signal DAC_ADRS			: SPI_CONF; --regsiter address
+
+--signal process Read3Fifo
+signal index : integer range 0 to 2:= 0; --Index variable into Read3Fifo process
 
 begin
 
@@ -140,8 +147,6 @@ begin
 
  GPIO_SPI_CLK	<= spi_sclk;		--GPIO( 5 )
  GPIO_SPI_SS	<= spi_ss_n(0);	--GPIO( 7 )
- 
- --DAC_OE_OUTPUT <= '0';
  
  DAC_COMMAND(0)		<= "0000";--Write code to n
  DAC_COMMAND(1)		<= "1000";--write code to all
@@ -178,7 +183,7 @@ begin
  DAC_ADRS(15)	<= "1111";		--DAC 15
  
  
-
+ --SPI master declaration
  sm_dac: entity work.ASP_spi_master(SPI_DAC)
 
   GENERIC MAP (
@@ -188,33 +193,35 @@ begin
   PORT MAP(
     clock    => CLOCK_50,
     reset_n  => reset_n,
-    enable   => spi_enable,
-    cpol     => '1',
-    cpha     => '1',                  --spi clock phase
-    cont     => '0',                  --continuous mode command
-    clk_div  => 5,										--system clock cycles, based on 1/2 period of clock (~10MHz -> 3 ; 100K -> 250)
-    addr     => 0,                    --address of slave
-    tx_data  => fSpi_read,           --data to transmit
-    sclk     => spi_sclk,             --spi clock
-    ss_n     => spi_ss_n,             --slave select
-    busy     => spi_busy,             --busy / data ready signal
-    rx_data  => spi_rxdata,						--data received
-	 MISOMOSI => GPIO_SPI_SDIO 					--GPIO(6)
+    enable   => spi_enable,			-- new data available
+    cpol     => '1',						-- spi clock polarity
+    cpha     => '1',            -- spi clock phase
+    cont     => '0',            -- continuous mode command
+    clk_div  => 5,							-- system clock cycles, based on 1/2 period of clock (~10MHz -> 3 ; 100K -> 250)
+    addr     => 0,              -- address of slave
+    tx_data  => fSpi_read,      -- data to transmit
+    sclk     => spi_sclk,       -- spi clock
+    ss_n     => spi_ss_n,       -- slave select
+    busy     => spi_busy,       -- busy / data ready signal
+    rx_data  => spi_rxdata,			-- data received
+		MISOMOSI => GPIO_SPI_SDIO 	-- GPIO(6)
 	);
 
+	-- fifo acceleration declaration
 	fifoIpAcc: IP_FIFO_24																 
 	PORT MAP                                           
 	(
 		clock	=> CLOCK_50,
-		data	=> fifo_write(0),
-		rdreq	=> fifo_oe_r(0),
-		wrreq	=> fifo_oe_w(0),
-		empty	=> isEmpty(0),
-		full	=> isFull(0),
-		q			=> fifo_read(0),
-    usedw	=> fWord(0)
+		data	=> fifo_write(0),			-- fifo input data 
+		rdreq	=> fifo_oe_r(0), 			-- fifo enable read
+		wrreq	=> fifo_oe_w(0),			-- fifo enable write
+		empty	=> isEmpty(0),				-- check if fifo is empty 0: Not-empty , 1: empty
+		full	=> isFull(0),					-- check if fifo is full  0: Not-full  , 1: full
+		q			=> fifo_read(0),			-- fifo output data
+    usedw	=> fWord(0)						-- nbr of word into fifo
 	);
 	
+	--fifo speed decalration
 	fifoIpSpeed: IP_FIFO_24
 	PORT MAP
 	(
@@ -228,6 +235,7 @@ begin
     usedw	=> fWord(1)		
 	);
 	
+	--fifo position declaration
 	fifoIpPos: IP_FIFO_24
 	PORT MAP
 	(
@@ -241,11 +249,12 @@ begin
     usedw	=> fWord(2)
 	);
 	
+	--fifo spi declaration
 	fifoIpSpi: IP_FIFO_24
 	PORT MAP
 	(
 		clock	=> CLOCK_50,   
-		data	=> fSpi_write,
+		data	=> fifo_read(index),
 		rdreq	=> fSpi_oe_r,
 		wrreq	=> fSpi_oe_w,
 		empty	=> fSpi_isEmp,
@@ -275,133 +284,25 @@ begin
 	--
 	--	Acceleration data store
 	--
-	accSt : process(reset_n, CLOCK_50) is
-			
-		begin
-				
-			if reset_n = '0' then
-				
-				fifo_oe_w(0)	<= '0';
-				cStateAcc 		<= IDLEst;
-					
-			elsif rising_edge(CLOCK_50) then
-					
-				case cStateAcc is
-					
-					when IDLEst =>
-						
-						if DAC_OE_INPUT = '1' then
-							fifo_oe_w(0) <= '1';
-							cStateAcc 	 <= WRITEst;
-						else
-							cStateAcc <= IDLEst;
-						end if;						
-						
-					when WRITEst =>
-						
-						fifo_write(0) <= DAC_COMMAND(6) & DAC_ADRS(0) & RECV_DATA;						
-						cStateAcc 		<= RESETst;
-						
-					when RESETst =>
-						
-						fifo_oe_w(0)	<= '0';						
-						cStateAcc 		<= IDLEst;
-						
-					when others =>
-						cStateAcc <= IDLEst;
-			end case;
-		end if;
-	end process accSt;
+	fifo_write(0) <= DAC_COMMAND(6) & DAC_ADRS(0) & RECV_DATA;
+	fifo_oe_w(0)	<= DAC_OE_INPUT;
 	
 	--
 	--	Speed data store
 	--
-	spdSt : process(reset_n, CLOCK_50) is
-			
-		begin
-				
-			if reset_n = '0' then
-					
-				fifo_oe_w(1)	<= '0';
-				cStateSpd <= IDLEst;
-					
-			elsif rising_edge( CLOCK_50) then
-					
-				case cStateSpd is
-					
-					when IDLEst =>
-						
-						if DAC_SPD_OE_IN = '1' then
-							fifo_oe_w(1) <= '1';
-							cStateSpd <= WRITEst;
-						else
-							cStateSpd <= IDLEst;
-						end if;						
-						
-					when WRITEst =>
-						
-						fifo_write(1) <= DAC_COMMAND(6) & DAC_ADRS(1) & DAC_SPEED_DATA;
-						cStateSpd <= RESETst;
-						
-					when RESETst =>
-						
-						fifo_oe_w(1)	<= '0';						
-						cStateSpd 		<= IDLEst;
-						
-					when others =>
-						cStateSpd <= IDLEst;
-			end case;
-		end if;
-	end process spdSt;
+	fifo_write(1) <= DAC_COMMAND(6) & DAC_ADRS(1) & DAC_SPEED_DATA;
+	fifo_oe_w(1)	<= DAC_SPD_OE_IN;
 	
 	--
 	--	Position data store
 	--
-	posSt : process(reset_n, CLOCK_50) is
-			
-		begin
-				
-			if reset_n = '0' then
-					
-				fifo_oe_w(2)	<= '0';
-				cStatePos 		<= IDLEst;
-					
-			elsif rising_edge( CLOCK_50) then
-					
-				case cStatePos is
-					
-					when IDLEst =>
-						
-						if DAC_SPD_OE_IN = '1' then
-							fifo_oe_w(2) <= '1';
-							cStatePos 	 <= WRITEst;
-						else
-							cStatePos 	 <= IDLEst;
-						end if;						
-						
-					when WRITEst =>
-						
-						fifo_write(2) <= DAC_COMMAND(6) & DAC_ADRS(2) & DAC_POS_DATA;
-						cStatePos 		<= RESETst;
-						
-					when RESETst =>
-						
-						fifo_oe_w(2)	<= '0';						
-						cStatePos 		<= IDLEst;
-						
-					when others =>
-						cStatePos <= IDLEst;
-			end case;
-		end if;
-	end process posSt;
-	
+	fifo_write(2) <= DAC_COMMAND(6) & DAC_ADRS(2) & DAC_POS_DATA;
+	fifo_oe_w(2) 	<= DAC_POS_OE_IN;
 	
 	--
 	--	Read three fifo data and store into fifo_DAC
 	--
-	RnWFifos : process(reset_n, CLOCK_50) is 
-			
-			variable index : integer range 0 to 2:= 0;
+	RnWFifos : process(reset_n, CLOCK_50) is
 			
 		begin
 			
@@ -410,7 +311,7 @@ begin
 				fifo_oe_r(0)	<= '0';
 				fifo_oe_r(1) 	<= '0';
 				fifo_oe_r(2)	<= '0';
-				index 				:= 0;
+				index 				<= 0;
 				
 				cStateRnW <= IDLEst;
 				
@@ -420,10 +321,10 @@ begin
 					
 					when IDLEst =>
 							
+						fSpi_oe_w	<= '0';
+							
 						if isEmpty(index) = '0' then
 							fifo_oe_r(index) <= '1';		--enable fifo read for acceleration, speed, position
-							fSpi_oe_w		 		 <= '1';		--enable fifo write for FIFO_spi
-							
 							cStateRnW <= CPDATAst;
 						else
 							cStateRnW <= INCREMTst;
@@ -431,9 +332,8 @@ begin
 							
 					when CPDATAst =>
 							
-						fSpi_write		 	 <= fifo_read(index);
+						fSpi_oe_w		 		 <= '1';			--enable fifo write for FIFO_spi
 						fifo_oe_r(index) <= '0';
-						fSpi_oe_w 		 	 <= '0';
 							
 						if index <= 2 then
 							cStateRnW <= INCREMTst;
@@ -442,11 +342,14 @@ begin
 						end if;
 							
 					when INCREMTst =>
+						
+						fSpi_oe_w	<= '0';
+						
 						if index < 2 then
-							index := index +1;
+							index <= index +1;
 							cStateRnW <= IDLEst;
 						else
-							index := 0;
+							index <= 0;
 							cStateRnW <= IDLEst;
 						end if;
 							
@@ -463,46 +366,40 @@ begin
 	R_spiFifo : process (reset_n, CLOCK_50)
 	
 		begin
-			
-			if reset_n = '0' then
 				
+			if reset_n = '0' then
+					
 				fSpi_oe_r 		<= '0';
 			  spi_enable		<= '0';
 				DAC_OE_OUTPUT	<= '0';
-				
-				cStateSpi <= IDLEst;
-				
-			elsif rising_edge(CLOCK_50) then
-				
-				case cStateSpi is
+				cStateSpi 		<= IDLEst;
 					
-					when IDLEst =>
+			elsif rising_edge(CLOCK_50) then
+					
+				case cStateSpi is
 						
-						if fSpi_isEmp = '0' then
+					when IDLEst =>
 							
-							fSpi_oe_r		 	<= '1';
+						spi_enable		<= '0';
+						DAC_OE_OUTPUT	<= '0';
 							
-							DAC_OE_OUTPUT	<= '1';
-							
-							cStateSpi <= CPDATAst;
+						if spi_busy = '0' AND spi_enable = '0' then
+							if fSpi_isEmp = '0' then
+								fSpi_oe_r		 	<= '1';
+								cStateSpi 		<= CPDATAst;
+							else
+								cStateSpi <= IDLEst;
+							end if;
 						else
 							cStateSpi <= IDLEst;
 						end if;
-					
+							
 					when CPDATAst =>
 							
-						--spi_txdata <= fSpi_read;
-						spi_enable		<= '1';
 						fSpi_oe_r			<= '0';
-						cStateSpi <= TRANSMITst;
-						
-					when TRANSMITst =>
-						
-						
-						spi_enable		<= '0';
-						DAC_OE_OUTPUT	<= '0';
-						
-						cStateSpi <= IDLEst;
+						DAC_OE_OUTPUT	<= '1';
+						spi_enable		<= '1';
+						cStateSpi 		<= IDLEst;
 						
 					when others =>
 						cStateSpi <= IDLEst;
