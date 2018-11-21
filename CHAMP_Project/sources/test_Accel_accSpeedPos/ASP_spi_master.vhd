@@ -27,7 +27,8 @@
 --		Hack system to used ADXL355 (SPI 4 wires) as a SPI 3 wires
 --
 -- Version 2.1 1/03/2018 - Pierre ROMET
---		Use multiple architecture to use SPI master module in different cases.
+--		Use multiple architectures to use SPI master module as Bi-directionnal 
+--		or unidirectionnal pipe
 ----------------------------------------------------------------------------------
 
 LIBRARY ieee;
@@ -88,7 +89,7 @@ BEGIN
 			RW_INDEX <= 7;
 		end generate ADXL_RW_BIT;
 		
-		-- Generate configuration for ADXL355 Accelerometer
+		-- Generate configuration for AIS3624 Accelerometer
 		AIS_RW_BIT : if accel_used = 1 generate
 			RW_INDEX <= 0;
 		end generate AIS_RW_BIT;
