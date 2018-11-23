@@ -12,6 +12,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use work.all;
 
 entity accSpeedPos_tb is
 end entity;
@@ -19,7 +20,7 @@ end entity;
 Architecture arch_tb of accSpeedPos_tb is
 
 	signal clock50_stub	: std_logic := '0';
-	signal clock1k_stub	: std_logic := '1';
+	signal clock1k_stub	: std_logic := '0';
 	signal flt_oeI_stub	: std_logic;
 	signal flt_oeO_stub	: std_logic;
 	signal flt_data_stub: std_logic_vector(19 downto 0);
@@ -38,7 +39,10 @@ Architecture arch_tb of accSpeedPos_tb is
 	signal gpio_stub		: std_logic_vector(35 downto 0);
 	signal dac_oeO_stub	: std_logic;
 	
-	type T_STATE is (IDLEst, INCREMTst);
+	signal index	: integer := 0;
+	signal avrg		: integer := 65536;
+	
+	type T_STATE is (IDLEst, INCREMTst, DECREMENTst, RESYNCHROst);
 	signal stbState : T_STATE;
 	
 	component ASP_filter
@@ -51,7 +55,7 @@ Architecture arch_tb of accSpeedPos_tb is
 			TSMT_TOANALOG	:	OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 			SPD_OE_OUTPUT	: OUT STD_LOGIC;
 			SPD_OUTPUT		:	OUT STD_LOGIC_VECTOR(15 DOWNTO 0);		-- Speed data, obtain by integration of acceleration
-			SPD_COUNT			: OUT INTEGER;													-- Store the number of integration of acceleration since the beginning
+			SPD_COUNT			: OUT INTEGER;									-- Store the number of integration of acceleration since the beginning
 			POS_OE_OUTPUT	:	OUT STD_LOGIC;
 			POS_OUTPUT		: OUT STD_LOGIC_VECTOR(15 DOWNTO 0);		-- Position data, obtain by itegration of acceleration
 			POS_COUNT			: OUT INTEGER;
@@ -70,12 +74,12 @@ Architecture arch_tb of accSpeedPos_tb is
 			GPIO_SPI_CLK	:	INOUT STD_LOGIC;
 			GPIO_SPI_SS		:	INOUT STD_LOGIC;
 			GPIO_SPI_SDIO	:	INOUT STD_LOGIC;
-			RECV_DATA			:	IN STD_LOGIC_VECTOR(15 DOWNTO 0);		-- acceleration data supply by filter
-			DAC_OE_INPUT	:	IN STD_LOGIC;												-- acceleration data oenable input
-			DAC_SPEED_DATA: IN STD_LOGIC_VECTOR(15 DOWNTO 0);		-- speed data supply by filter
-			DAC_SPD_OE_IN	: IN STD_LOGIC;												-- speed data oenable input
-			DAC_POS_DATA	: IN STD_LOGIC_VECTOR(15 downto 0);		-- position data supply by filter
-			DAC_POS_OE_IN	: IN STD_LOGIC;												-- position data oenable input
+			RECV_DATA			:	IN STD_LOGIC_VECTOR(15 DOWNTO 0);	-- acceleration data supply by filter
+			DAC_OE_INPUT	:	IN STD_LOGIC;									-- acceleration data oenable input
+			DAC_SPEED_DATA: IN STD_LOGIC_VECTOR(15 DOWNTO 0);			-- speed data supply by filter
+			DAC_SPD_OE_IN	: IN STD_LOGIC;									-- speed data oenable input
+			DAC_POS_DATA	: IN STD_LOGIC_VECTOR(15 downto 0);			-- position data supply by filter
+			DAC_POS_OE_IN	: IN STD_LOGIC;									-- position data oenable input
 			DAC_OE_OUTPUT	:	OUT STD_LOGIC;
 			RESET_SIGNAL 	:	IN STD_LOGIC
 		);
@@ -84,7 +88,7 @@ Architecture arch_tb of accSpeedPos_tb is
 	begin
 	
 	clock50_stub 	<= not clock50_stub after 10 ns;		-- system clock
-	clock1k_stub	<= not clock1k_stub after 50000 ns;	-- freq. of 1KHz allow to simulate data rate of acceleromter, but need to accelerate freq to have a shorter simulation time (period of 0.1 ms). 
+	clock1k_stub	<= not clock1k_stub after 200 ns;	-- 50000 ns <=> freq. of 1KHz allow to simulate data rate of acceleromter, but need to accelerate freq to have a shorter simulation time (period of 0.1 ms). 
 	sw_stub				<= (others => '0');
 	reset_stub		<= '0', '1' after 97.0 ns;
 	
@@ -127,6 +131,7 @@ Architecture arch_tb of accSpeedPos_tb is
 		);
 		
 	IncrmtStub: process(reset_stub, clock50_stub) is
+			variable token : integer := 0;
 		begin
 			if reset_stub = '0' then
 				
@@ -135,23 +140,54 @@ Architecture arch_tb of accSpeedPos_tb is
 				
 				stbState <= IDLEst;
 				
-			elsif rising_edge(clock50_stub) or falling_edge(clock50_stub)then            
+			elsif rising_edge(clock50_stub) or falling_edge(clock50_stub) then  
 				
 				case stbState is
 					
 					when IDLEst =>
-							
+						flt_oeI_stub <= '0';
+						
 						if clock1k_stub'event AND clock1k_stub = '1' then
-							flt_oeI_stub <= '1';
-							stbState <= INCREMTst;
+							if token = 0 then
+								stbState <= INCREMTst;
+							elsif token = 1 then
+								stbState <= DECREMENTst;
+							end if;
+							
 						else
 							stbState <= IDLEst;
 						end if;
 							
-					when INCREMTst =>
+					when INCREMTst =>						
+						
+						if INDEX <= 2048 then
+							INDEX  <= INDEX +1;
+							flt_data_stub <= std_logic_vector(to_signed(avrg, flt_data_stub'length));
+							flt_oeI_stub <= '1';
+							stbState <= RESYNCHROst;
+						else
+							if to_integer(signed(flt_data_stub)) >= 500000 then
+								INDEX <= 0;
+								token := 1;
+							end if;
+							flt_oeI_stub <= '1';
+							flt_data_stub <= std_logic_vector(to_signed(to_integer(signed(flt_data_stub)) + 2500, flt_data_stub'length));
+							stbState <= RESYNCHROst;
+						end if;
+						
+					when DECREMENTst =>
 							
-						flt_data_stub <= std_logic_vector(to_signed(to_integer(signed(flt_data_stub)) + 1, flt_data_stub'length));
-						flt_oeI_stub <= '0';
+						if to_integer(signed(flt_data_stub)) <= 0 then
+							token := 0;
+						end if;
+						flt_oeI_stub <= '1';
+						flt_data_stub <= std_logic_vector(to_signed(to_integer(signed(flt_data_stub)) - 2500, flt_data_stub'length));
+						stbState <= RESYNCHROst;
+						
+					when RESYNCHROst =>
+						--This state is required,
+						--the 1K clock used to simulate the accelerometer rising edge when the main 50k clock folling edge
+						--So, with this state, we could resynchronized clock and data
 						stbState <= IDLEst;
 							
 					when others =>
