@@ -270,9 +270,9 @@ begin
 				else
 					cState3 <= IDLEst;
 				end if;
-				
+					
 			when Testst =>
-				
+					
 				if unsigned(TSMT_TOANALOG) > to_unsigned(36864, TSMT_TOANALOG'length) then
 					spdTab(spdIdx) <= unsigned(TSMT_TOANALOG) - to_unsigned(36864, TSMT_TOANALOG'length);
 				else
@@ -280,31 +280,37 @@ begin
 				end if;
 				spdIdx 	<= spdidx +1;
 				cState3 <= ADDst;
-				
+					
 			when ADDst =>
 				if spdIdx = 5 then
 					spdIdx <= 0;
 				end if;
-				
-				spdAdder <= resize(spdTab(0) + spdTab(1) + spdTab(2) + spdTab(3) + spdTab(4) ,spdAdder'length);
+					
+				spdAdder <= resize(spdTab(0),spdAdder'length) + resize(spdTab(1),spdAdder'length)
+									+ resize(spdTab(2),spdAdder'length) + resize(spdTab(3),spdAdder'length)
+									+ resize(spdTab(4),spdAdder'length) ;
 				cState3 <= MAPst;
-				
+					
 			when MAPst =>
 				spdDiv 	<= shift_right(unsigned(spdAdder), 2);
 				cState3 <= REMAPst;
-				
+					
 			when REMAPst =>
-				
+					
 				to_send <= spdDiv(16 downto 0) + to_unsigned(32768, to_send'length);
 				cState3 <= TRANSMITst;
-				
+					
 			when TRANSMITst =>
-				
-				SPD_OUTPUT	<= std_logic_vector(to_send(15 downto 0));
+					
+				if to_send <= to_unsigned(65535, to_send'length) then
+					SPD_OUTPUT	<= std_logic_vector(to_send(15 downto 0));
+				else
+					SPD_OUTPUT	<= std_logic_vector(to_unsigned(65535, to_send'length-1));
+				end if; 
 				SPD_COUNT		<= SPD_COUNT + 1;
 				SPD_OE_OUTPUT <= '1';
 				cState3 <= IDLEst;
-				
+					
 			when others =>
 				cState3 <= IDLEst;
 		end case;
@@ -351,9 +357,9 @@ begin
 				else
 					cState4 <= IDLEst;
 				end if;
-				
+					
 			when Testst =>
-				
+					
 				if unsigned(SPD_OUTPUT) > to_unsigned(36864, SPD_OUTPUT'length) then
 					posTab(posIdx) <= unsigned(SPD_OUTPUT) - to_unsigned(36864, SPD_OUTPUT'length);
 				else
@@ -361,31 +367,38 @@ begin
 				end if;
 				posIdx 	<= posIdx +1;
 				cState4 <= ADDst;
-				
+					
 			when ADDst =>
 				if posIdx = 5 then
 					posIdx <= 0;
 				end if;
-				
-				posAdder <= resize(posTab(0) + posTab(1) + posTab(2) + posTab(3) + posTab(4) ,posAdder'length);
+					
+				posAdder <= resize(posTab(0),posAdder'length) + resize(posTab(1),posAdder'length)
+										+ resize(posTab(2),posAdder'length) + resize(posTab(3),posAdder'length)
+										+ resize(posTab(4),posAdder'length) ;
 				cState4 <= MAPst;
-				
+					
 			when MAPst =>
+					
 				posDiv 	<= shift_right(unsigned(posAdder), 2);
 				cState4 <= REMAPst;
-				
+					
 			when REMAPst =>
-				
+					
 				pos_send <= posDiv(16 downto 0) + to_unsigned(32768, pos_send'length);
 				cState4 <= TRANSMITst;
-				
+					
 			when TRANSMITst =>
-				
-				POS_OUTPUT	<= std_logic_vector(pos_send(15 downto 0));
+					
+				if pos_send <= to_unsigned(65535, pos_send'length) then
+					POS_OUTPUT	<= std_logic_vector(pos_send(15 downto 0));
+				else
+					POS_OUTPUT	<= std_logic_vector(to_unsigned(65535, pos_send'length-1));
+				end if;
 				POS_COUNT		<= POS_COUNT + 1;
 				POS_OE_OUTPUT <= '1';
 				cState4 <= IDLEst;
-				
+					
 			when others =>
 				cState4 <= IDLEst;
 		end case;
