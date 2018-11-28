@@ -77,10 +77,12 @@ architecture filter_mapBitAvrgANDInteg of ASP_filter is
  signal spdAdder	: signed(20 downto 0);
  signal spdDiv		: signed(20 downto 0);
  signal to_send		:	signed(20 downto 0);
+ signal oe_motor	: std_logic;							-- high state active
 --position
- signal posAdder	: signed(20 downto 0);
- signal posDiv		: unsigned(15 downto 0);
- signal pos_send	:	signed(20 downto 0);
+ signal posAdder	: unsigned(20 downto 0);
+ signal posDiv		: unsigned(20 downto 0);
+ signal pos_send	:	unsigned(20 downto 0);
+ signal oe_pos		: std_logic;
  
  component ASP_HexDisplay
 	port
@@ -195,7 +197,7 @@ average: process(RESET_SIGNAL, CLOCK_50) is
 				
 				when Testst =>
 					
-					if to_integer(signed(RCV_TOFILTER(19 downto 4))) >= 0
+					if to_integer(signed(RCV_TOFILTER(19 downto 4))) >= 3300
 						AND to_integer(signed(RCV_TOFILTER(19 downto 4))) <= 4096 then
 						
 						avgAdder <= avgAdder + signed(RCV_TOFILTER(19 downto 4));
@@ -238,6 +240,7 @@ begin
 			
 		spdAdder			<= 21x"0";
 		spdDiv				<= 21x"0";
+		oe_motor			<= '0';
 		to_send				<= 21x"0";
 		SPD_OUTPUT 		<= 16x"0";
 		SPD_OE_OUTPUT <= '0';
@@ -248,6 +251,7 @@ begin
 -- signal spdAdder	: signed(20 downto 0);
 -- signal spdDiv		: signed(20 downto 0);
 -- signal to_send		:	signed(20 downto 0);
+-- signal oe_motor	: std_logic;
 		case cState3 is
 			
 			when IDLEst =>
@@ -261,15 +265,29 @@ begin
 				end if;
 					
 			when TEStst =>
-				spdDiv <= resize( signed(RCV_TOFILTER(19 downto 4)) - avrg(15 downto 0), spdDiv'Length);
+				spdDiv <= resize( signed(RCV_TOFILTER(19 downto 4)), spdDiv'Length);
 				cState3 <= ADDst;
 					
 			when ADDst =>
-				spdAdder <= spdAdder + shift_right(signed(spdDiv), 10);
+				if spdDiv <= to_signed(4096, to_send'length)							--3300 < accInst < 4096
+					 AND spdDiv >= to_signed(3300, to_send'length) then
+					 
+					spdAdder <= 21x"0";
+					oe_motor <= '0';
+				else																											--out of range
+					spdAdder <= spdAdder + shift_right(signed(spdDiv), 6);
+					oe_motor <= '1';
+				end if;
+					
 				cState3 <= MAPst;
 					
 			when MAPst =>
-				to_send <= spdAdder + to_signed(32768, to_send'length);
+				if oe_motor = '0' then
+					to_send <= to_signed(32768, to_send'length);
+				else
+					to_send <= spdAdder + to_signed(32768, to_send'length);
+				end if;
+				
 				cState3 <= TRANSMITst;
 					
 			when TRANSMITst =>
@@ -289,16 +307,18 @@ end process Speed;
 -- Integrated speed
 --
 Position: process(RESET_SIGNAL, CLOCK_50) is
--- signal posAdder	: signed(20 downto 0);
+-- signal posAdder	: unsigned(20 downto 0);
 -- signal posDiv		: unsigned(20 downto 0);
--- signal pos_send	:	signed(20 downto 0);
+-- signal pos_send	:	unsigned(20 downto 0);
+ --signal oe_pos		: std_logic;
 		
 begin
 		
 	if RESET_SIGNAL = '0' then
 
 		posAdder			<= 21x"0";
-		posDiv				<= 16x"0";
+		posDiv				<= 21x"0";
+		oe_pos				<= '0';
 		pos_send			<= 21x"0";
 		POS_OUTPUT		<= 16x"0";
 		POS_OE_OUTPUT	<= '0';
@@ -318,17 +338,29 @@ begin
 				else
 					cState4 <= IDLEst;
 				end if;
-			
+					
 			when TEStst =>
-				posDiv 	<= shift_right(unsigned(to_send(15 downto 0)), 10);
+				posDiv 	<= resize( unsigned(spdAdder), spdDiv'Length);
 				cState4 <= ADDst;
-				
+					
 			when ADDst =>
-				posAdder 	<= posAdder + resize(signed(posDiv), posAdder'length);
+				if posDiv /= 16x"0" then
+					posAdder 	<= posAdder + shift_right(unsigned(posDiv), 5);
+					oe_pos		<= '1';
+				else
+					posAdder 	<= 21x"0";
+					oe_pos		<= '0';
+				end if;
+					
 				cState4 	<= MAPst;
 					
 			when MAPst =>
-				pos_send <= posAdder + to_signed(32768, pos_send'length);
+				if oe_pos = '0' then
+					pos_send <= to_unsigned(32768, to_send'length);
+				else
+					pos_send <= posAdder + to_unsigned(32768, pos_send'length);
+				end if;
+					
 				cState4 <= TRANSMITst;
 					
 			when TRANSMITst =>
