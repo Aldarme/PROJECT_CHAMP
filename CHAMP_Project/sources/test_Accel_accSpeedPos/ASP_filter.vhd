@@ -74,17 +74,13 @@ architecture filter_mapBitAvrgANDInteg of ASP_filter is
  signal avrg			:	signed(23 downto 0);		-- Calculated average
  signal avgAdder	:	signed(23 downto 0);		-- Calculated average
  --speed
- signal spdTab 		: myTab;
- signal spdIdx	 	: integer;
- signal spdAdder	: unsigned(20 downto 0);
- signal spdDiv		: unsigned(20 downto 0);
- signal to_send		:	unsigned(16 downto 0);
+ signal spdAdder	: signed(20 downto 0);
+ signal spdDiv		: signed(20 downto 0);
+ signal to_send		:	signed(20 downto 0);
 --position
- signal posTab 		: myTab;
- signal posIdx	 	: integer;
- signal posAdder	: unsigned(20 downto 0);
- signal posDiv		: unsigned(20 downto 0);
- signal pos_send	:	unsigned(16 downto 0);
+ signal posAdder	: signed(20 downto 0);
+ signal posDiv		: unsigned(15 downto 0);
+ signal pos_send	:	signed(20 downto 0);
  
  component ASP_HexDisplay
 	port
@@ -234,82 +230,53 @@ end process average;
 --
 -- Integrated acceleration
 --
-Speed: process(RESET_SIGNAL, CLOCK_50) is	
--- signal spdTab 		: myTab;
--- signal spdIdx	 	: integer;
--- signal spdAdder	: unsigned(20 downto 0);
--- signal spdDiv		: unsigned(16 downto 0);
--- signal to_send		:	unsigned(16 downto 0;
+Speed: process(RESET_SIGNAL, CLOCK_50) is
 		
 begin
 		
 	if RESET_SIGNAL = '0' then
-		
-		for I in 0 to spdTab'length-1 loop
-			spdTab(I) <= 16x"0";
-		end loop;
-		spdIdx				<= 0;
+			
 		spdAdder			<= 21x"0";
 		spdDiv				<= 21x"0";
-		to_send				<= 17x"0";
+		to_send				<= 21x"0";
 		SPD_OUTPUT 		<= 16x"0";
 		SPD_OE_OUTPUT <= '0';
 		SPD_COUNT			<= 0;
 		cState3 			<= IDLEst;
-		
-	elsif rising_edge(CLOCK_50) then
 			
+	elsif rising_edge(CLOCK_50) then
+-- signal spdAdder	: signed(20 downto 0);
+-- signal spdDiv		: signed(20 downto 0);
+-- signal to_send		:	signed(20 downto 0);
 		case cState3 is
 			
 			when IDLEst =>
 					
 				SPD_OE_OUTPUT <= '0';
 					
-				if FLT_OE_OUTPUT = '1' then
-					cState3 <= Testst;
+				if FLT_OE_INPUT = '1' then
+					cState3 <= TEStst;
 				else
 					cState3 <= IDLEst;
 				end if;
 					
-			when Testst =>
-					
-				if unsigned(TSMT_TOANALOG) > to_unsigned(36864, TSMT_TOANALOG'length) then
-					spdTab(spdIdx) <= unsigned(TSMT_TOANALOG) - to_unsigned(36864, TSMT_TOANALOG'length);
-				else
-					spdTab(spdIdx) <= 16x"0";
-				end if;
-				spdIdx 	<= spdidx +1;
+			when TEStst =>
+				spdDiv <= resize( signed(RCV_TOFILTER(19 downto 4)) - avrg(15 downto 0), spdDiv'Length);
 				cState3 <= ADDst;
 					
 			when ADDst =>
-				if spdIdx = 5 then
-					spdIdx <= 0;
-				end if;
-					
-				spdAdder <= resize(spdTab(0),spdAdder'length) + resize(spdTab(1),spdAdder'length)
-									+ resize(spdTab(2),spdAdder'length) + resize(spdTab(3),spdAdder'length)
-									+ resize(spdTab(4),spdAdder'length) ;
+				spdAdder <= spdAdder + shift_right(signed(spdDiv), 10);
 				cState3 <= MAPst;
 					
 			when MAPst =>
-				spdDiv 	<= shift_right(unsigned(spdAdder), 2);
-				cState3 <= REMAPst;
-					
-			when REMAPst =>
-					
-				to_send <= spdDiv(16 downto 0) + to_unsigned(32768, to_send'length);
+				to_send <= spdAdder + to_signed(32768, to_send'length);
 				cState3 <= TRANSMITst;
 					
 			when TRANSMITst =>
-					
-				if to_send <= to_unsigned(65535, to_send'length) then
-					SPD_OUTPUT	<= std_logic_vector(to_send(15 downto 0));
-				else
-					SPD_OUTPUT	<= std_logic_vector(to_unsigned(65535, to_send'length-1));
-				end if; 
-				SPD_COUNT		<= SPD_COUNT + 1;
-				SPD_OE_OUTPUT <= '1';
-				cState3 <= IDLEst;
+				SPD_OE_OUTPUT	<= '1';
+				SPD_OUTPUT		<= std_logic_vector(to_send(15 downto 0));
+				SPD_COUNT			<= SPD_COUNT + 1;
+				cState3 			<= IDLEst;
 					
 			when others =>
 				cState3 <= IDLEst;
@@ -322,23 +289,17 @@ end process Speed;
 -- Integrated speed
 --
 Position: process(RESET_SIGNAL, CLOCK_50) is
--- signal posTab 		: myTab;
--- signal posIdx	 	: integer;
--- signal posAdder	: unsigned(20 downto 0);
--- signal posDiv		: unsigned(16 downto 0);
--- signal pos_send		:	unsigned(16 downto 0;
+-- signal posAdder	: signed(20 downto 0);
+-- signal posDiv		: unsigned(20 downto 0);
+-- signal pos_send	:	signed(20 downto 0);
 		
 begin
 		
 	if RESET_SIGNAL = '0' then
-		
-		for I in 0 to posTab'length-1 loop
-			posTab(I) <= 16x"0";
-		end loop;
-		posIdx				<= 0;
+
 		posAdder			<= 21x"0";
-		posDiv				<= 21x"0";
-		pos_send			<= 17x"0";
+		posDiv				<= 16x"0";
+		pos_send			<= 21x"0";
 		POS_OUTPUT		<= 16x"0";
 		POS_OE_OUTPUT	<= '0';
 		POS_COUNT			<= 0;
@@ -353,51 +314,28 @@ begin
 				POS_OE_OUTPUT <= '0';
 					
 				if SPD_OE_OUTPUT = '1' then
-					cState4 <= Testst;
+					cState4 <= TEStst;
 				else
 					cState4 <= IDLEst;
 				end if;
-					
-			when Testst =>
-					
-				if unsigned(SPD_OUTPUT) > to_unsigned(36864, SPD_OUTPUT'length) then
-					posTab(posIdx) <= unsigned(SPD_OUTPUT) - to_unsigned(36864, SPD_OUTPUT'length);
-				else
-					posTab(posIdx) <= 16x"0";
-				end if;
-				posIdx 	<= posIdx +1;
+			
+			when TEStst =>
+				posDiv 	<= shift_right(unsigned(to_send(15 downto 0)), 10);
 				cState4 <= ADDst;
-					
+				
 			when ADDst =>
-				if posIdx = 5 then
-					posIdx <= 0;
-				end if;
-					
-				posAdder <= resize(posTab(0),posAdder'length) + resize(posTab(1),posAdder'length)
-										+ resize(posTab(2),posAdder'length) + resize(posTab(3),posAdder'length)
-										+ resize(posTab(4),posAdder'length) ;
-				cState4 <= MAPst;
+				posAdder 	<= posAdder + resize(signed(posDiv), posAdder'length);
+				cState4 	<= MAPst;
 					
 			when MAPst =>
-					
-				posDiv 	<= shift_right(unsigned(posAdder), 2);
-				cState4 <= REMAPst;
-					
-			when REMAPst =>
-					
-				pos_send <= posDiv(16 downto 0) + to_unsigned(32768, pos_send'length);
+				pos_send <= posAdder + to_signed(32768, pos_send'length);
 				cState4 <= TRANSMITst;
 					
 			when TRANSMITst =>
-					
-				if pos_send <= to_unsigned(65535, pos_send'length) then
-					POS_OUTPUT	<= std_logic_vector(pos_send(15 downto 0));
-				else
-					POS_OUTPUT	<= std_logic_vector(to_unsigned(65535, pos_send'length-1));
-				end if;
-				POS_COUNT		<= POS_COUNT + 1;
-				POS_OE_OUTPUT <= '1';
-				cState4 <= IDLEst;
+				POS_OE_OUTPUT	<= '1';
+				POS_OUTPUT		<= std_logic_vector(pos_send(15 downto 0));
+				POS_COUNT			<= POS_COUNT + 1;
+				cState4 			<= IDLEst;
 					
 			when others =>
 				cState4 <= IDLEst;
