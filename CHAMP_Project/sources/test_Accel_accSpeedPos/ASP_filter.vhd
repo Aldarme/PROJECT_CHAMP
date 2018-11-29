@@ -279,7 +279,7 @@ begin
 					GPIO_OE_MOTOR	<= oe_motor;
 						
 				else																											--out of range
-					spdAdder <= spdAdder + shift_right(signed(spdDiv), 5);	--le facteur de division est la calibration en vitesse (5)
+					spdAdder <= spdAdder + shift_right(signed(spdDiv), 6);	--le facteur de division est 64 (6 decalage à droite, pour une calibration en vitesse de 5m.s à 10v
 					if spdDiv > to_signed(8000, to_send'length) then
 					oe_motor <= '1';
 					GPIO_OE_MOTOR	<= oe_motor;
@@ -352,7 +352,7 @@ begin
 					
 			when ADDst =>
 				if posDiv /= 16x"0" then
-					posAdder 	<= posAdder + shift_right(unsigned(posDiv), 5);	--le facteur de division est la calibration en position (5)
+					posAdder 	<= posAdder + shift_right(unsigned(posDiv), 3);	--le facteur de division est 8 (3 décalage à droite) pour une calibration en position de 1.2v par cm
 					oe_pos		<= '1';
 				else
 					posAdder 	<= 21x"0";
