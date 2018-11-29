@@ -4,7 +4,7 @@
 -- Dependencies:     none
 -- Design Software:  Quartus II Version 17.1.0
 --
--- This file provide an architecture to calculated different type of data
+-- This file provide an architecture to calculate different type of data
 -- Those data are:
 --	Average acceleration
 --	Speed 		(integration of acceleration)
@@ -37,6 +37,7 @@ entity ASP_filter is
 		SWITCH				:	IN 	STD_LOGIC_VECTOR(17 DOWNTO 0);
 		HEX4Disp			: OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
 		HEX5Disp			: OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
+		GPIO_OE_MOTOR	: OUT 	STD_LOGIC;
 		RESET_SIGNAL	:	IN 	STD_LOGIC
 	);
 	
@@ -78,6 +79,7 @@ architecture filter_mapBitAvrgANDInteg of ASP_filter is
  signal spdDiv		: signed(20 downto 0);
  signal to_send		:	signed(20 downto 0);
  signal oe_motor	: std_logic;							-- high state active
+ signal spdGain		: integer;
 --position
  signal posAdder	: unsigned(20 downto 0);
  signal posDiv		: unsigned(20 downto 0);
@@ -241,6 +243,7 @@ begin
 		spdAdder			<= 21x"0";
 		spdDiv				<= 21x"0";
 		oe_motor			<= '0';
+		spdGain				<= 0;
 		to_send				<= 21x"0";
 		SPD_OUTPUT 		<= 16x"0";
 		SPD_OE_OUTPUT <= '0';
@@ -269,14 +272,18 @@ begin
 				cState3 <= ADDst;
 					
 			when ADDst =>
-				if spdDiv <= to_signed(4096, to_send'length)							--3300 < accInst < 4096
-					 AND spdDiv >= to_signed(3300, to_send'length) then
+				if spdDiv <= to_signed(4096, to_send'length) then					--accInst < 4096
 					 
-					spdAdder <= 21x"0";
-					oe_motor <= '0';
+					spdAdder 			<= 21x"0";
+					oe_motor 			<= '0';
+					GPIO_OE_MOTOR	<= oe_motor;
+						
 				else																											--out of range
-					spdAdder <= spdAdder + shift_right(signed(spdDiv), 6);
+					spdAdder <= spdAdder + shift_right(signed(spdDiv), 5);	--le facteur de division est la calibration en vitesse (5)
+					if spdDiv > to_signed(8000, to_send'length) then
 					oe_motor <= '1';
+					GPIO_OE_MOTOR	<= oe_motor;
+					end if;
 				end if;
 					
 				cState3 <= MAPst;
@@ -345,7 +352,7 @@ begin
 					
 			when ADDst =>
 				if posDiv /= 16x"0" then
-					posAdder 	<= posAdder + shift_right(unsigned(posDiv), 5);
+					posAdder 	<= posAdder + shift_right(unsigned(posDiv), 5);	--le facteur de division est la calibration en position (5)
 					oe_pos		<= '1';
 				else
 					posAdder 	<= 21x"0";

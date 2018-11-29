@@ -68,6 +68,7 @@ architecture topArchi of ASP_TopEntity is
 		SWITCH				:	IN 	STD_LOGIC_VECTOR(17 DOWNTO 0);
 		HEX4Disp			: OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
 		HEX5Disp			: OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
+		GPIO_OE_MOTOR	: OUT 	STD_LOGIC;
 		RESET_SIGNAL	:	IN 	STD_LOGIC
 	);
  END COMPONENT;
@@ -150,6 +151,7 @@ reset_all <= TOP_KEY(3);
 		SWITCH				=> SW,
 		HEX4Disp			=> HEX4,
 		HEX5Disp			=> HEX5,
+		GPIO_OE_MOTOR	=> TOP_GPIO(19),
 		RESET_SIGNAL	=> reset_all
 	);
 	
